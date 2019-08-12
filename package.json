@@ -1,0 +1,21 @@
+{
+  "name": "babble",
+  "version": "0.0.1",
+  "description": "说都不会话了。",
+  "author": "Kevin Kuehler <keur@ocf.berkeley.edu>",
+  "license": "GPL",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json src/**/*.ts -- --fix",
+    "build": "tsc --project tsconfig.build.json"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^12.7.1",
+    "prettier": "^1.18.2",
+    "requirejs": "^2.3.6",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.5.3"
+  }
+}
