@@ -12,8 +12,8 @@
         "<all_urls>"
       ],
       "js": [
-        "dist/parse.js",
-        "dist/content.js"
+        "dist/js/parse.js",
+        "dist/js/content.js"
       ]
     }
   ]

@@ -5,17 +5,22 @@
   "author": "Kevin Kuehler <keur@ocf.berkeley.edu>",
   "license": "GPL",
   "scripts": {
-    "lint": "tslint --project tsconfig.json src/**/*.ts -- --fix",
-    "build": "tsc --project tsconfig.build.json"
+    "build": "webpack --config webpack/webpack.prod.js",
+    "lint": "tslint --project tsconfig.json --fix src/**/*.ts"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^12.7.1",
+    "copy-webpack-plugin": "^5.0.4",
     "prettier": "^1.18.2",
     "requirejs": "^2.3.6",
+    "ts-loader": "^6.0.4",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-merge": "^4.2.1"
   }
 }
