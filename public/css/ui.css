@@ -1,8 +1,19 @@
-.border {
-  width: 800px;
-  height: 300px;
+html {
+  min-width: 350px;
 }
 
 .babble-text {
   resize: none;
+}
+
+.fa {
+  color: #cacbcc;
+}
+
+.fa-babble-active {
+  color: black;
+  border-bottom: 4px solid orange;
+  display: inline-block;
+  padding: 10px;
+  margin: 8px;
 }
