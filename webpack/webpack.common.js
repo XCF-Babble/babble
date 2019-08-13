@@ -29,14 +29,14 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
-    }
-    //plugins: [
-    //    // exclude locale files in moment
-    //    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    //    new CopyPlugin([
-    //        { from: '.', to: '../' }
-    //      ],
-    //      {context: 'public' }
-    //    ),
-    //]
+    },
+    plugins: [
+        // exclude locale files in moment
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new CopyPlugin([
+            { from: '.', to: '../' }
+          ],
+          {context: 'public' }
+        ),
+    ]
 };
