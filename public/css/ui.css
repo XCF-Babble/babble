@@ -1,19 +1,36 @@
 html {
-  min-width: 350px;
+  min-width: 500px;
 }
 
-.babble-text {
-  resize: none;
+.container-col {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: no-wrap;
 }
 
-.fa {
+.container-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: no-wrap;
+  justify-content: center;
+}
+
+.item {
+  padding: .2em;
+  margin: 0 8px;
+  flex-grow: 1;
+}
+
+.fitem {
+  flex-grow: 0;
+}
+
+.fa-babble-footer {
   color: #cacbcc;
+  padding: 16px 0;
+  margin: 0 10px;
 }
-
 .fa-babble-active {
   color: black;
   border-bottom: 4px solid orange;
-  display: inline-block;
-  padding: 10px;
-  margin: 8px;
 }
