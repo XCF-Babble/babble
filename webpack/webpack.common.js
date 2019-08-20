@@ -6,6 +6,7 @@ const srcDir = '../src/';
 module.exports = {
     entry: {
         content: path.join(__dirname, srcDir + 'content.ts'),
+        cryptoutils: path.join(__dirname, srcDir + 'cryptoutils.ts'),
         parse: path.join(__dirname, srcDir + 'parse.ts')
     },
     output: {

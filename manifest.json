@@ -12,8 +12,10 @@
         "<all_urls>"
       ],
       "js": [
+        "dist/js/content.js",
+        "dist/js/cryptoutils.js",
         "dist/js/parse.js",
-        "dist/js/content.js"
+        "dist/js/vendor.js"
       ]
     }
   ],
@@ -21,6 +23,7 @@
     "default_popup": "dist/html/ui.html"
   },
   "permissions": [
+    "debugger",
     "storage"
   ]
 }
