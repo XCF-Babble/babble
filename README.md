@@ -5,18 +5,18 @@
 Get a development build of the project:
 
 ```
-yarn install
-yarn run dev
+npm install
+npm run dev
 ```
 
 Before commiting run:
 
 ```
-yarn run lint
+npm run lint
 ```
 
 If adding a new dependency run:
 
 ```
-yarn audit
+npm audit
 ```
