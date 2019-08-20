@@ -5,7 +5,6 @@
     "tslint-config-prettier"
   ],
   "rules": {
-    "prettier": true,
-    "quotemark": [true, "single", "avoid-escape", "avoid-template"]
+    "prettier": [true, { "singleQuote": true }]
   }
 }
