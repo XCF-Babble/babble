@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-const _sodium = require("libsodium-wrappers");
-const babbleSalt = "BabbleBabbleBabb";
+const _sodium = require('libsodium-wrappers');
+const babbleSalt = 'BabbleBabbleBabb';
 
 export const libsodium = async () => {
   const sodium = _sodium;
