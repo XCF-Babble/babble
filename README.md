@@ -2,12 +2,21 @@
 
 说都不会话了
 
+Get a development build of the project:
+
 ```
-yarn run build
+yarn install
+yarn run dev
 ```
 
 Before commiting run:
 
 ```
 yarn run lint
+```
+
+If adding a new dependency run:
+
+```
+yarn audit
 ```

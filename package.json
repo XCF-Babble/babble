@@ -6,6 +6,7 @@
   "license": "GPL",
   "scripts": {
     "build": "webpack --config webpack/webpack.prod.js",
+    "dev": "webpack --config webpack/webpack.dev.js",
     "lint": "tslint --project tsconfig.json --fix src/**/*.ts"
   },
   "dependencies": {},
