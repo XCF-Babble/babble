@@ -1,21 +1,22 @@
 'use strict';
 
-const _sodium = require('libsodium-wrappers');
+const sodium = require('libsodium-wrappers');
 const babbleSalt: string = 'BabbleBabbleBabb';
-const babbleBase: string =
+var sodiumInited: boolean = false;
+
+export const babbleDefaultBase: string =
   '的一是了人在有我他这为之来以个们到说和地也子时而要于就下得可你年生自会那后能对着事其里所去行过十用发如然方成者多都三二同么当起与好看学进将还分此心前面又定见只从现因开些长明样已月正想实把相两力等外它并间手应全门点身由何向至物被五及入先己或很最书美山什名曰合加世水果位度马给数次今表原各才几解则气再听提万更比百尔即白许系且光路接结题指感量取场电空边件住放风求形望传笑叫往区达设记字故品象花七服据云像飞远收石类程转千式流每该始术格运怎步让识拉若备造快集布尽称确呢节注存具甚容吃算坐早引似视尚轻况留照写足余星居技属找食';
 
-export const libsodium = async () => {
-  const sodium = _sodium;
-  await sodium.ready;
-
-  return sodium;
+const sodiumInit = (): void => {
+  if (!sodiumInited) {
+    sodium.ready.then();
+    // TODO: handle error.
+    sodiumInited = true;
+  }
 };
 
-export const deriveKey = async (
-  babblePassphrase: string
-): Promise<Uint8Array> => {
-  const sodium = await libsodium();
+export const deriveKey = (babblePassphrase: string): Uint8Array => {
+  sodiumInit();
   return sodium.crypto_pwhash(
     sodium.crypto_aead_chacha20poly1305_ietf_KEYBYTES,
     sodium.from_string(babblePassphrase),
@@ -26,11 +27,8 @@ export const deriveKey = async (
   );
 };
 
-export const encrypt = async (
-  s: string,
-  babbleKey: Uint8Array
-): Promise<Uint8Array> => {
-  const sodium = await libsodium();
+const encrypt = (s: string, babbleKey: Uint8Array): Uint8Array => {
+  sodiumInit();
   const nonce: Uint8Array = sodium.randombytes_buf(
     sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES
   );
@@ -47,11 +45,8 @@ export const encrypt = async (
   return ret;
 };
 
-export const decrypt = async (
-  s: Uint8Array,
-  babbleKey: Uint8Array
-): Promise<string> => {
-  const sodium = await libsodium();
+const decrypt = (s: Uint8Array, babbleKey: Uint8Array): string => {
+  sodiumInit();
   if (
     s.length <
     sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES +
@@ -76,7 +71,7 @@ export const decrypt = async (
   );
 };
 
-export const hanziEncode = async (s: Uint8Array): Promise<string> => {
+const hanziEncode = (s: Uint8Array, babbleBase: string): string => {
   var ret = '';
   s.forEach(b => {
     ret += babbleBase[b];
@@ -84,7 +79,7 @@ export const hanziEncode = async (s: Uint8Array): Promise<string> => {
   return ret;
 };
 
-export const hanziDecode = async (s: string): Promise<Uint8Array> => {
+const hanziDecode = (s: string, babbleBase: string): Uint8Array => {
   var ret = new Uint8Array(s.length);
   var parsed = 0;
   for (var c of s) {
@@ -94,23 +89,25 @@ export const hanziDecode = async (s: string): Promise<Uint8Array> => {
   return ret.subarray(0, parsed);
 };
 
-export const babble = async (
+export const babble = (
   s: string,
-  babbleKey: Uint8Array
-): Promise<string> => {
+  babbleKey: Uint8Array,
+  babbleBase: string
+): string => {
   try {
-    return await hanziEncode(await encrypt(s, babbleKey));
+    return hanziEncode(encrypt(s, babbleKey), babbleBase);
   } catch (e) {
     return '';
   }
 };
 
-export const debabble = async (
+export const debabble = (
   s: string,
-  babbleKey: Uint8Array
-): Promise<string> => {
+  babbleKey: Uint8Array,
+  babbleBase: string
+): string => {
   try {
-    return await decrypt(await hanziDecode(s), babbleKey);
+    return decrypt(hanziDecode(s, babbleBase), babbleKey);
   } catch (e) {
     return '';
   }
