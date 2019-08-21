@@ -1,6 +1,6 @@
 'use strict';
 
-const cryptoutils = require('./cryptoutils');
+import * as cryptoutils from './cryptoutils';
 
 export interface KeystoreEntry {
   name: string;
