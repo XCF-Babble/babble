@@ -1,3 +1,6 @@
+'use strict';
+
+import * as parse from './parse';
 var clickedElem: Element;
 
 document.addEventListener(

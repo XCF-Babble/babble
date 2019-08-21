@@ -17,9 +17,11 @@ chrome.contextMenus.onClicked.addListener(
   ): void => {
     // send this message to the current tab
     if (tab && tab.id) {
-      chrome.tabs.sendMessage(tab.id, 'getContextElement', (response): void => {
-        // TODO: do we actually need to do anything here?
-      });
+      chrome.tabs.sendMessage(
+        tab.id,
+        'getContextElement',
+        (response): void => {}
+      );
     }
   }
 );

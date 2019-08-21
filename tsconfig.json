@@ -4,7 +4,7 @@
     "module": "commonjs",
     "lib": [
       "dom",
-      "es5"
+      "es6"
     ],
     "outDir": "./out",
     "rootDir": "./src",

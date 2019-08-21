@@ -1,15 +1,16 @@
 'use strict';
 
-const parse = require('./parse');
-const cryptoutils = require('./cryptoutils');
+import * as parse from './parse';
+import * as cryptoutils from './cryptoutils.ts';
 
 const start = () => {
   console.log(cryptoutils.deriveKey('henlo'));
-  parse.walkDOM(document.body, (elem: Element) => {
+  parse.walkDOM(document.body, (elem: Element): boolean => {
     const text: String = elem.innerHTML.trim();
     if (text === 'keur') {
       elem.innerHTML = 'test';
     }
+    return false;
   });
 };
 

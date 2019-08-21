@@ -1,6 +1,6 @@
 'use strict';
 
-const _sodium = require('libsodium-wrappers');
+import * as _sodium from 'libsodium-wrappers';
 const babbleSalt: string = 'BabbleBabbleBabb';
 
 export const babbleDefaultBase: string =
