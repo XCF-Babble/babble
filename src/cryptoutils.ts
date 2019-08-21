@@ -86,8 +86,8 @@ const hanziEncode = (s: Uint8Array, babbleBase: string): string => {
 const hanziDecode = (s: string, babbleBase: string): Uint8Array => {
   var ret = new Uint8Array(s.length);
   var parsed = 0;
-  for (var c of s) {
-    var index = babbleBase.indexOf(c);
+  for (const c of s) {
+    const index = babbleBase.indexOf(c);
     if (index != -1) ret[parsed++] = index;
   }
   return ret.subarray(0, parsed);

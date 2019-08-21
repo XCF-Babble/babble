@@ -16,6 +16,7 @@
         "dist/js/content.js",
         "dist/js/cryptoutils.js",
         "dist/js/events.js",
+        "dist/js/keystore.js",
         "dist/js/parse.js",
         "dist/js/vendor.js"
       ]

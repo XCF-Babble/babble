@@ -1,6 +1,10 @@
 'use strict';
 
-export const walkDOM = (root: Element, callback: (elem: Element) => boolean, down:boolean = true) => {
+export const walkDOM = (
+  root: Element,
+  callback: (elem: Element) => boolean,
+  down: boolean = true
+) => {
   if (down) {
     walkDOMDownwards(root, callback);
   } else {
@@ -10,7 +14,10 @@ export const walkDOM = (root: Element, callback: (elem: Element) => boolean, dow
   }
 };
 
-const walkDOMDownwards = (root: Element, callback: (elem: Element) => boolean) => {
+const walkDOMDownwards = (
+  root: Element,
+  callback: (elem: Element) => boolean
+) => {
   if (callback(root)) {
     return;
   }
@@ -20,7 +27,10 @@ const walkDOMDownwards = (root: Element, callback: (elem: Element) => boolean) =
   }
 };
 
-const walkDOMUpwards = (node: Element, callback: (elem: Element) => boolean) => {
+const walkDOMUpwards = (
+  node: Element,
+  callback: (elem: Element) => boolean
+) => {
   if (callback(node)) {
     return;
   }

@@ -9,6 +9,7 @@ module.exports = {
         content: path.join(__dirname, srcDir + 'content.ts'),
         cryptoutils: path.join(__dirname, srcDir + 'cryptoutils.ts'),
         events: path.join(__dirname, srcDir + 'events.ts'),
+        keystore: path.join(__dirname, srcDir + 'keystore.ts'),
         parse: path.join(__dirname, srcDir + 'parse.ts')
     },
     output: {
