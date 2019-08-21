@@ -6,12 +6,12 @@ export interface KeystoreEntry {
   name: string;
   key: Array<number>;
   base: string;
-  tags: [string];
+  tags: string[];
 }
 
-export const getKeystore = (): Promise<[KeystoreEntry]> => {
-  return new Promise<[KeystoreEntry]>(
-    (resolve: (_: [KeystoreEntry]) => void) => {
+export const getKeystore = (): Promise<KeystoreEntry[]> => {
+  return new Promise<KeystoreEntry[]>(
+    (resolve: (_: KeystoreEntry[]) => void) => {
       chrome.storage.local.get({ keystore: [] }, result => {
         resolve(result.keystore);
       });
@@ -19,7 +19,7 @@ export const getKeystore = (): Promise<[KeystoreEntry]> => {
   );
 };
 
-const setKeystore = (keystore: [KeystoreEntry]): Promise<void> => {
+const setKeystore = (keystore: KeystoreEntry[]): Promise<void> => {
   return new Promise<void>((resolve: () => void) => {
     chrome.storage.local.set({ keystore: keystore }, resolve);
   });
@@ -40,7 +40,7 @@ export const addEntry = async (
   name: string,
   passphrase: string,
   base: string,
-  tags: [string]
+  tags: string[]
 ): Promise<void> => {
   var keystore = await getKeystore();
   keystore.push({
@@ -57,7 +57,7 @@ export const editEntry = async (
   name: string,
   passphrase: string,
   base: string,
-  tags: [string]
+  tags: string[]
 ): Promise<void> => {
   var keystore = await getKeystore();
   keystore[id] = {
