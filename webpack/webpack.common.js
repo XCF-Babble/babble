@@ -8,9 +8,9 @@ module.exports = {
         background: path.join(__dirname, srcDir + 'background.ts'),
         content: path.join(__dirname, srcDir + 'content.ts'),
         cryptoutils: path.join(__dirname, srcDir + 'cryptoutils.ts'),
-        events: path.join(__dirname, srcDir + 'events.ts'),
         keystore: path.join(__dirname, srcDir + 'keystore.ts'),
-        parse: path.join(__dirname, srcDir + 'parse.ts')
+        parse: path.join(__dirname, srcDir + 'parse.ts'),
+        popup: path.join(__dirname, srcDir + 'popup.ts')
     },
     output: {
         path: path.join(__dirname, '../dist/js'),
