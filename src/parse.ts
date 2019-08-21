@@ -1,5 +1,5 @@
 'use strict';
-
+console.log('parse');
 export const walkDOM = (root: Element, callback: (elem: Element) => void) => {
   parseDOM(root, callback);
 };

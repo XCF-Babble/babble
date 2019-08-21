@@ -15,17 +15,25 @@
       "js": [
         "dist/js/content.js",
         "dist/js/cryptoutils.js",
+        "dist/js/events.js",
         "dist/js/parse.js",
         "dist/js/vendor.js"
       ]
     }
   ],
+  "background": {
+    "scripts": ["dist/js/background.js"],
+    "persistent": false
+  },
   "browser_action": {
     "default_popup": "dist/html/ui.html"
   },
   "permissions": [
+    "contextMenus",
     "debugger",
     "storage",
+    "tabs",
+    "unlimitedStorage",
     "<all_urls>"
   ]
 }

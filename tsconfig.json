@@ -10,13 +10,13 @@
     "rootDir": "./src",
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
     "noFallthroughCasesInSwitch": true,
     "typeRoots": [],
     "types": [
-      "node"
+      "node",
+      "chrome"
     ]
   },
   "include": ["src/**/*.ts"],

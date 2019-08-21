@@ -7,10 +7,12 @@
   "scripts": {
     "build": "webpack --config webpack/webpack.prod.js",
     "dev": "webpack --config webpack/webpack.dev.js",
+    "clean": "rm -rf dist",
     "lint": "tslint --project tsconfig.json --fix src/**/*.ts"
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/chrome": "0.0.88",
     "@types/libsodium-wrappers": "^0.7.5",
     "@types/node": "^12.7.1",
     "copy-webpack-plugin": "^5.0.4",

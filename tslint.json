@@ -5,6 +5,7 @@
     "tslint-config-prettier"
   ],
   "rules": {
-    "prettier": [true, { "singleQuote": true }]
+    "prettier": [true, { "singleQuote": true }],
+    "only-arrow-functions": true
   }
 }
