@@ -2,6 +2,10 @@ html {
   min-width: 300px;
 }
 
+textarea {
+  resize: none;
+}
+
 .container-col {
   display: flex;
   flex-direction: column;

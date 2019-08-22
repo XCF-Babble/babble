@@ -36,5 +36,6 @@ chrome.runtime.onMessage.addListener(
     sendResponse
   ): void => {
     cipherInput.innerHTML = request.data;
+    sendResponse({success: true});
   }
 );
