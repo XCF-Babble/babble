@@ -14,15 +14,18 @@
       ],
       "js": [
         "dist/js/content.js",
-        "dist/js/cryptoutils.js",
-        "dist/js/keystore.js",
         "dist/js/parse.js",
-        "dist/js/vendor.js"
+        "dist/js/message.js"
       ]
     }
   ],
   "background": {
-    "scripts": ["dist/js/background.js"],
+    "scripts": [
+      "dist/js/background.js",
+      "dist/js/cryptoutils.js",
+      "dist/js/message.js",
+      "dist/js/vendor.js"
+    ],
     "persistent": false
   },
   "browser_action": {

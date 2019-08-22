@@ -9,6 +9,7 @@ module.exports = {
         content: path.join(__dirname, srcDir + 'content.ts'),
         cryptoutils: path.join(__dirname, srcDir + 'cryptoutils.ts'),
         keystore: path.join(__dirname, srcDir + 'keystore.ts'),
+        message: path.join(__dirname, srcDir + 'message.ts'),
         parse: path.join(__dirname, srcDir + 'parse.ts'),
         popup: path.join(__dirname, srcDir + 'popup.ts')
     },

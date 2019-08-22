@@ -1,5 +1,8 @@
 'use strict';
 
+import * as keystore from './keystore';
+import { Request, sendMessageActiveTab } from './message';
+
 chrome.runtime.onInstalled.addListener((): void => {
   // TODO: add locales
   chrome.contextMenus.create({
@@ -9,6 +12,29 @@ chrome.runtime.onInstalled.addListener((): void => {
     contexts: ['all']
   });
 });
+
+chrome.runtime.onMessage.addListener(
+  (
+    request: Request,
+    sender: chrome.runtime.MessageSender,
+    sendResponse
+  ): void => {
+    switch (request.request) {
+      case 'babbleText':
+        // TODO: babble some text with selected key
+        keystore.babbleWithEntry(request.data, 0).then((cipherText: string) => {
+          sendMessageActiveTab(
+            { request: 'tunnelCipherText', data: cipherText },
+            (response: any): void => {}
+          );
+        });
+        break;
+      default:
+        console.error('Unknnown message request: ', request.request);
+        break;
+    }
+  }
+);
 
 chrome.contextMenus.onClicked.addListener(
   (

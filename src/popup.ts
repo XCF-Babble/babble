@@ -1,17 +1,6 @@
 'use strict';
 
-// TODO: in the future this should be made more generic to support other browsers.
-const sendMessageActiveTab = (
-  message: any,
-  responseCallback?: (response: any) => void
-): void => {
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    const activeTab: chrome.tabs.Tab | null = tabs.length > 0 ? tabs[0] : null;
-    if (activeTab && activeTab.id) {
-      chrome.tabs.sendMessage(activeTab.id, message, responseCallback);
-    }
-  });
-};
+import * as message from './message';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
   const plaintext: HTMLInputElement | null = document.getElementById(
@@ -20,8 +9,8 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
 
   if (plaintext) {
     plaintext.addEventListener('input', (kevent: Event) => {
-      sendMessageActiveTab(
-        { request: 'tunnelCipherText', data: plaintext.value },
+      chrome.runtime.sendMessage(
+        { request: 'babbleText', data: plaintext.value },
         (response: any): void => {}
       );
     });
@@ -32,7 +21,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
 
     plaintext.addEventListener('keydown', (kevent: KeyboardEvent) => {
       if (isEnter(kevent)) {
-        sendMessageActiveTab(
+        message.sendMessageActiveTab(
           { request: 'submitCipherText', data: null },
           (response: any): void => {
             if (response.success) {

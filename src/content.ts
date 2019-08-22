@@ -1,7 +1,9 @@
 'use strict';
 
 import * as parse from './parse';
+import { Request } from './message';
 
+// TODO: make this async because it is slow as fuck
 var cipherInput: Element;
 const start = () => {
   const editors: NodeListOf<Element> = document.querySelectorAll(
@@ -25,11 +27,6 @@ const start = () => {
 //// attempts to decrypt on any changes
 setTimeout(start, 3000);
 
-// TODO: move the interface out of this file and change request to an enum
-interface Request {
-  request: string;
-  data: string;
-}
 chrome.runtime.onMessage.addListener(
   (
     request: Request,
