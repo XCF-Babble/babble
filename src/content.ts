@@ -25,6 +25,7 @@ const start = () => {
 //// attempts to decrypt on any changes
 setTimeout(start, 3000);
 
+// TODO: move the interface out of this file and change request to an enum
 interface Request {
   request: string;
   data: string;
@@ -35,7 +36,37 @@ chrome.runtime.onMessage.addListener(
     sender: chrome.runtime.MessageSender,
     sendResponse
   ): void => {
-    cipherInput.innerHTML = request.data;
-    sendResponse({success: true});
+    switch (request.request) {
+      case 'tunnelCipherText':
+        cipherInput.innerHTML = request.data;
+        break;
+      case 'submitCipherText':
+        // Send <ENTER>
+        // TODO: keyCode is deprecated and thus not supported by typescript. Unwilling
+        // to spend more time trying to get this working with `key` and `code`.
+        // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent
+        cipherInput.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            bubbles: true,
+            cancelable: true,
+            // @ts-ignore
+            keyCode: 10
+          })
+        );
+        cipherInput.dispatchEvent(
+          new KeyboardEvent('keydown', {
+            bubbles: true,
+            cancelable: true,
+            // @ts-ignore
+            keyCode: 13
+          })
+        );
+
+        break;
+      default:
+        console.error('Unknown message request: ', request.request);
+        break;
+    }
+    sendResponse({ success: true });
   }
 );
