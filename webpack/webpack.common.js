@@ -8,6 +8,7 @@ module.exports = {
         background: path.join(__dirname, srcDir + 'background.ts'),
         content: path.join(__dirname, srcDir + 'content.ts'),
         cryptoutils: path.join(__dirname, srcDir + 'cryptoutils.ts'),
+        elementpicker: path.join(__dirname, srcDir + 'element-picker.ts'),
         keystore: path.join(__dirname, srcDir + 'keystore.ts'),
         message: path.join(__dirname, srcDir + 'message.ts'),
         parse: path.join(__dirname, srcDir + 'parse.ts'),

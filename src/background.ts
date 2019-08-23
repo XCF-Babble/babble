@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener(
     switch (request.request) {
       case 'babbleText':
         // TODO: babble some text with selected key
-        const cleanedData:string = request.data.trim();
+        const cleanedData: string = request.data.trim();
         if (cleanedData !== '') {
           keystore
             .babbleWithEntry(cleanedData, 0)
