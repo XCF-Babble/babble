@@ -4,6 +4,7 @@ import * as cryptoutils from './cryptoutils';
 
 export interface KeystoreEntry {
   name: string;
+  passphrase: string;
   key: Array<number>;
   base: string;
   tags: string[];
@@ -36,6 +37,11 @@ export const getKeystoreSize = async (): Promise<number> => {
   return keystore.length;
 };
 
+export const getEntry = async (id: number): Promise<KeystoreEntry> => {
+  const keystore = await getKeystore();
+  return keystore[id];
+};
+
 export const addEntry = async (
   name: string,
   passphrase: string,
@@ -45,6 +51,7 @@ export const addEntry = async (
   var keystore = await getKeystore();
   keystore.push({
     name: name,
+    passphrase: passphrase,
     key: Array.from(await cryptoutils.deriveKey(passphrase)),
     base: base,
     tags: tags
@@ -62,6 +69,7 @@ export const editEntry = async (
   var keystore = await getKeystore();
   keystore[id] = {
     name: name,
+    passphrase: passphrase,
     key: Array.from(await cryptoutils.deriveKey(passphrase)),
     base: base,
     tags: tags
@@ -87,14 +95,17 @@ export const babbleWithEntry = async (
   );
 };
 
-export const debabbleWithEntry = async (
-  s: string,
-  id: number
-): Promise<string> => {
+export const debabbleWithAllEntries = async (s: string): Promise<string> => {
   const keystore = await getKeystore();
-  return await cryptoutils.debabble(
-    s,
-    Uint8Array.from(keystore[id].key),
-    keystore[id].base
-  );
+  for (const entry of keystore) {
+    const debabble = await cryptoutils.debabble(
+      s,
+      Uint8Array.from(entry.key),
+      entry.base
+    );
+    if (debabble !== '') {
+      return debabble;
+    }
+  }
+  return '';
 };
