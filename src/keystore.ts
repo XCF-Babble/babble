@@ -83,11 +83,9 @@ export const delEntry = async (id: number): Promise<void> => {
   return await setKeystore(keystore);
 };
 
-export const babbleWithEntry = async (
-  s: string,
-  id: number
-): Promise<string> => {
+export const babbleWithSelectedEntry = async (s: string): Promise<string> => {
   const keystore = await getKeystore();
+  const id = await getSelectedEntry();
   return await cryptoutils.babble(
     s,
     Uint8Array.from(keystore[id].key),
@@ -108,4 +106,26 @@ export const debabbleWithAllEntries = async (s: string): Promise<string> => {
     }
   }
   return '';
+};
+
+export const getSelectedEntry = (): Promise<number> => {
+  return new Promise<number>((resolve: (_: number) => void) => {
+    chrome.storage.local.get({ keystoreSelectedEntry: 0 }, result => {
+      getKeystoreSize().then((size: number) => {
+        if (result.keystoreSelectedEntry >= size) {
+          setSelectedEntry(0).then(() => {
+            resolve(0);
+          });
+        } else {
+          resolve(result.keystoreSelectedEntry);
+        }
+      });
+    });
+  });
+};
+
+export const setSelectedEntry = (id: number): Promise<void> => {
+  return new Promise<void>((resolve: () => void) => {
+    chrome.storage.local.set({ keystoreSelectedEntry: id }, resolve);
+  });
 };

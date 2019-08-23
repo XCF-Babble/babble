@@ -15,8 +15,9 @@
     "noFallthroughCasesInSwitch": true,
     "typeRoots": [],
     "types": [
-      "node",
-      "chrome"
+      "chrome",
+      "jquery",
+      "node"
     ]
   },
   "include": ["src/**/*.ts"],

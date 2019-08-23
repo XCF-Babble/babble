@@ -30,8 +30,11 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
 
   if (keystoreIcon) {
     keystoreIcon.addEventListener('click', (event: MouseEvent) => {
-      console.log('keystore clicked!');
-      // JERRY TODO
+      if (chrome.runtime.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+      } else {
+        window.open(chrome.runtime.getURL('../html/options.html'));
+      }
     });
   }
 

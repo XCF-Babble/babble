@@ -13,7 +13,9 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/bootstrap": "^4.3.1",
     "@types/chrome": "0.0.88",
+    "@types/jquery": "^3.3.31",
     "@types/libsodium-wrappers": "^0.7.5",
     "@types/node": "^12.7.1",
     "copy-webpack-plugin": "^5.0.4",

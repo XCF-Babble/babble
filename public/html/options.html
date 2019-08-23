@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Babble Keystore</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+      body {
+        padding-top: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main role="main" class="container">
+      <h1>Babble Keystore</h1>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <button type="button" class="btn btn-primary" id="addNewButton">Add New</button>
+        </div>
+        <input type="text" class="form-control" placeholder="Search" id="searchBox">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-danger" id="deleteAllButton">Delete All</button>
+        </div>
+      </div>
+      <table class="table table-bordered" id="keystoreTable">
+        <thead>
+          <tr>
+            <th scope="col">Select</th>
+            <th scope="col">Name</th>
+            <th scope="col">Passphrase</th>
+            <th scope="col">Base</th>
+            <th scope="col">Tags</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <div class="modal fade" id="entryModal" tabindex="-1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="entryModalTitle"></h5>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editId">
+            <div class="form-group">
+              <label for="nameBox">Name</label>
+              <input type="text" class="form-control" id="nameBox">
+            </div>
+            <div class="form-group">
+              <label for="passphraseBox">Passphrase</label>
+              <input type="text" class="form-control" id="passphraseBox">
+            </div>
+            <div class="form-group">
+              <label for="baseBox">Base</label>
+              <input type="text" class="form-control" id="baseBox" minlength="256" maxlength="256">
+            </div>
+            <div class="form-group">
+              <label for="tagsBox">Tags (Comma Separated)</label>
+              <input type="text" class="form-control" id="tagsBox">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="saveButton">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../js/jquery-3.3.1.slim.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/vendor.js"></script>
+    <script src="../js/options.js"></script>
+  </body>
+</html>
