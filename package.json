@@ -7,6 +7,7 @@
   "scripts": {
     "build": "webpack --config webpack/webpack.prod.js",
     "dev": "webpack --config webpack/webpack.dev.js",
+    "watch": "webpack --config webpack/webpack.dev.js --watch",
     "clean": "rm -rf dist",
     "lint": "tslint --project tsconfig.json --fix src/**/*.ts"
   },
