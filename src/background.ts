@@ -22,12 +22,22 @@ chrome.runtime.onMessage.addListener(
     switch (request.request) {
       case 'babbleText':
         // TODO: babble some text with selected key
-        keystore.babbleWithEntry(request.data, 0).then((cipherText: string) => {
+        const cleanedData:string = request.data.trim();
+        if (cleanedData !== '') {
+          keystore
+            .babbleWithEntry(cleanedData, 0)
+            .then((cipherText: string) => {
+              sendMessageActiveTab(
+                { request: 'tunnelCipherText', data: cipherText },
+                (response: any): void => {}
+              );
+            });
+        } else {
           sendMessageActiveTab(
-            { request: 'tunnelCipherText', data: cipherText },
+            { request: 'clearInputBox' },
             (response: any): void => {}
           );
-        });
+        }
         break;
       default:
         console.error('Unknnown message request: ', request.request);

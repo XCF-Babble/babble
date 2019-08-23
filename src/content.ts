@@ -60,6 +60,9 @@ chrome.runtime.onMessage.addListener(
         );
 
         break;
+      case 'clearInputBox':
+        cipherInput.innerHTML = '';
+        break;
       default:
         console.error('Unknown message request: ', request.request);
         break;
