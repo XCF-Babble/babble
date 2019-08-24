@@ -1,15 +1,16 @@
 'use strict';
 
 import { sendMessageActiveTab, Request } from './message';
+import { getKeystoreSize } from './keystore';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
-  const plaintext: HTMLInputElement | null = document.getElementById(
+  const plaintext: HTMLTextAreaElement | null = document.getElementById(
     'plaintext'
-  ) as HTMLInputElement;
+  ) as HTMLTextAreaElement;
 
-  const decryptedText: HTMLInputElement | null = document.getElementById(
+  const decryptedText: HTMLTextAreaElement | null = document.getElementById(
     'decrypted-text'
-  ) as HTMLInputElement;
+  ) as HTMLTextAreaElement;
 
   const debabbleIcon: HTMLElement | null = document.getElementById(
     'debabble-icon'
@@ -39,11 +40,19 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
   }
 
   if (plaintext) {
-    plaintext.addEventListener('input', (kevent: Event) => {
-      chrome.runtime.sendMessage(
-        { request: 'babbleText', data: plaintext.value },
-        (response: any): void => {}
-      );
+    getKeystoreSize().then((size: number) => {
+      if (size > 0) {
+        plaintext.addEventListener('input', (kevent: Event) => {
+          chrome.runtime.sendMessage(
+            { request: 'babbleText', data: plaintext.value },
+            (response: any): void => {}
+          );
+        });
+      } else {
+        plaintext.placeholder = 'Create key to encrypt messages...';
+        plaintext.readOnly = true;
+        plaintext.disabled = true;
+      }
     });
 
     const isEnter = (event: KeyboardEvent) => {
