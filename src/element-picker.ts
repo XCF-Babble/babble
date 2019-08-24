@@ -5,6 +5,7 @@ export class ElementPicker {
   private hoverCb: (event: Element) => void;
   private lastElem: HTMLElement | null;
   private lastBackgroundColor: string | null;
+  private isActive: boolean;
   constructor(
     hoverCb: (elem: Element) => void,
     hoverColor: string = 'rgba(195, 63, 182, 0.3)'
@@ -13,6 +14,7 @@ export class ElementPicker {
     this.hoverCb = hoverCb;
     this.lastElem = null;
     this.lastBackgroundColor = null;
+    this.isActive = false;
   }
 
   resetColor = (): void => {
@@ -24,8 +26,11 @@ export class ElementPicker {
   onMouseEvent = (event: Event): void => {
     const e: Event = event || window.event;
     const target: EventTarget | null = e.target || e.srcElement;
-    this.resetColor();
     if (target && target instanceof HTMLElement) {
+      if (target === this.lastElem) {
+        return;
+      }
+      this.resetColor();
       this.hoverCb(target);
       this.lastElem = target;
       this.lastBackgroundColor = target.style.backgroundColor;
@@ -33,10 +38,21 @@ export class ElementPicker {
     }
   };
 
+  toggle = (): void => {
+    if (this.isActive) {
+      this.deactivate();
+      this.isActive = false;
+    } else {
+      this.activate();
+      this.isActive = true;
+    }
+  };
+
   activate = (): void => {
     document.addEventListener('click', () => {}, false);
     document.addEventListener('mousemove', this.onMouseEvent, false);
     document.body.style.cursor = 'crosshair';
+    this.isActive = true;
   };
 
   deactivate = (): void => {
@@ -46,5 +62,6 @@ export class ElementPicker {
     this.lastElem = null;
     this.lastBackgroundColor = null;
     document.body.style.cursor = 'auto';
+    this.isActive = false;
   };
 }
