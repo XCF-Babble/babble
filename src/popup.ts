@@ -20,11 +20,17 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     'keystore-icon'
   ) as HTMLElement;
 
+  const toggleIconColor = (icon: HTMLElement) => {
+    icon.classList.toggle('fa-babble-active');
+  };
+
   if (debabbleIcon) {
     debabbleIcon.addEventListener('click', (event: MouseEvent) => {
       sendMessageActiveTab(
         { request: 'toggleElementPicker', data: null },
-        (response: any): void => {}
+        (response: any): void => {
+          toggleIconColor(event.target as HTMLElement);
+        }
       );
     });
   }
