@@ -14,9 +14,12 @@
       ],
       "js": [
         "dist/js/content.js",
+        "dist/js/elementpicker.js",
         "dist/js/parse.js",
-        "dist/js/message.js"
-      ]
+        "dist/js/message.js",
+        "dist/js/vendor.js"
+      ],
+      "run_at": "document_end"
     }
   ],
   "background": {

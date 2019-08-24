@@ -1,40 +1,27 @@
 'use strict';
 
+export enum Parse {
+  STOP,
+  CONTINUE
+}
+
 export const walkDOM = (
   root: Element,
-  callback: (elem: Element) => boolean,
+  callback: (elem: Element) => Parse,
   down: boolean = true
 ) => {
-  if (down) {
-    walkDOMDownwards(root, callback);
-  } else {
-    if (root) {
-      walkDOMUpwards(root, callback);
-    }
-  }
+  walkDOMDownwards(root, callback);
 };
 
 const walkDOMDownwards = (
   root: Element,
-  callback: (elem: Element) => boolean
+  callback: (elem: Element) => Parse
 ) => {
-  if (callback(root)) {
+  if (callback(root) == Parse.STOP) {
     return;
   }
   for (var i = 0; i < root.children.length; i++) {
     const child: Element = root.children[i];
     walkDOMDownwards(child, callback);
-  }
-};
-
-const walkDOMUpwards = (
-  node: Element,
-  callback: (elem: Element) => boolean
-) => {
-  if (callback(node)) {
-    return;
-  }
-  if (node.parentElement) {
-    walkDOMUpwards(node.parentElement, callback);
   }
 };
