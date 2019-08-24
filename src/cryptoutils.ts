@@ -116,3 +116,19 @@ export const debabble = async (
     return '';
   }
 };
+
+export const genUUID = async (): Promise<string> => {
+  const sodium = await getSodium();
+  const uuidLen: number = 16;
+  const hyphenPos: Array<number> = [3, 5, 7, 9];
+  const rand: Uint8Array = sodium.randombytes_buf(uuidLen);
+  var ret: string = '';
+  for (var i = 0; i < uuidLen; ++i) {
+    const hex: string = rand[i].toString(16);
+    ret += hex.length === 1 ? '0' + hex : hex;
+    if (hyphenPos.includes(i)) {
+      ret += '-';
+    }
+  }
+  return ret;
+};
