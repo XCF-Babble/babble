@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(
         // TODO: babble some text with selected key
         if (cleanedData !== '') {
           keystore
-            .babbleWithEntry(cleanedData, 0)
+            .babbleWithSelectedEntry(cleanedData)
             .then((cipherText: string) => {
               sendMessageActiveTab(
                 { request: 'tunnelCipherText', data: cipherText },
@@ -43,7 +43,7 @@ chrome.runtime.onMessage.addListener(
       case 'debabbleText':
         if (cleanedData !== '') {
           keystore
-            .debabbleWithEntry(cleanedData, 0)
+            .debabbleWithAllEntries(cleanedData)
             .then((plainText: string) => {
               chrome.runtime.sendMessage(
                 { request: 'displayDebabbled', data: plainText },

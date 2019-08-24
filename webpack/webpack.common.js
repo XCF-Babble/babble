@@ -11,6 +11,7 @@ module.exports = {
         elementpicker: path.join(__dirname, srcDir + 'element-picker.ts'),
         keystore: path.join(__dirname, srcDir + 'keystore.ts'),
         message: path.join(__dirname, srcDir + 'message.ts'),
+        options: path.join(__dirname, srcDir + 'options.ts'),
         parse: path.join(__dirname, srcDir + 'parse.ts'),
         popup: path.join(__dirname, srcDir + 'popup.ts')
     },
