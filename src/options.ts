@@ -131,6 +131,10 @@ $(document).ready(async () => {
     $('#saveButton').prop('disabled', false);
   });
   $('#searchBox').keyup(refreshTable);
+  $('#genUUIDButton').click(async () => {
+    const uuid: string = await cryptoutils.genUUID();
+    $('#passphraseBox').val(uuid);
+  });
 });
 
 // Taken from mustache.js templating library
