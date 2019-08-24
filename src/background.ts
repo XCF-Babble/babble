@@ -19,10 +19,10 @@ chrome.runtime.onMessage.addListener(
     sender: chrome.runtime.MessageSender,
     sendResponse
   ): void => {
+    const cleanedData: string = request.data.trim();
     switch (request.request) {
       case 'babbleText':
         // TODO: babble some text with selected key
-        const cleanedData: string = request.data.trim();
         if (cleanedData !== '') {
           keystore
             .babbleWithEntry(cleanedData, 0)
@@ -31,16 +31,29 @@ chrome.runtime.onMessage.addListener(
                 { request: 'tunnelCipherText', data: cipherText },
                 (response: any): void => {}
               );
+              sendResponse({ success: true });
             });
         } else {
           sendMessageActiveTab(
             { request: 'clearInputBox' },
-            (response: any): void => {}
+            (response: any): void => {} // TODO: handle this
           );
         }
         break;
+      case 'debabbleText':
+        if (cleanedData !== '') {
+          keystore
+            .debabbleWithEntry(cleanedData, 0)
+            .then((plainText: string) => {
+              chrome.runtime.sendMessage(
+                { request: 'displayDebabbled', data: plainText },
+                (response: any): void => {} // TODO: handle this
+              );
+              sendResponse({ success: true });
+            });
+        }
+        break;
       default:
-        console.error('Unknnown message request: ', request.request);
         break;
     }
   }

@@ -1,11 +1,39 @@
 'use strict';
 
-import * as message from './message';
+import { sendMessageActiveTab, Request } from './message';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
   const plaintext: HTMLInputElement | null = document.getElementById(
     'plaintext'
   ) as HTMLInputElement;
+
+  const decryptedText: HTMLInputElement | null = document.getElementById(
+    'decrypted-text'
+  ) as HTMLInputElement;
+
+  const debabbleIcon: HTMLElement | null = document.getElementById(
+    'debabble-icon'
+  ) as HTMLElement;
+
+  const keystoreIcon: HTMLElement | null = document.getElementById(
+    'keystore-icon'
+  ) as HTMLElement;
+
+  if (debabbleIcon) {
+    debabbleIcon.addEventListener('click', (event: MouseEvent) => {
+      sendMessageActiveTab(
+        { request: 'toggleElementPicker', data: null },
+        (response: any): void => {}
+      );
+    });
+  }
+
+  if (keystoreIcon) {
+    keystoreIcon.addEventListener('click', (event: MouseEvent) => {
+      console.log('keystore clicked!');
+      // JERRY TODO
+    });
+  }
 
   if (plaintext) {
     plaintext.addEventListener('input', (kevent: Event) => {
@@ -21,7 +49,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
 
     plaintext.addEventListener('keydown', (kevent: KeyboardEvent) => {
       if (isEnter(kevent)) {
-        message.sendMessageActiveTab(
+        sendMessageActiveTab(
           { request: 'submitCipherText', data: null },
           (response: any): void => {
             if (response.success) {
@@ -32,4 +60,23 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
       }
     });
   }
+  chrome.runtime.onMessage.addListener(
+    (
+      request: Request,
+      sender: chrome.runtime.MessageSender,
+      sendResponse
+    ): void => {
+      const cleanedData: string = request.data.trim();
+      switch (request.request) {
+        case 'displayDebabbled':
+          if (decryptedText) {
+            sendResponse({ success: true });
+            decryptedText.value = cleanedData;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  );
 });

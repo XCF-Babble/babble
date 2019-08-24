@@ -2,7 +2,7 @@ html {
   min-width: 300px;
 }
 
-textarea {
+.babble-text {
   resize: none;
 }
 
@@ -16,7 +16,7 @@ textarea {
   display: flex;
   flex-direction: row;
   flex-wrap: no-wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .item {
@@ -25,16 +25,13 @@ textarea {
   flex-grow: 1;
 }
 
-.fitem {
-  flex-grow: 0;
-}
-
-.fa-babble-footer {
+.fa-babble-selector {
   color: #cacbcc;
   padding: 16px 0;
   margin: 0 10px;
 }
-.fa-babble-active {
-  color: black;
-  border-bottom: 4px solid orange;
+
+.fa-babble-selector:hover {
+  color: #171515;
+  cursor: pointer;
 }
