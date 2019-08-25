@@ -42,3 +42,6 @@ yarn.lock
 
 # ignore ctags
 tags
+
+# platform symlink
+/manifest.json
