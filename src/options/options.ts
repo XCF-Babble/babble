@@ -1,7 +1,7 @@
 'use strict';
 
-import * as keystore from './keystore';
-import * as cryptoutils from './cryptoutils';
+import * as keystore from '../utils/keystore';
+import * as cryptoutils from '../utils/cryptoutils';
 import * as _ from 'bootstrap';
 
 const refreshTable = async (): Promise<void> => {

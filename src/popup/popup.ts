@@ -1,7 +1,7 @@
 'use strict';
 
-import { sendMessageActiveTab, Request } from './message';
-import * as keystore from './keystore';
+import { sendMessageActiveTab, Request } from '../utils/message';
+import * as keystore from '../utils/keystore';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
   const plaintext: HTMLTextAreaElement | null = document.getElementById(

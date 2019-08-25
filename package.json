@@ -2,7 +2,7 @@
   "name": "babble",
   "version": "0.0.1",
   "description": "说都不会话了。",
-  "author": "Kevin Kuehler <keur@ocf.berkeley.edu>",
+  "author": "All Babble Contributors",
   "license": "GPL",
   "scripts": {
     "build": "webpack --config webpack/webpack.prod.js",
