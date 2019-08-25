@@ -25,10 +25,11 @@
   "browser_action": {
     "default_popup": "dist/html/ui.html"
   },
-  "options_page": "dist/html/options.html",
+  "options_ui": {
+    "page": "dist/html/options.html",
+    "open_in_tab": true
+  },
   "permissions": [
-    "contextMenus",
-    "debugger",
     "storage",
     "tabs",
     "unlimitedStorage",
