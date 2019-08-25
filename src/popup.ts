@@ -46,32 +46,36 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
   }
 
   if (plaintext) {
-    keystore.getKeystoreSize().then((size: number) => {
-      if (size > 0) {
-        plaintext.addEventListener('input', (kevent: Event) => {
-          const cleanedData: string = plaintext.value.trim();
-          if (cleanedData !== '') {
-            keystore
-              .babbleWithSelectedEntry(cleanedData)
-              .then((cipherText: string) => {
-                sendMessageActiveTab(
-                  { request: 'tunnelCipherText', data: cipherText },
-                  (response: any): void => {}
-                );
-              });
-          } else {
-            sendMessageActiveTab(
-              { request: 'clearInputBox' },
-              (response: any): void => {} // TODO: handle this
-            );
-          }
-        });
-      } else {
+    (async (): Promise<void> => {
+      const numKeys: number = await keystore.getKeystoreSize();
+      if (numKeys === 0) {
         plaintext.placeholder = 'Create key to encrypt messages...';
         plaintext.readOnly = true;
         plaintext.disabled = true;
+        return;
       }
-    });
+    })();
+
+    plaintext.addEventListener(
+      'input',
+      async (kevent: Event): Promise<void> => {
+        const cleanedData: string = plaintext.value.trim();
+        if (cleanedData === '') {
+          sendMessageActiveTab(
+            { request: 'clearInputBox' },
+            (response: any): void => {}
+          );
+          return;
+        }
+        const babbledText: string = await keystore.babbleWithSelectedEntry(
+          cleanedData
+        );
+        sendMessageActiveTab(
+          { request: 'tunnelCipherText', data: babbledText },
+          (response: any): void => {}
+        );
+      }
+    );
 
     const isEnter = (event: KeyboardEvent) => {
       return event.ctrlKey && (event.keyCode == 10 || event.keyCode == 13);
@@ -91,21 +95,21 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     });
   }
   chrome.runtime.onMessage.addListener(
-    (
+    async (
       request: Request,
       sender: chrome.runtime.MessageSender,
       sendResponse
-    ): void => {
+    ): Promise<void> => {
       const cleanedData: string = request.data.trim();
+      if (!decryptedText || cleanedData === '') {
+        return;
+      }
       switch (request.request) {
         case 'debabbleText':
-          if (decryptedText && cleanedData !== '') {
-            keystore
-              .debabbleWithAllEntries(cleanedData)
-              .then((debabbledText: string) => {
-                decryptedText.value = debabbledText;
-              });
-          }
+          const debabbledText: string = await keystore.debabbleWithAllEntries(
+            cleanedData
+          );
+          decryptedText.value = debabbledText;
           break;
         default:
           break;
