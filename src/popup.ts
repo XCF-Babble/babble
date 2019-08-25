@@ -1,7 +1,7 @@
 'use strict';
 
 import { sendMessageActiveTab, Request } from './message';
-import { getKeystoreSize } from './keystore';
+import * as keystore from './keystore';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
   const plaintext: HTMLTextAreaElement | null = document.getElementById(
@@ -46,13 +46,25 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
   }
 
   if (plaintext) {
-    getKeystoreSize().then((size: number) => {
+    keystore.getKeystoreSize().then((size: number) => {
       if (size > 0) {
         plaintext.addEventListener('input', (kevent: Event) => {
-          chrome.runtime.sendMessage(
-            { request: 'babbleText', data: plaintext.value },
-            (response: any): void => {}
-          );
+          const cleanedData: string = plaintext.value.trim();
+          if (cleanedData !== '') {
+            keystore
+              .babbleWithSelectedEntry(cleanedData)
+              .then((cipherText: string) => {
+                sendMessageActiveTab(
+                  { request: 'tunnelCipherText', data: cipherText },
+                  (response: any): void => {}
+                );
+              });
+          } else {
+            sendMessageActiveTab(
+              { request: 'clearInputBox' },
+              (response: any): void => {} // TODO: handle this
+            );
+          }
         });
       } else {
         plaintext.placeholder = 'Create key to encrypt messages...';
@@ -86,10 +98,13 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     ): void => {
       const cleanedData: string = request.data.trim();
       switch (request.request) {
-        case 'displayDebabbled':
-          if (decryptedText) {
-            sendResponse({ success: true });
-            decryptedText.value = cleanedData;
+        case 'debabbleText':
+          if (decryptedText && cleanedData !== '') {
+            keystore
+              .debabbleWithAllEntries(cleanedData)
+              .then((debabbledText: string) => {
+                decryptedText.value = debabbledText;
+              });
           }
           break;
         default:

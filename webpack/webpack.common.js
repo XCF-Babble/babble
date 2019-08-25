@@ -5,7 +5,6 @@ const srcDir = '../src/';
 
 module.exports = {
     entry: {
-        background: path.join(__dirname, srcDir + 'background.ts'),
         content: path.join(__dirname, srcDir + 'content.ts'),
         cryptoutils: path.join(__dirname, srcDir + 'cryptoutils.ts'),
         elementpicker: path.join(__dirname, srcDir + 'element-picker.ts'),
