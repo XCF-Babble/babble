@@ -1,7 +1,7 @@
 'use strict';
 
 import { sendMessageActiveTab, Request } from './message';
-import { getKeystoreSize } from './keystore';
+import * as keystore from './keystore';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
   const plaintext: HTMLTextAreaElement | null = document.getElementById(
@@ -46,20 +46,36 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
   }
 
   if (plaintext) {
-    getKeystoreSize().then((size: number) => {
-      if (size > 0) {
-        plaintext.addEventListener('input', (kevent: Event) => {
-          chrome.runtime.sendMessage(
-            { request: 'babbleText', data: plaintext.value },
-            (response: any): void => {}
-          );
-        });
-      } else {
+    (async (): Promise<void> => {
+      const numKeys: number = await keystore.getKeystoreSize();
+      if (numKeys === 0) {
         plaintext.placeholder = 'Create key to encrypt messages...';
         plaintext.readOnly = true;
         plaintext.disabled = true;
+        return;
       }
-    });
+    })();
+
+    plaintext.addEventListener(
+      'input',
+      async (kevent: Event): Promise<void> => {
+        const cleanedData: string = plaintext.value.trim();
+        if (cleanedData === '') {
+          sendMessageActiveTab(
+            { request: 'clearInputBox' },
+            (response: any): void => {}
+          );
+          return;
+        }
+        const babbledText: string = await keystore.babbleWithSelectedEntry(
+          cleanedData
+        );
+        sendMessageActiveTab(
+          { request: 'tunnelCipherText', data: babbledText },
+          (response: any): void => {}
+        );
+      }
+    );
 
     const isEnter = (event: KeyboardEvent) => {
       return event.ctrlKey && (event.keyCode == 10 || event.keyCode == 13);
@@ -79,18 +95,21 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     });
   }
   chrome.runtime.onMessage.addListener(
-    (
+    async (
       request: Request,
       sender: chrome.runtime.MessageSender,
       sendResponse
-    ): void => {
+    ): Promise<void> => {
       const cleanedData: string = request.data.trim();
+      if (!decryptedText || cleanedData === '') {
+        return;
+      }
       switch (request.request) {
-        case 'displayDebabbled':
-          if (decryptedText) {
-            sendResponse({ success: true });
-            decryptedText.value = cleanedData;
-          }
+        case 'debabbleText':
+          const debabbledText: string = await keystore.debabbleWithAllEntries(
+            cleanedData
+          );
+          decryptedText.value = debabbledText;
           break;
         default:
           break;
