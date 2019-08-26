@@ -110,16 +110,14 @@ export const debabbleWithAllEntries = async (s: string): Promise<string> => {
 
 export const getSelectedEntry = (): Promise<number> => {
   return new Promise<number>((resolve: (_: number) => void) => {
-    chrome.storage.local.get({ keystoreSelectedEntry: 0 }, result => {
-      getKeystoreSize().then((size: number) => {
-        if (result.keystoreSelectedEntry >= size) {
-          setSelectedEntry(0).then(() => {
-            resolve(0);
-          });
-        } else {
-          resolve(result.keystoreSelectedEntry);
-        }
-      });
+    chrome.storage.local.get({ keystoreSelectedEntry: 0 }, async result => {
+      const size: number = await getKeystoreSize();
+      if (result.keystoreSelectedEntry >= size) {
+        await setSelectedEntry(0);
+        resolve(0);
+      } else {
+        resolve(result.keystoreSelectedEntry);
+      }
     });
   });
 };
