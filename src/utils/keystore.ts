@@ -56,7 +56,7 @@ export const addEntry = async (
     base: base,
     tags: tags
   });
-  return await setKeystore(keystore);
+  return setKeystore(keystore);
 };
 
 export const editEntry = async (
@@ -74,19 +74,19 @@ export const editEntry = async (
     base: base,
     tags: tags
   };
-  return await setKeystore(keystore);
+  return setKeystore(keystore);
 };
 
 export const delEntry = async (id: number): Promise<void> => {
   var keystore = await getKeystore();
   keystore.splice(id, 1);
-  return await setKeystore(keystore);
+  return setKeystore(keystore);
 };
 
 export const babbleWithSelectedEntry = async (s: string): Promise<string> => {
   const keystore = await getKeystore();
   const id = await getSelectedEntry();
-  return await cryptoutils.babble(
+  return cryptoutils.babble(
     s,
     Uint8Array.from(keystore[id].key),
     keystore[id].base
