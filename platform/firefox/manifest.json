@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
   "name": "Babble",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "说都不会话了。",
   "icons": {
-    "128": "images/icon_128.png"
+    "128": "assets/images/icon_128.png"
   },
   "content_scripts": [
     {
@@ -13,17 +13,17 @@
         "https://*/*"
       ],
       "js": [
-        "dist/js/content.js",
-        "dist/js/elementpicker.js",
-        "dist/js/parse.js",
-        "dist/js/message.js",
+        "dist/js/content/element-picker.js",
+        "dist/js/content/inject.js",
+        "dist/js/content/walkdom.js",
+        "dist/js/utils/message.js",
         "dist/js/vendor.js"
       ],
       "run_at": "document_end"
     }
   ],
   "browser_action": {
-    "default_popup": "dist/html/ui.html"
+    "default_popup": "dist/html/popup.html"
   },
   "options_ui": {
     "page": "dist/html/options.html",

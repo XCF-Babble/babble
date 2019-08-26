@@ -1,8 +1,8 @@
 'use strict';
 
-import { ElementPicker } from './element-picker.ts';
-import { Parse, walkDOM } from './parse';
-import { Request } from './message';
+import { ElementPicker } from './element-picker';
+import { Parse, walkDOM } from './walkdom';
+import { Request } from '../utils/message';
 
 window.onload = (): void => {
   ((): void => {

@@ -5,14 +5,14 @@ const srcDir = '../src/';
 
 module.exports = {
     entry: {
-        content: path.join(__dirname, srcDir + 'content.ts'),
-        cryptoutils: path.join(__dirname, srcDir + 'cryptoutils.ts'),
-        elementpicker: path.join(__dirname, srcDir + 'element-picker.ts'),
-        keystore: path.join(__dirname, srcDir + 'keystore.ts'),
-        message: path.join(__dirname, srcDir + 'message.ts'),
-        options: path.join(__dirname, srcDir + 'options.ts'),
-        parse: path.join(__dirname, srcDir + 'parse.ts'),
-        popup: path.join(__dirname, srcDir + 'popup.ts')
+        'content/element-picker': path.join(__dirname, srcDir + 'content/element-picker.ts'),
+        'content/inject': path.join(__dirname, srcDir + 'content/inject.ts'),
+        'content/walkdom': path.join(__dirname, srcDir + 'content/walkdom.ts'),
+        'options/options': path.join(__dirname, srcDir + 'options/options.ts'),
+        'popup/popup': path.join(__dirname, srcDir + 'popup/popup.ts'),
+        'utils/cryptoutils': path.join(__dirname, srcDir + 'utils/cryptoutils.ts'),
+        'utils/keystore': path.join(__dirname, srcDir + 'utils/keystore.ts'),
+        'utils/message': path.join(__dirname, srcDir + 'utils/message.ts')
     },
     output: {
         path: path.join(__dirname, '../dist/js'),
