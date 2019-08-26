@@ -1,13 +1,13 @@
 'use strict';
 
-export enum Parse {
+export enum Walk {
   STOP,
   CONTINUE
 }
 
 export const walkDOM = (
   root: Element,
-  callback: (elem: Element) => Parse,
+  callback: (elem: Element) => Walk,
   down: boolean = true
 ) => {
   walkDOMDownwards(root, callback);
@@ -15,9 +15,9 @@ export const walkDOM = (
 
 const walkDOMDownwards = (
   root: Element,
-  callback: (elem: Element) => Parse
+  callback: (elem: Element) => Walk
 ) => {
-  if (callback(root) == Parse.STOP) {
+  if (callback(root) == Walk.STOP) {
     return;
   }
   for (var i = 0; i < root.children.length; i++) {

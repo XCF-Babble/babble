@@ -1,7 +1,7 @@
 'use strict';
 
 import { ElementPicker } from './element-picker';
-import { Parse, walkDOM } from './walkdom';
+import { Walk, walkDOM } from './walkdom';
 import { Website } from './website';
 import { Request } from '../utils/message';
 import { load } from './loader';
@@ -10,14 +10,14 @@ window.onload = (): void => {
   const picker = new ElementPicker((selected: Element) => {
     walkDOM(
       selected,
-      (childNode: Element): Parse => {
+      (childNode: Element): Walk => {
         if (childNode instanceof HTMLElement) {
           chrome.runtime.sendMessage(
             { request: 'debabbleText', data: childNode.innerText },
             (response: any): void => {} // TODO: we want to return if we successfully decrypted something
           );
         }
-        return Parse.CONTINUE;
+        return Walk.CONTINUE;
       }
     );
   });
