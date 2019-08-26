@@ -1,12 +1,12 @@
 'use strict';
 
-// TODO: move the interface out of this file and change request to an enum
+// TODO: Maybe change request and requestClass to enum
 export interface Request {
   request: string;
   data: string;
+  requestClass: string;
 }
 
-// TODO: in the future this should be made more generic to support other browsers.
 export const sendMessageActiveTab = (
   message: any,
   responseCallback?: (response: any) => void

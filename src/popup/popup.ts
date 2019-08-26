@@ -62,7 +62,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
         const cleanedData: string = plaintext.value.trim();
         if (cleanedData === '') {
           sendMessageActiveTab(
-            { request: 'clearInputBox' },
+            { request: 'clearInputBox', requestClass: 'injectInput' },
             (response: any): void => {}
           );
           return;
@@ -71,7 +71,11 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
           cleanedData
         );
         sendMessageActiveTab(
-          { request: 'tunnelCipherText', data: babbledText },
+          {
+            request: 'tunnelCipherText',
+            requestClass: 'injectInput',
+            data: babbledText
+          },
           (response: any): void => {}
         );
       }
@@ -84,7 +88,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     plaintext.addEventListener('keydown', (kevent: KeyboardEvent) => {
       if (isEnter(kevent)) {
         sendMessageActiveTab(
-          { request: 'submitCipherText', data: null },
+          { request: 'submitCipherText', requestClass: 'injectInput' },
           (response: any): void => {
             if (response.success) {
               plaintext.value = '';

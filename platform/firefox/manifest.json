@@ -15,8 +15,12 @@
       "js": [
         "dist/js/content/element-picker.js",
         "dist/js/content/inject.js",
+        "dist/js/content/loader.js",
         "dist/js/content/walkdom.js",
+        "dist/js/content/website.js",
+        "dist/js/content/website/slack.js",
         "dist/js/utils/message.js",
+        "dist/js/utils/webutils.js",
         "dist/js/vendor.js"
       ],
       "run_at": "document_end"
