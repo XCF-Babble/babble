@@ -1,7 +1,7 @@
 'use strict';
 
 import { Website } from '../website';
-import { sendEnterEvent } from '../../utils/webutils';
+import { documentObserver, sendEnterEvent } from '../../utils/webutils';
 
 export class Slack extends Website {
   private targetElement: HTMLElement | null;
@@ -12,14 +12,14 @@ export class Slack extends Website {
   }
 
   register(): void {
-    setTimeout(():void => {
+    documentObserver((mutationsList: MutationRecord[], observer: MutationObserver) => {
       const inputBoxes: NodeListOf<Element> = document.querySelectorAll(
         'div.ql-editor'
       );
       if (inputBoxes.length > 0) {
         this.targetElement = inputBoxes[0] as HTMLElement;
       }
-    }, 3000);
+    });
   };
 
   tunnelInput(s: string): boolean {
@@ -34,7 +34,7 @@ export class Slack extends Website {
     if (!this.targetElement) {
       return false;
     }
-    sendEnterEvent(this.targetElement);
+    sendEnterEvent('keydown', this.targetElement);
     return true;
   }
 
