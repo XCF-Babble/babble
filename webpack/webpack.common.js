@@ -36,6 +36,13 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
+    watchOptions: {
+      poll: true,
+      ignored: [
+        '/node_modules/',
+        '**/.git'
+      ]
+    },
     plugins: [
         // exclude locale files in moment
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
