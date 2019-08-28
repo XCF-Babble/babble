@@ -18,6 +18,7 @@
         "dist/js/content/loader.js",
         "dist/js/content/walkdom.js",
         "dist/js/content/website.js",
+        "dist/js/content/websites/discord.js",
         "dist/js/content/websites/slack.js",
         "dist/js/utils/message.js",
         "dist/js/utils/webutils.js",

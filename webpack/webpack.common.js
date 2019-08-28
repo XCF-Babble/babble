@@ -10,6 +10,7 @@ module.exports = {
         'content/loader': path.join(__dirname, srcDir + 'content/loader.ts'),
         'content/walkdom': path.join(__dirname, srcDir + 'content/walkdom.ts'),
         'content/website': path.join(__dirname, srcDir + 'content/website.ts'),
+        'content/websites/discord': path.join(__dirname, srcDir + 'content/websites/discord.ts'),
         'content/websites/slack': path.join(__dirname, srcDir + 'content/websites/slack.ts'),
         'options/options': path.join(__dirname, srcDir + 'options/options.ts'),
         'popup/popup': path.join(__dirname, srcDir + 'popup/popup.ts'),

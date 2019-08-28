@@ -3,21 +3,19 @@
 import { Website } from '../website';
 import { documentObserver, sendEnterEvent } from '../../utils/webutils';
 
-export class Slack extends Website {
-  private targetElement: HTMLElement | null;
+export class Discord extends Website {
+  private targetElement: HTMLTextAreaElement | null;
   constructor() {
     super();
-    this.domain = 'app.slack.com';
+    this.domain = 'discordapp.com';
     this.targetElement = null;
   }
 
   register(): void {
     documentObserver((mutationsList: MutationRecord[], observer: MutationObserver) => {
-      const inputBoxes: NodeListOf<Element> = document.querySelectorAll(
-        'div.ql-editor'
-      );
+      const inputBoxes: HTMLCollectionOf<HTMLTextAreaElement> = document.getElementsByTagName('textarea');
       if (inputBoxes.length > 0) {
-        this.targetElement = inputBoxes[0] as HTMLElement;
+        this.targetElement = inputBoxes[0];
       }
     });
   };
@@ -26,7 +24,10 @@ export class Slack extends Website {
     if (!this.targetElement) {
       return false;
     }
-    this.targetElement.innerHTML = s;
+    this.targetElement.value = s;
+    // React tracks DOMNode.value changes, so we also need to fire an 'input' event.
+    // https://github.com/facebook/react/issues/10135#issuecomment-314441175
+    this.targetElement.dispatchEvent(new KeyboardEvent('input', { bubbles: true}));
     return true;
   }
 
@@ -34,7 +35,7 @@ export class Slack extends Website {
     if (!this.targetElement) {
       return false;
     }
-    sendEnterEvent('keydown', this.targetElement);
+    sendEnterEvent('keypress', this.targetElement);
     return true;
   }
 
@@ -42,7 +43,7 @@ export class Slack extends Website {
     if (!this.targetElement) {
       return false;
     }
-    this.targetElement.innerHTML = '';
+    this.targetElement.value = '';
     return true;
   }
 }
