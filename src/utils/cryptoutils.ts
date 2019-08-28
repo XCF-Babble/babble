@@ -111,7 +111,7 @@ export const debabble = async (
   babbleBase: string
 ): Promise<string> => {
   try {
-    return decrypt(hanziDecode(s, babbleBase), babbleKey);
+    return await decrypt(hanziDecode(s, babbleBase), babbleKey);
   } catch (e) {
     return '';
   }
