@@ -5,12 +5,12 @@ export enum Walk {
   CONTINUE
 }
 
-export const walkDOM = (root: Element, callback: (elem: Element) => Walk) => {
+export const walkDOM = (root: Node, callback: (elem: Node) => Walk) => {
   if (callback(root) == Walk.STOP) {
     return;
   }
-  for (var i = 0; i < root.children.length; i++) {
-    const child: Element = root.children[i];
+  for (var i = 0; i < root.childNodes.length; i++) {
+    const child: Node = root.childNodes[i];
     walkDOM(child, callback);
   }
 };

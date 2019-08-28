@@ -10,10 +10,10 @@ window.onload = (): void => {
   const picker = new ElementPicker((selected: Element) => {
     walkDOM(
       selected,
-      (childNode: Element): Walk => {
-        if (childNode instanceof HTMLElement) {
+      (childNode: Node): Walk => {
+        if (childNode.textContent) {
           chrome.runtime.sendMessage(
-            { request: 'debabbleText', data: childNode.innerText },
+            { request: 'debabbleText', data: childNode.textContent },
             (response: any): void => {} // TODO: we want to return if we successfully decrypted something
           );
         }
