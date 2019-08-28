@@ -4,9 +4,11 @@ import { Website } from '../website';
 import { sendEnterEvent } from '../../utils/webutils';
 
 export class Slack extends Website {
+  private targetElement: HTMLElement | null;
   constructor() {
     super();
     this.domain = 'app.slack.com';
+    this.targetElement = null;
   }
 
   register(): void {
