@@ -110,7 +110,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     copyIcon.addEventListener('click', (event: MouseEvent) => {
       displaytext.select();
       document.execCommand('copy');
-      const selection:Selection | null = document.getSelection();
+      const selection: Selection | null = document.getSelection();
       if (selection) {
         selection.removeAllRanges();
       }

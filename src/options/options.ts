@@ -72,6 +72,8 @@ const refreshTable = async (): Promise<void> => {
       $('#passphraseBox').val(entry.passphrase);
       $('#baseBox').val(entry.base);
       $('#tagsBox').val(entry.tags.join(','));
+
+      $('#baseBox').removeClass('is-invalid');
       $('#entryModal').modal('show');
     });
     $('#' + deleteButtonId).click(async () => {
@@ -90,6 +92,8 @@ $(document).ready(async () => {
     $('#passphraseBox').val('');
     $('#baseBox').val(cryptoutils.babbleDefaultBase);
     $('#tagsBox').val('');
+
+    $('#baseBox').removeClass('is-invalid');
     $('#entryModal').modal('show');
   });
   $('#deleteAllButton').click(async () => {
@@ -97,7 +101,6 @@ $(document).ready(async () => {
     await refreshTable();
   });
   $('#saveButton').click(async () => {
-    $('#saveButton').prop('disabled', true); // spammy clickers can't create multiple keys
     const editId = $('#editId').val();
     const name = $('#nameBox').val();
     const passphrase = $('#passphraseBox').val();
@@ -110,6 +113,11 @@ $(document).ready(async () => {
     for (var i = 0; i < tagsLen; ++i) {
       tags[i] = tags[i].trim();
     }
+    if (!isValidBase(base as string)) {
+      $('#baseBox').addClass('is-invalid');
+      return;
+    }
+    $('#saveButton').prop('disabled', true); // spammy clickers can't create multiple keys
     if (editId === '') {
       await keystore.addEntry(
         name as string,
@@ -164,4 +172,9 @@ const escapeHtml = (unsafe: string): string => {
   return unsafe.replace(/[&<>"'`=\/]/g, (s: string): string => {
     return entityMap[s];
   });
+};
+
+const baseLen: number = 256;
+const isValidBase = (base: string): boolean => {
+  return new Set(base).size === baseLen;
 };
