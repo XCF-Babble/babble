@@ -34,17 +34,17 @@ const refreshTable = async (): Promise<void> => {
     var deleteButtonId: string = '';
 
     if (i == selectedEntry) {
-      button = 'Selected';
+      button = '<i class="fa fa-check"></i>';
     } else {
       selectButtonId = 'selectButton' + i.toString();
-      button = `<button type="button" class="btn btn-primary btn-sm btn-block" id="${selectButtonId}">Select</button>`;
+      button = `<button type="button" class="btn btn-primary btn-sm btn-block" id="${selectButtonId}"><i class="fa fa-check"></i></button>`;
     }
     truncatedBase = entry.base.substr(0, 10) + '...';
     tags = entry.tags.join(', ');
     const editButtonId = 'editButton' + i.toString();
-    editButton = `<button type="button" class="btn btn-info btn-sm btn-block" id="${editButtonId}">Edit</button>`;
+    editButton = `<button type="button" class="btn btn-info btn-sm btn-block" id="${editButtonId}"><i class="fa fa-edit"></i></button>`;
     deleteButtonId = 'deleteButton' + i.toString();
-    deleteButton = `<button type="button" class="btn btn-danger btn-sm btn-block" id="${deleteButtonId}">Delete</button>`;
+    deleteButton = `<button type="button" class="btn btn-danger btn-sm btn-block" id="${deleteButtonId}"><i class="fa fa-trash"></i></button>`;
     const row = `
     <tr>
       <td>${button}</td>

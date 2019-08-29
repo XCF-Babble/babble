@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Babble Keystore</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css" rel="stylesheet">
     <style>
       body {
         padding-top: 3rem;
+      }
+      .table {
+        text-align: center;
       }
     </style>
   </head>
@@ -26,13 +30,13 @@
       <table class="table table-bordered" id="keystoreTable">
         <thead>
           <tr>
-            <th scope="col">Select</th>
+            <th scope="col"><i class="fa fa-check"></i></th>
             <th scope="col">Name</th>
             <th scope="col">Passphrase</th>
             <th scope="col">Base</th>
             <th scope="col">Tags</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col"><i class="fa fa-edit"></i></th>
+            <th scope="col"><i class="fa fa-trash"></i></th>
           </tr>
         </thead>
         <tbody></tbody>
