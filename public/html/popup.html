@@ -8,9 +8,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css" rel="stylesheet">
   </head>
   <body>
-    <div class="container-col">
+    <div class="container mt-3">
       <div class="item">
-        <h4 class="mt-3">Babble &ndash; 说都不会话了。</h4>
+        <h4>Babble &ndash; 说都不会话了。</h4>
       </div>
       <div class="container-row">
         <div id="debabble-icon">
@@ -23,17 +23,19 @@
           <i class="fa fa-copy fa-1x fa-babble-selector"></i>
         </div>
       </div>
-    </div>
-    </div>
-    <div class="container-col">
+      <div class="item">
+        <small class="text-muted">Encryption Key: <span id="encryption-key-name">(None)</span></small>
+      </div>
       <div class="item">
         <textarea class="form-control babble-text" id="plaintext" placeholder="Plain Text" rows="5"></textarea>
       </div>
       <div class="item">
         <textarea readonly class="form-control babble-text" id="display-text" rows="5"></textarea>
       </div>
+      <div class="item">
+        <small class="text-muted">Ouput length: <span id="display-length">0</span></small>
+      </div>
     </div>
-    <br>
     <script src="../js/utils/message.js"></script>
     <script src="../js/popup/popup.js"></script>
     <script src="../js/vendor.js"></script>

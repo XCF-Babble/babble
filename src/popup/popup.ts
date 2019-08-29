@@ -24,6 +24,14 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     'copy-icon'
   ) as HTMLElement;
 
+  const encryptionKeyName: HTMLElement | null = document.getElementById(
+    'encryption-key-name'
+  ) as HTMLElement;
+
+  const displayLength: HTMLElement | null = document.getElementById(
+    'display-length'
+  ) as HTMLElement;
+
   const toggleIconColor = (icon: HTMLElement) => {
     icon.classList.toggle('fa-babble-active');
   };
@@ -57,6 +65,11 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
         plaintext.readOnly = true;
         plaintext.disabled = true;
         return;
+      } else {
+        const curEntry = await keystore.getEntry(
+          await keystore.getSelectedEntry()
+        );
+        encryptionKeyName.innerText = curEntry.name;
       }
     })();
 
@@ -70,12 +83,14 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
             (response: any): void => {}
           );
           displaytext.value = '';
+          displayLength.innerText = displaytext.value.length.toString();
           return;
         }
         const babbledText: string = await keystore.babbleWithSelectedEntry(
           cleanedData
         );
         displaytext.value = babbledText;
+        displayLength.innerText = displaytext.value.length.toString();
         sendMessageActiveTab(
           {
             request: 'tunnelCipherText',
@@ -99,6 +114,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
             if (response.success) {
               plaintext.value = '';
               displaytext.value = '';
+              displayLength.innerText = displaytext.value.length.toString();
             }
           }
         );
@@ -134,6 +150,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
           );
           if (debabbledText !== '') {
             displaytext.value = debabbledText;
+            displayLength.innerText = displaytext.value.length.toString();
           }
           break;
         default:

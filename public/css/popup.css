@@ -1,15 +1,9 @@
-html {
-  min-width: 300px;
+body {
+  min-width: 350px;
 }
 
 .babble-text {
   resize: none;
-}
-
-.container-col {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: no-wrap;
 }
 
 .container-row {
