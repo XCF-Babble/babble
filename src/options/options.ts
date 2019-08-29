@@ -34,17 +34,17 @@ const refreshTable = async (): Promise<void> => {
     var deleteButtonId: string = '';
 
     if (i == selectedEntry) {
-      button = 'Selected';
+      button = '<i class="fa fa-check"></i>';
     } else {
       selectButtonId = 'selectButton' + i.toString();
-      button = `<button type="button" class="btn btn-primary btn-sm btn-block" id="${selectButtonId}">Select</button>`;
+      button = `<button type="button" class="btn btn-primary btn-sm btn-block" id="${selectButtonId}"><i class="fa fa-check"></i></button>`;
     }
     truncatedBase = entry.base.substr(0, 10) + '...';
     tags = entry.tags.join(', ');
     const editButtonId = 'editButton' + i.toString();
-    editButton = `<button type="button" class="btn btn-info btn-sm btn-block" id="${editButtonId}">Edit</button>`;
+    editButton = `<button type="button" class="btn btn-info btn-sm btn-block" id="${editButtonId}"><i class="fa fa-edit"></i></button>`;
     deleteButtonId = 'deleteButton' + i.toString();
-    deleteButton = `<button type="button" class="btn btn-danger btn-sm btn-block" id="${deleteButtonId}">Delete</button>`;
+    deleteButton = `<button type="button" class="btn btn-danger btn-sm btn-block" id="${deleteButtonId}"><i class="fa fa-trash"></i></button>`;
     const row = `
     <tr>
       <td>${button}</td>
@@ -72,6 +72,8 @@ const refreshTable = async (): Promise<void> => {
       $('#passphraseBox').val(entry.passphrase);
       $('#baseBox').val(entry.base);
       $('#tagsBox').val(entry.tags.join(','));
+
+      $('#baseBox').removeClass('is-invalid');
       $('#entryModal').modal('show');
     });
     $('#' + deleteButtonId).click(async () => {
@@ -90,14 +92,19 @@ $(document).ready(async () => {
     $('#passphraseBox').val('');
     $('#baseBox').val(cryptoutils.babbleDefaultBase);
     $('#tagsBox').val('');
+
+    $('#baseBox').removeClass('is-invalid');
     $('#entryModal').modal('show');
   });
-  $('#deleteAllButton').click(async () => {
+  $('#deleteAllButton').click(() => {
+    $('#deleteAllModal').modal('show');
+  });
+  $('#deleteAllModalButton').click(async () => {
     await keystore.clearKeystore();
     await refreshTable();
+    $('#deleteAllModal').modal('hide');
   });
   $('#saveButton').click(async () => {
-    $('#saveButton').prop('disabled', true); // spammy clickers can't create multiple keys
     const editId = $('#editId').val();
     const name = $('#nameBox').val();
     const passphrase = $('#passphraseBox').val();
@@ -110,6 +117,11 @@ $(document).ready(async () => {
     for (var i = 0; i < tagsLen; ++i) {
       tags[i] = tags[i].trim();
     }
+    if (!isValidBase(base as string)) {
+      $('#baseBox').addClass('is-invalid');
+      return;
+    }
+    $('#saveButton').prop('disabled', true); // spammy clickers can't create multiple keys
     if (editId === '') {
       await keystore.addEntry(
         name as string,
@@ -135,6 +147,16 @@ $(document).ready(async () => {
     const uuid: string = await cryptoutils.genUUID();
     $('#passphraseBox').val(uuid);
   });
+  // TODO: Find this type!
+  const entryModalOnEnter = (event: any) => {
+    if (event.keyCode == 10 || event.keyCode == 13) {
+      $('#saveButton').click();
+    }
+  };
+  $('#nameBox').keydown(entryModalOnEnter);
+  $('#passphraseBox').keydown(entryModalOnEnter);
+  $('#baseBox').keydown(entryModalOnEnter);
+  $('#tagsBox').keydown(entryModalOnEnter);
 });
 
 // Taken from mustache.js templating library
@@ -154,4 +176,9 @@ const escapeHtml = (unsafe: string): string => {
   return unsafe.replace(/[&<>"'`=\/]/g, (s: string): string => {
     return entityMap[s];
   });
+};
+
+const baseLen: number = 256;
+const isValidBase = (base: string): boolean => {
+  return new Set(base).size === baseLen;
 };

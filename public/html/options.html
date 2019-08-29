@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Babble Keystore</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css" rel="stylesheet">
     <style>
       body {
         padding-top: 3rem;
+      }
+      .table {
+        text-align: center;
       }
     </style>
   </head>
@@ -18,7 +22,7 @@
         <div class="input-group-prepend">
           <button type="button" class="btn btn-primary" id="addNewButton">Add New</button>
         </div>
-        <input type="text" class="form-control" placeholder="Search" id="searchBox">
+        <input type="text" class="form-control" placeholder="Search by name and tag" id="searchBox">
         <div class="input-group-append">
           <button type="button" class="btn btn-danger" id="deleteAllButton">Delete All</button>
         </div>
@@ -26,13 +30,13 @@
       <table class="table table-bordered" id="keystoreTable">
         <thead>
           <tr>
-            <th scope="col">Select</th>
+            <th scope="col"><i class="fa fa-check"></i></th>
             <th scope="col">Name</th>
             <th scope="col">Passphrase</th>
             <th scope="col">Base</th>
             <th scope="col">Tags</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col"><i class="fa fa-edit"></i></th>
+            <th scope="col"><i class="fa fa-trash"></i></th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -62,6 +66,9 @@
             <div class="form-group">
               <label for="baseBox">Base</label>
               <input type="text" class="form-control" id="baseBox" minlength="256" maxlength="256">
+              <div class="invalid-feedback">
+                Base must be 256 unique characters.
+              </div>
             </div>
             <div class="form-group">
               <label for="tagsBox">Tags (Comma Separated)</label>
@@ -71,6 +78,22 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" id="saveButton">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="deleteAllModal" tabindex="-1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Warning</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete all the keys? This operation is irreversible!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-danger" id="deleteAllModalButton">Yes</button>
           </div>
         </div>
       </div>
