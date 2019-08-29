@@ -135,6 +135,16 @@ $(document).ready(async () => {
     const uuid: string = await cryptoutils.genUUID();
     $('#passphraseBox').val(uuid);
   });
+  // TODO: Find this type!
+  const entryModalOnEnter = (event: any) => {
+    if (event.keyCode == 10 || event.keyCode == 13) {
+      $('#saveButton').click();
+    }
+  };
+  $('#nameBox').keydown(entryModalOnEnter);
+  $('#passphraseBox').keydown(entryModalOnEnter);
+  $('#baseBox').keydown(entryModalOnEnter);
+  $('#tagsBox').keydown(entryModalOnEnter);
 });
 
 // Taken from mustache.js templating library
