@@ -8,8 +8,8 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     'plaintext'
   ) as HTMLTextAreaElement;
 
-  const decryptedText: HTMLTextAreaElement | null = document.getElementById(
-    'decrypted-text'
+  const displaytext: HTMLTextAreaElement | null = document.getElementById(
+    'display-text'
   ) as HTMLTextAreaElement;
 
   const debabbleIcon: HTMLElement | null = document.getElementById(
@@ -18,6 +18,10 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
 
   const keystoreIcon: HTMLElement | null = document.getElementById(
     'keystore-icon'
+  ) as HTMLElement;
+
+  const copyIcon: HTMLElement | null = document.getElementById(
+    'copy-icon'
   ) as HTMLElement;
 
   const toggleIconColor = (icon: HTMLElement) => {
@@ -65,11 +69,13 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
             { request: 'clearInputBox', requestClass: 'injectInput' },
             (response: any): void => {}
           );
+          displaytext.value = '';
           return;
         }
         const babbledText: string = await keystore.babbleWithSelectedEntry(
           cleanedData
         );
+        displaytext.value = babbledText;
         sendMessageActiveTab(
           {
             request: 'tunnelCipherText',
@@ -92,12 +98,25 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
           (response: any): void => {
             if (response.success) {
               plaintext.value = '';
+              displaytext.value = '';
             }
           }
         );
       }
     });
   }
+
+  if (displaytext && copyIcon) {
+    copyIcon.addEventListener('click', (event: MouseEvent) => {
+      displaytext.select();
+      document.execCommand('copy');
+      const selection:Selection | null = document.getSelection();
+      if (selection) {
+        selection.removeAllRanges();
+      }
+    });
+  }
+
   chrome.runtime.onMessage.addListener(
     async (
       request: Request,
@@ -105,7 +124,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
       sendResponse
     ): Promise<void> => {
       const cleanedData: string = request.data.trim();
-      if (!decryptedText || cleanedData === '') {
+      if (!displaytext || cleanedData === '') {
         return;
       }
       switch (request.request) {
@@ -113,7 +132,9 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
           const debabbledText: string = await keystore.debabbleWithAllEntries(
             cleanedData
           );
-          decryptedText.value = debabbledText;
+          if (debabbledText !== '') {
+            displaytext.value = debabbledText;
+          }
           break;
         default:
           break;
