@@ -96,9 +96,13 @@ $(document).ready(async () => {
     $('#baseBox').removeClass('is-invalid');
     $('#entryModal').modal('show');
   });
-  $('#deleteAllButton').click(async () => {
+  $('#deleteAllButton').click(() => {
+    $('#deleteAllModal').modal('show');
+  });
+  $('#deleteAllModalButton').click(async () => {
     await keystore.clearKeystore();
     await refreshTable();
+    $('#deleteAllModal').modal('hide');
   });
   $('#saveButton').click(async () => {
     const editId = $('#editId').val();
