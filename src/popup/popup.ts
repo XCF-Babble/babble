@@ -50,6 +50,7 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
       } else {
         window.open(chrome.runtime.getURL('../html/options.html'));
       }
+      window.close();
     });
   }
 
