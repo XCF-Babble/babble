@@ -3,23 +3,24 @@
 export class ElementPicker {
   private hoverColor: string;
   private borderStyle: string;
-  private hoverCb: (event: Element) => void;
+  private callbackHover: (event: Element) => void;
+  private callbackOnDeactivate: () => void;
   private lastElem: HTMLElement | null;
   private lastBackgroundColor: string | null;
   private lastBorder: string | null;
-  private isActive: boolean;
   constructor(
-    hoverCb: (elem: Element) => void,
+    callbackHover: (elem: Element) => void,
+    callbackOnDeactivate: () => void,
     hoverColor: string = 'rgba(195, 63, 182, 0.3)',
     borderStyle: string = 'thin solid rgba(222, 18, 99, 0.8)'
   ) {
     this.hoverColor = hoverColor;
     this.borderStyle = borderStyle;
-    this.hoverCb = hoverCb;
+    this.callbackHover = callbackHover;
+    this.callbackOnDeactivate = callbackOnDeactivate;
     this.lastElem = null;
     this.lastBackgroundColor = null;
     this.lastBorder = null;
-    this.isActive = false;
   }
 
   resetElement = (): void => {
@@ -29,7 +30,21 @@ export class ElementPicker {
     }
   };
 
-  onMouseEvent = (event: Event): void => {
+  onKeydownEvent = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape' || event.which === 27) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.deactivate();
+    }
+  };
+
+  onMouseClickEvent = (event: Event): void => {
+    event.stopPropagation();
+    event.preventDefault();
+    this.deactivate();
+  };
+
+  onMouseMoveEvent = (event: Event): void => {
     const e: Event = event || window.event;
     const target: EventTarget | null = e.target || e.srcElement;
     if (target && target instanceof HTMLElement) {
@@ -37,7 +52,7 @@ export class ElementPicker {
         return;
       }
       this.resetElement();
-      this.hoverCb(target);
+      this.callbackHover(target);
       this.lastElem = target;
       this.lastBackgroundColor = target.style.backgroundColor;
       this.lastBorder = target.style.border;
@@ -46,41 +61,21 @@ export class ElementPicker {
     }
   };
 
-  toggle = (): void => {
-    if (this.isActive) {
-      this.deactivate();
-      this.isActive = false;
-    } else {
-      this.activate();
-      this.isActive = true;
-    }
-  };
-
   activate = (): void => {
-    document.addEventListener(
-      'click',
-      () => {
-        this.deactivate();
-      },
-      false
-    );
-    document.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        this.deactivate();
-      }
-    });
-    document.addEventListener('mousemove', this.onMouseEvent, false);
+    document.addEventListener('click', this.onMouseClickEvent, true);
+    document.addEventListener('keydown', this.onKeydownEvent, true);
+    document.addEventListener('mousemove', this.onMouseMoveEvent, false);
     document.body.style.cursor = 'crosshair';
-    this.isActive = true;
   };
 
   deactivate = (): void => {
-    document.removeEventListener('click', () => {}, false);
-    document.removeEventListener('mousemove', this.onMouseEvent, false);
+    document.removeEventListener('click', this.onMouseClickEvent, true);
+    document.removeEventListener('keydown', this.onKeydownEvent, true);
+    document.removeEventListener('mousemove', this.onMouseMoveEvent, false);
     this.resetElement();
+    document.body.style.cursor = 'auto';
     this.lastElem = null;
     this.lastBackgroundColor = null;
-    document.body.style.cursor = 'auto';
-    this.isActive = false;
+    this.callbackOnDeactivate();
   };
 }
