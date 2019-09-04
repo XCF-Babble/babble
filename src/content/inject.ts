@@ -7,6 +7,39 @@ import { Request } from '../utils/message';
 import { load } from './loader';
 
 window.onload = (): void => {
+  setTimeout(() => {
+    const cryptFrame: HTMLIFrameElement = document.createElement('iframe');
+    cryptFrame.id = 'keur';
+    cryptFrame.src = chrome.runtime.getURL('dist/html/decrypt.html');
+    const pickerCSSStyle: string = [
+      'background: transparent',
+      'border: 0',
+      'border-radius: 0',
+      'box-shadow: none',
+      'display: block',
+      'height: 100%',
+      'left: 0',
+      'margin: 0',
+      'max-height: none',
+      'max-width: none',
+      'opacity: 1',
+      'outline: 0',
+      'padding: 0',
+      'position: fixed',
+      'top: 0',
+      'visibility: visible',
+      'width: 100%',
+      'pointer-events: none', // this lets us be the top layer and still highlight DOM nodes
+      'z-index: 2147483647',
+      ''
+    ].join(' !important;');
+    cryptFrame.style.cssText = pickerCSSStyle;
+    // We don't append to the body because we are setting the frame's
+    // width and height to be 100%. Prevents the picker from only being
+    // able to hover the iframe.
+    document.documentElement.appendChild(cryptFrame);
+  }, 200);
+
   const picker = new ElementPicker((selected: Element) => {
     walkDOM(
       selected,

@@ -6,6 +6,13 @@
   "icons": {
     "128": "assets/images/icon_128.png"
   },
+  "background": {
+    "scripts": [
+      "dist/js/background/background.js",
+      "dist/js/vendor.js"
+    ],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "matches": [
@@ -31,6 +38,10 @@
     "default_popup": "dist/html/popup.html"
   },
   "options_page": "dist/html/options.html",
+  "web_accessible_resources": [
+    "dist/html/decrypt.html",
+    "dist/js/web_accessible_resources/decrypt.js"
+  ],
   "permissions": [
     "debugger",
     "storage",

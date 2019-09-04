@@ -5,6 +5,7 @@ const srcDir = '../src/';
 
 module.exports = {
     entry: {
+        'background/background': path.join(__dirname, srcDir + 'background/background.ts'),
         'content/element-picker': path.join(__dirname, srcDir + 'content/element-picker.ts'),
         'content/inject': path.join(__dirname, srcDir + 'content/inject.ts'),
         'content/loader': path.join(__dirname, srcDir + 'content/loader.ts'),
@@ -17,7 +18,8 @@ module.exports = {
         'utils/cryptoutils': path.join(__dirname, srcDir + 'utils/cryptoutils.ts'),
         'utils/keystore': path.join(__dirname, srcDir + 'utils/keystore.ts'),
         'utils/message': path.join(__dirname, srcDir + 'utils/message.ts'),
-        'utils/webutils': path.join(__dirname, srcDir + 'utils/webutils.ts')
+        'utils/webutils': path.join(__dirname, srcDir + 'utils/webutils.ts'),
+        'web_accessible_resources/decrypt': path.join(__dirname, srcDir + 'web_accessible_resources/decrypt.ts'),
     },
     output: {
         path: path.join(__dirname, '../dist/js'),

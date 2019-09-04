@@ -1,6 +1,6 @@
 'use strict';
 
-import { sendMessageActiveTab, Request } from '../utils/message';
+import { sendMessageActiveTab } from '../utils/message';
 import * as keystore from '../utils/keystore';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
@@ -32,16 +32,12 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     'display-length'
   ) as HTMLElement;
 
-  const toggleIconColor = (icon: HTMLElement) => {
-    icon.classList.toggle('fa-babble-active');
-  };
-
   if (debabbleIcon) {
     debabbleIcon.addEventListener('click', (event: MouseEvent) => {
       sendMessageActiveTab(
         { request: 'toggleElementPicker', data: null },
         (response: any): void => {
-          toggleIconColor(event.target as HTMLElement);
+          window.close();
         }
       );
     });
@@ -132,30 +128,4 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
       }
     });
   }
-
-  chrome.runtime.onMessage.addListener(
-    async (
-      request: Request,
-      sender: chrome.runtime.MessageSender,
-      sendResponse
-    ): Promise<void> => {
-      const cleanedData: string = request.data.trim();
-      if (!displaytext || cleanedData === '') {
-        return;
-      }
-      switch (request.request) {
-        case 'debabbleText':
-          const debabbledText: string = await keystore.debabbleWithAllEntries(
-            cleanedData
-          );
-          if (debabbledText !== '') {
-            displaytext.value = debabbledText;
-            displayLength.innerText = displaytext.value.length.toString();
-          }
-          break;
-        default:
-          break;
-      }
-    }
-  );
 });
