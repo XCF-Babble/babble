@@ -10,14 +10,6 @@ export const sendEnterEvent = (kevent: string, target: Node): void => {
       bubbles: true,
       cancelable: true,
       // @ts-ignore
-      keyCode: 10
-    })
-  );
-  target.dispatchEvent(
-    new KeyboardEvent(kevent, {
-      bubbles: true,
-      cancelable: true,
-      // @ts-ignore
       keyCode: 13
     })
   );
