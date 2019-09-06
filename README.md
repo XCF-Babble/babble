@@ -1,27 +1,37 @@
-# Babble
+# Babble Browser Extension
 
-说都不会话了
+说都不会话了。
 
-<b>Babble</b> is a platform agnostic browser extension that allows for easy
+**Babble** is a platform agnostic browser extension that allows for easy
 encryption and decryption of text data across the web. With Babble, users can
 create encryption keys from passwords, encrypt text with any of these keys, and
 decrypt any ciphertext they have a key for. Babble is meant to be _dead simple_
 to use, so people of all backgrounds have the ability to encrypt sensitive data
 on any service.
 
-## Usage
+## Demo
 
 ### Encryption
 
-<img src="https://i.fluffy.cc/1gsjrtgs30Kw6ZnmsdX74V8MBpZ1QztB.gif">
+<img src="https://i.fluffy.cc/1gsjrtgs30Kw6ZnmsdX74V8MBpZ1QztB.gif" height="500">
 
 ### Decryption
 
-<img src="https://i.fluffy.cc/FtVXtVZCPLtTWxdr8cfgRTRWGwXPDgrp.gif">
+<img src="https://i.fluffy.cc/FtVXtVZCPLtTWxdr8cfgRTRWGwXPDgrp.gif" height="500">
 
 ## How it works
 
 ### Encryption and Encoding
+
+Babble uses [Argon2i](https://en.wikipedia.org/wiki/Argon2) algorithm to
+generate a 256-bit encryption key (with salt `BabbleBabbleBabb`). The key
+derivation process is slow (takes about 0.5-2s in the browser) to prevent brute
+force attack. The encryption algorithm is
+[ChaCha20](https://en.wikipedia.org/wiki/Salsa20#ChaCha_variant)-IETF-[Poly1305](https://en.wikipedia.org/wiki/Poly1305).
+The cipher text is then (byte-by-byte) encoded to UTF-8 characters using a
+256-character base. The default base is 256 Chinese characters taken from a
+frequency table. You can use whatever base you'd like, as long as it's 256 UTF-8
+characters and only contains unique characters.
 
 ### Decryption
 
@@ -30,17 +40,13 @@ clicked. This action launches the element picker, highlighting the DOM element
 under the cursor purple. The extension will walk the DOM starting at that
 element looking for data to decrypt.
 
-<b>Babble operates under the assumption that every website is running hostile
-Javascript</b>. To that end, all ciphertext is first passed into the
-extension's background script (completely isolated from the page DOM), and
-decryption is performed in the background. If a piece of text can be decrypted,
-the background script forwards the plaintext to a listener back on the page.
-This listener is special because it is inside of an iframe whose source links
-to [web accessible
+**Babble operates under the assumption that every website is running hostile
+JavaScript**. To that end, when the element picker is started, an iframe is
+created whose source is a [web accessible
 resource](https://developer.chrome.com/extensions/manifest/web_accessible_resources).
-
-Web accessible resources are benefical because they have unique protocols
-(`chrome-extension://` on Chromium or `moz-extension://` on Firefox) and
-protect our plaintext from being exfiltrated by malicious Javascript the on
-page by the [same-origin
-policy]([https://en.wikipedia.org/wiki/Same-origin_policy](https://en.wikipedia.org/wiki/Same-origin_policy)).
+All ciphertext targeted for decryption is transferred to the iframe, where it
+is then decrypted and displayed to the user. Web accessible resources are
+utilized because they have unique protocols (`chrome-extension://` on Chromium
+or `moz-extension://` on Firefox), and protect our plaintext from being
+exfiltrated by malicious Javascript the on page by the [same-origin
+policy](https://en.wikipedia.org/wiki/Same-origin_policy).
