@@ -4,12 +4,14 @@ export class ElementPicker {
   private hoverColor: string;
   private borderStyle: string;
   private callbackHover: (event: Element) => void;
+  private callbackClick: (event: EventTarget) => void;
   private callbackOnDeactivate: () => void;
   private lastElem: HTMLElement | null;
   private lastBackgroundColor: string | null;
   private lastBorder: string | null;
   constructor(
     callbackHover: (elem: Element) => void,
+    callbackClick: (elem: EventTarget) => void,
     callbackOnDeactivate: () => void,
     hoverColor: string = 'rgba(195, 63, 182, 0.3)',
     borderStyle: string = 'thin solid rgba(222, 18, 99, 0.8)'
@@ -17,6 +19,7 @@ export class ElementPicker {
     this.hoverColor = hoverColor;
     this.borderStyle = borderStyle;
     this.callbackHover = callbackHover;
+    this.callbackClick = callbackClick;
     this.callbackOnDeactivate = callbackOnDeactivate;
     this.lastElem = null;
     this.lastBackgroundColor = null;
@@ -34,14 +37,13 @@ export class ElementPicker {
     if (event.key === 'Escape' || event.which === 27) {
       event.stopPropagation();
       event.preventDefault();
-      this.deactivate();
     }
   };
 
   onMouseClickEvent = (event: Event): void => {
     event.stopPropagation();
     event.preventDefault();
-    this.deactivate();
+    this.callbackClick(event.target as EventTarget);
   };
 
   onMouseMoveEvent = (event: Event): void => {
@@ -68,7 +70,7 @@ export class ElementPicker {
     document.body.style.cursor = 'crosshair';
   };
 
-  deactivate = (): void => {
+  deactivate = (triggerCallback: boolean = true): void => {
     document.removeEventListener('click', this.onMouseClickEvent, true);
     document.removeEventListener('keydown', this.onKeydownEvent, true);
     document.removeEventListener('mousemove', this.onMouseMoveEvent, false);
@@ -76,6 +78,8 @@ export class ElementPicker {
     document.body.style.cursor = 'auto';
     this.lastElem = null;
     this.lastBackgroundColor = null;
-    this.callbackOnDeactivate();
+    if (triggerCallback) {
+      this.callbackOnDeactivate();
+    }
   };
 }

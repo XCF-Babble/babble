@@ -24,11 +24,24 @@ window.onload = (): void => {
         }
       );
     },
+    (_: EventTarget) => {
+      chrome.runtime.sendMessage(
+        { request: 'proxyPickerSelect', data: null },
+        (response: any): void => {
+          if (!cryptFrame || !response.success) {
+            return;
+          }
+          cryptFrame.style.pointerEvents = 'all';
+          picker.deactivate(false);
+        }
+      );
+    },
     () => {
       if (cryptFrame) {
         document.documentElement.removeChild(cryptFrame);
         cryptFrame = null; // ensure we don't keep the node in mem
       }
+      picker.deactivate();
     }
   );
 
@@ -93,6 +106,15 @@ window.onload = (): void => {
         // able to hover the iframe.
         document.documentElement.appendChild(cryptFrame);
         picker.activate();
+        sendResponse({ success: true });
+      } else if (request.request === 'deletePickerIFrame') {
+        if (picker) {
+          picker.deactivate();
+        }
+        if (cryptFrame) {
+          document.documentElement.removeChild(cryptFrame);
+          cryptFrame = null; // ensure we don't keep the node in mem
+        }
         sendResponse({ success: true });
       }
     }

@@ -71,15 +71,36 @@
     .show {
       visibility: visible !important;
     }
-  </style>
+
+    button {
+      float: left;
+      background-color: #ccc !important;
+      border 1px solid #aaa !important;
+      cursor: pointer !important;
+      padding: 4px 6px !important;
+      margin: 0 0 0 2px !important;
+    }
+
+    button:first-of-type {
+      margin-left: 0 !important;
+    }
+
+    .show {
+      visibility: visible !important;
+    }
+
+</style>
 </head>
 
 <body>
   <aside>
     <section>
       <div>
-        <textarea id="decrypt-box" lang="en" dir="ltr" spellcheck="false"></textarea>
+        <textarea id="decrypt-box" readonly lang="en" dir="ltr" spellcheck="false"></textarea>
       </div>
+      <div>
+        <button id="copy" disabled type="button">Copy</button>
+        <button id="quit" disabled type="button">Quit</button>
     </section>
   </aside>
   <script src="../js/web_accessible_resources/decrypt.js"></script>

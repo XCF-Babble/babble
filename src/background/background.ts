@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(
     request: Request,
     sender: chrome.runtime.MessageSender,
     sendResponse
-  ): void => {
+  ): boolean => {
     switch (request.request) {
       case 'proxyDebabbleText':
         sendMessageActiveTab(
@@ -25,8 +25,26 @@ chrome.runtime.onMessage.addListener(
           }
         );
         break;
+      case 'proxyDeletePickerIFrame':
+        sendMessageActiveTab(
+          { request: 'deletePickerIFrame', data: null },
+          (response: any): void => {
+            sendResponse(response);
+          }
+        );
+        break;
+      case 'proxyPickerSelect':
+        sendMessageActiveTab(
+          { request: 'pickerSelect', data: null },
+          (response: any): void => {
+            console.log(response);
+            sendResponse(response);
+          }
+        );
+        break;
       default:
         break;
     }
+    return true;
   }
 );
