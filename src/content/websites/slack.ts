@@ -13,12 +13,7 @@ export class Slack extends Website {
 
   register(): void {
     documentObserver((mutationsList: MutationRecord[], observer: MutationObserver) => {
-      const inputBoxes: NodeListOf<Element> = document.querySelectorAll(
-        'div.ql-editor'
-      );
-      if (inputBoxes.length > 0) {
-        this.targetElement = inputBoxes[0] as HTMLElement;
-      }
+      this.targetElement = document.querySelector('div.ql-editor');
     });
   };
 
@@ -26,7 +21,7 @@ export class Slack extends Website {
     if (!this.targetElement) {
       return false;
     }
-    this.targetElement.innerHTML = s;
+    this.targetElement.innerText = s;
     return true;
   }
 
@@ -34,6 +29,7 @@ export class Slack extends Website {
     if (!this.targetElement) {
       return false;
     }
+    (this.targetElement.parentElement as HTMLElement).click();
     sendEnterEvent('keydown', this.targetElement);
     return true;
   }
