@@ -37,6 +37,7 @@ export class ElementPicker {
     if (event.key === 'Escape' || event.which === 27) {
       event.stopPropagation();
       event.preventDefault();
+      this.deactivate();
     }
   };
 

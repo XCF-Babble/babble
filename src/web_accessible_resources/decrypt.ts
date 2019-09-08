@@ -78,9 +78,15 @@ window.onload = (): void => {
           sendResponse({ success: true });
           break;
         case 'pickerSelect':
-          copyButton.disabled = false;
-          quitButton.disabled = false;
-          sendResponse({ success: true });
+          if (aside.classList.contains('show')) {
+            // We are hovering over a decrypted element
+            copyButton.disabled = false;
+            quitButton.disabled = false;
+            sendResponse({ success: true });
+          } else {
+            // No decrypted element
+            sendResponse({ success: false });
+          }
           break;
         default:
           break;

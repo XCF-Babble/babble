@@ -25,14 +25,20 @@ window.onload = (): void => {
       );
     },
     (_: EventTarget) => {
+      picker.deactivate(false);
       chrome.runtime.sendMessage(
         { request: 'proxyPickerSelect', data: null },
         (response: any): void => {
-          if (!cryptFrame || !response.success) {
+          if (!cryptFrame) {
             return;
           }
-          cryptFrame.style.pointerEvents = 'all';
-          picker.deactivate(false);
+
+          if (response.success) {
+            cryptFrame.style.pointerEvents = 'all';
+          } else {
+            document.documentElement.removeChild(cryptFrame);
+            cryptFrame = null; // ensure we don't keep the node in mem
+          }
         }
       );
     },
@@ -41,7 +47,6 @@ window.onload = (): void => {
         document.documentElement.removeChild(cryptFrame);
         cryptFrame = null; // ensure we don't keep the node in mem
       }
-      picker.deactivate();
     }
   );
 
