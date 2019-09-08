@@ -22,7 +22,11 @@ chrome.runtime.onMessage.addListener(
   ): boolean => {
     if (request.request.startsWith('proxy') && request.request.length > 5) {
       sendMessageActiveTab(
-        { request: proxyTransformer(request.request), data: request.data },
+        {
+          request: proxyTransformer(request.request),
+          requestClass: request.requestClass,
+          data: request.data
+        },
         (response: any): void => {
           sendResponse(response);
         }

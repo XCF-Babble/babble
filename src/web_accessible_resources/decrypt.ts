@@ -27,7 +27,11 @@ window.onload = (): void => {
 
   quitButton.addEventListener('click', (event: MouseEvent) => {
     chrome.runtime.sendMessage(
-      { request: 'proxyDeletePickerIFrame', data: null },
+      {
+        request: 'proxyDeletePickerIFrame',
+        requestClass: 'decryptionPicker',
+        data: null
+      },
       (response: any): void => {}
     );
   });
