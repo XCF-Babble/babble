@@ -16,7 +16,7 @@ window.onload = (): void => {
         (childNode: Node): Walk => {
           if (childNode.textContent) {
             chrome.runtime.sendMessage(
-              { request: 'debabbleText', data: childNode.textContent },
+              { request: 'proxyDebabbleText', data: childNode.textContent },
               (response: any): void => {} // TODO: we want to return if we successfully decrypted something
             );
           }
@@ -25,15 +25,10 @@ window.onload = (): void => {
       );
     },
     () => {
-      chrome.runtime.sendMessage(
-        { request: 'pickerStop', data: null },
-        (response: any): void => {
-          if (cryptFrame) {
-            document.documentElement.removeChild(cryptFrame);
-            cryptFrame = null; // ensure we don't keep the node in mem
-          }
-        }
-      );
+      if (cryptFrame) {
+        document.documentElement.removeChild(cryptFrame);
+        cryptFrame = null; // ensure we don't keep the node in mem
+      }
     }
   );
 
@@ -69,7 +64,6 @@ window.onload = (): void => {
         sendResponse({ success: true });
       } else if (request.request === 'activateElementPicker') {
         cryptFrame = document.createElement('iframe');
-        cryptFrame.id = 'keur';
         cryptFrame.src = chrome.runtime.getURL('dist/html/decrypt.html');
         const pickerCSSStyle: string = [
           'background: transparent',

@@ -1,71 +1,77 @@
 <head>
   <meta charset="utf-8">
   <title>Babble Decryption</title>
-<style>
-body {
-  background: transparent !important;
-  color: black !important;
-  font: 12px sans-serif !important;
-  height: 100% !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-  width: 100% !important;
-}
-body :focus {
-  outline: none !important;
-}
-section {
-  border: 0 !important;
-  box-sizing: border-box !important;
-  display: inline-block !important;
-  width: 100% !important;
-}
-section > div:first-child {
-  border: 1px solid #aaa !important;
-  margin: 0 !important;
-  position: relative !important;
-}
-section.invalidFilter > div:first-child {
-  border-color: red !important;
-}
-section > div:first-child > textarea {
-  background-color: #fff !important;
-  border: none !important;
-  box-sizing: border-box !important;
-  color: #000 !important;
-  font: 11px monospace !important;
-  height: 8em !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-  overflow-y: auto !important;
-  padding: 2px !important;
-  resize: none !important;
-  width: 100% !important;
-  word-break: break-all !important;
-}
-section > div:first-child + div {
-  direction: ltr !important;
-  margin: 2px 0 !important;
-  text-align: right !important;
-}
+  <style>
+    body {
+      background: transparent !important;
+      color: black !important;
+      font: 12px sans-serif !important;
+      height: 100% !important;
+      margin: 0 !important;
+      overflow: hidden !important;
+      width: 100% !important;
+    }
 
-aside {
-  background-color: #eee !important;
-  border: 1px solid #aaa !important;
-  bottom: 4px !important;
-  box-sizing: border-box !important;
-  min-width: 24em !important;
-  padding: 4px !important;
-  position: fixed !important;
-  right: 4px !important;
-  visibility: hidden !important;
-  width: calc(40% - 4px) !important;
-}
+    body :focus {
+      outline: none !important;
+    }
 
-.show {
-  visibility: visible !important;
-}
-</style>
+    section {
+      border: 0 !important;
+      box-sizing: border-box !important;
+      display: inline-block !important;
+      width: 100% !important;
+    }
+
+    section > div:first-child {
+      border: 1px solid #aaa !important;
+      margin: 0 !important;
+      position: relative !important;
+    }
+
+    section.invalidFilter > div:first-child {
+      border-color: red !important;
+    }
+
+    section > div:first-child > textarea {
+      background-color: #fff !important;
+      border: none !important;
+      box-sizing: border-box !important;
+      color: #000 !important;
+      font: 11px monospace !important;
+      height: 8em !important;
+      margin: 0 !important;
+      overflow: hidden !important;
+      overflow-y: auto !important;
+      padding: 2px !important;
+      resize: none !important;
+      width: 100% !important;
+      word-break: break-all !important;
+    }
+
+    section > div:first-child + div {
+      direction: ltr !important;
+      margin: 2px 0 !important;
+      text-align: right !important;
+    }
+
+    aside {
+      background-color: #eee !important;
+      border: 1px solid #aaa !important;
+      bottom: 4px !important;
+      box-sizing: border-box !important;
+      min-width: 24em !important;
+      padding: 4px !important;
+      position: fixed !important;
+      right: 4px !important;
+      visibility: hidden !important;
+      width: calc(40% - 4px) !important;
+    }
+
+    .show {
+      visibility: visible !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -77,4 +83,5 @@ aside {
     </section>
   </aside>
   <script src="../js/web_accessible_resources/decrypt.js"></script>
+  <script src="../js/vendor.js"></script>
 </body>
