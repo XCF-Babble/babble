@@ -2,6 +2,10 @@
 
 import { Request, sendMessageActiveTab } from '../utils/message';
 
+const proxyTransformer = (proxyRequest: string): string => {
+  return proxyRequest[5].toLowerCase() + proxyRequest.slice(6);
+};
+
 // Because Firefox does not support sending messages from content script to
 // content script, we have the background proxy the request back to the content
 // page for the iframe to receive the message.
@@ -16,34 +20,15 @@ chrome.runtime.onMessage.addListener(
     sender: chrome.runtime.MessageSender,
     sendResponse
   ): boolean => {
-    switch (request.request) {
-      case 'proxyDebabbleText':
-        sendMessageActiveTab(
-          { request: 'debabbleText', data: request.data },
-          (response: any): void => {
-            sendResponse(response);
-          }
-        );
-        break;
-      case 'proxyDeletePickerIFrame':
-        sendMessageActiveTab(
-          { request: 'deletePickerIFrame', data: null },
-          (response: any): void => {
-            sendResponse(response);
-          }
-        );
-        break;
-      case 'proxyPickerSelect':
-        sendMessageActiveTab(
-          { request: 'pickerSelect', data: null },
-          (response: any): void => {
-            console.log(response);
-            sendResponse(response);
-          }
-        );
-        break;
-      default:
-        break;
+    if (request.request.startsWith('proxy') && request.request.length > 5) {
+      sendMessageActiveTab(
+        { request: proxyTransformer(request.request), data: request.data },
+        (response: any): void => {
+          sendResponse(response);
+        }
+      );
+    } else {
+      sendResponse({ success: false });
     }
     return true;
   }
