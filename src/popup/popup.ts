@@ -35,7 +35,11 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
   if (debabbleIcon) {
     debabbleIcon.addEventListener('click', (event: MouseEvent) => {
       sendMessageActiveTab(
-        { request: 'activateElementPicker', data: null },
+        {
+          request: 'activateElementPicker',
+          requestClass: 'decryptionPicker',
+          data: null
+        },
         (response: any): void => {
           window.close();
         }
