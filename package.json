@@ -24,7 +24,6 @@
     "libsodium": "^0.7.5",
     "libsodium-wrappers": "^0.7.5",
     "prettier": "^1.18.2",
-    "requirejs": "^2.3.6",
     "ts-loader": "^6.0.4",
     "tslint": "^5.18.0",
     "tslint-config-prettier": "^1.18.0",
