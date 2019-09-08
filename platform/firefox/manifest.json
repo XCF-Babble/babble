@@ -6,6 +6,12 @@
   "icons": {
     "128": "assets/images/icon_128.png"
   },
+  "background": {
+    "scripts": [
+      "dist/js/background/background.js",
+      "dist/js/vendor.js"
+    ]
+  },
   "content_scripts": [
     {
       "matches": [
@@ -34,6 +40,10 @@
     "page": "dist/html/options.html",
     "open_in_tab": true
   },
+  "web_accessible_resources": [
+    "dist/html/decrypt.html",
+    "dist/js/web_accessible_resources/decrypt.js"
+  ],
   "permissions": [
     "storage",
     "tabs",
