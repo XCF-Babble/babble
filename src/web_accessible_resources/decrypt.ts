@@ -16,6 +16,10 @@ window.onload = (): void => {
     'quit'
   ) as HTMLButtonElement;
 
+  const keyName: HTMLSpanElement = document.getElementById(
+    'key-name'
+  ) as HTMLSpanElement;
+
   copyButton.addEventListener('click', (event: MouseEvent) => {
     decryptBox.select();
     document.execCommand('copy');
@@ -48,11 +52,12 @@ window.onload = (): void => {
           const cleanedData: string = request.data.trim();
           if (cleanedData !== '') {
             (async (): Promise<void> => {
-              const debabbledText: string = await keystore.debabbleWithAllEntries(
+              const debabbleResult: keystore.DebabbleResult = await keystore.debabbleWithAllEntries(
                 cleanedData
               );
-              if (debabbledText !== '') {
-                decryptBox.value = debabbledText;
+              if (debabbleResult.clearText !== '') {
+                decryptBox.value = debabbleResult.clearText;
+                keyName.innerText = debabbleResult.keyName;
                 if (!aside.classList.contains('show')) {
                   aside.classList.add('show');
                 }
