@@ -5,12 +5,17 @@ import * as cryptoutils from '../utils/cryptoutils';
 import * as _ from 'bootstrap';
 
 const refreshTable = async (): Promise<void> => {
-  const tbody = $('#keystoreTable tbody');
-  const search = $('#searchBox').val() as string;
+  const tbody = document.querySelector(
+    '#keystoreTable tbody'
+  ) as HTMLTableElement;
+  const searchBox = document.getElementById('searchBox') as HTMLInputElement;
+  const search = searchBox.value as string;
   const ks = await keystore.getKeystore();
   const len = ks.length;
   const selectedEntry = await keystore.getSelectedEntry();
-  tbody.empty();
+  while (tbody.rows.length > 0) {
+    tbody.deleteRow(0);
+  }
   for (var i = 0; i < len; ++i) {
     const entry = ks[i];
     if (entry.name.indexOf(search) == -1) {
@@ -28,8 +33,8 @@ const refreshTable = async (): Promise<void> => {
     var button: string = '';
     var truncatedBase: string = '';
     var tags: string = '';
-    var editButton: string = '';
-    var deleteButton: string = '';
+    var editButtonHTML: string = '';
+    var deleteButtonHTML: string = '';
     var selectButtonId: string = '';
     var deleteButtonId: string = '';
 
@@ -42,9 +47,9 @@ const refreshTable = async (): Promise<void> => {
     truncatedBase = entry.base.substr(0, 10) + '...';
     tags = entry.tags.join(', ');
     const editButtonId = 'editButton' + i.toString();
-    editButton = `<button type="button" class="btn btn-info btn-sm btn-block" id="${editButtonId}"><i class="fa fa-edit"></i></button>`;
+    editButtonHTML = `<button type="button" class="btn btn-info btn-sm btn-block" id="${editButtonId}"><i class="fa fa-edit"></i></button>`;
     deleteButtonId = 'deleteButton' + i.toString();
-    deleteButton = `<button type="button" class="btn btn-danger btn-sm btn-block" id="${deleteButtonId}"><i class="fa fa-trash"></i></button>`;
+    deleteButtonHTML = `<button type="button" class="btn btn-danger btn-sm btn-block" id="${deleteButtonId}"><i class="fa fa-trash"></i></button>`;
     const row = `
     <tr>
       <td>${button}</td>
@@ -52,64 +57,113 @@ const refreshTable = async (): Promise<void> => {
       <td>${escapeHtml(entry.passphrase)}</td>
       <td>${escapeHtml(truncatedBase)}</td>
       <td>${escapeHtml(tags)}</td>
-      <td>${editButton}</td>
-      <td>${deleteButton}</td>
+      <td>${editButtonHTML}</td>
+      <td>${deleteButtonHTML}</td>
     </tr>
     `;
-    tbody.append(row);
+    tbody.insertRow(i);
+    tbody.rows[i].innerHTML = row;
     const id = i;
-    if (selectButtonId !== '') {
-      $('#' + selectButtonId).click(async () => {
+
+    const selectButton = document.getElementById(
+      selectButtonId
+    ) as HTMLButtonElement | null;
+    const editButton = document.getElementById(
+      editButtonId
+    ) as HTMLButtonElement;
+    const deleteButton = document.getElementById(
+      deleteButtonId
+    ) as HTMLButtonElement;
+
+    if (selectButton) {
+      selectButton.addEventListener('click', async (ev: MouseEvent) => {
         await keystore.setSelectedEntry(id);
         await refreshTable();
       });
     }
-    $('#' + editButtonId).click(async () => {
-      $('#entryModalTitle').html('Edit Entry');
-      $('#editId').val(id.toString());
-      const entry = await keystore.getEntry(id);
-      $('#nameBox').val(entry.name);
-      $('#passphraseBox').val(entry.passphrase);
-      $('#baseBox').val(entry.base);
-      $('#tagsBox').val(entry.tags.join(','));
+    editButton.addEventListener('click', async (ev: Event) => {
+      const entryModalTitle = document.getElementById(
+        'entryModalTitle'
+      ) as HTMLHeadingElement;
+      const editId = document.getElementById('editId') as HTMLInputElement;
+      const nameBox = document.getElementById('nameBox') as HTMLInputElement;
+      const passphraseBox = document.getElementById(
+        'passphraseBox'
+      ) as HTMLInputElement;
+      const baseBox = document.getElementById('baseBox') as HTMLInputElement;
+      const tagsBox = document.getElementById('tagsBox') as HTMLInputElement;
 
-      $('#baseBox').removeClass('is-invalid');
+      entryModalTitle.innerText = 'Edit Entry';
+      editId.value = id.toString();
+      const entry = await keystore.getEntry(id);
+      nameBox.value = entry.name;
+      passphraseBox.value = entry.passphrase;
+      baseBox.value = entry.base;
+      tagsBox.value = entry.tags.join(',');
+
+      baseBox.classList.remove('is-invalid');
       $('#entryModal').modal('show');
     });
-    $('#' + deleteButtonId).click(async () => {
+    deleteButton.addEventListener('click', async (ev: Event) => {
       await keystore.delEntry(id);
       await refreshTable();
     });
   }
 };
 
-$(document).ready(async () => {
+document.addEventListener('DOMContentLoaded', async () => {
   await refreshTable();
-  $('#addNewButton').click(() => {
-    $('#entryModalTitle').html('New Entry');
-    $('#editId').val('');
-    $('#nameBox').val('');
-    $('#passphraseBox').val('');
-    $('#baseBox').val(cryptoutils.babbleDefaultBase);
-    $('#tagsBox').val('');
+  const addNewButton = document.getElementById(
+    'addNewButton'
+  ) as HTMLButtonElement;
+  const deleteAllButton = document.getElementById(
+    'deleteAllButton'
+  ) as HTMLButtonElement;
+  const saveButton = document.getElementById('saveButton') as HTMLButtonElement;
+  const deleteAllModalButton = document.getElementById(
+    'deleteAllModalButton'
+  ) as HTMLButtonElement;
+  const genUUIDButton = document.getElementById(
+    'genUUIDButton'
+  ) as HTMLButtonElement;
 
-    $('#baseBox').removeClass('is-invalid');
+  const entryModalTitle = document.getElementById(
+    'entryModalTitle'
+  ) as HTMLHeadingElement;
+  const editId = document.getElementById('editId') as HTMLInputElement;
+  const nameBox = document.getElementById('nameBox') as HTMLInputElement;
+  const searchBox = document.getElementById('searchBox') as HTMLInputElement;
+  const passphraseBox = document.getElementById(
+    'passphraseBox'
+  ) as HTMLInputElement;
+  const baseBox = document.getElementById('baseBox') as HTMLInputElement;
+  const tagsBox = document.getElementById('tagsBox') as HTMLInputElement;
+
+  addNewButton.addEventListener('click', (ev: Event) => {
+    entryModalTitle.innerText = 'New Entry';
+    editId.value = '';
+    nameBox.value = '';
+    passphraseBox.value == '';
+    baseBox.value = cryptoutils.babbleDefaultBase;
+    tagsBox.value = '';
+
+    baseBox.classList.remove('is-invalid');
     $('#entryModal').modal('show');
   });
-  $('#deleteAllButton').click(() => {
+  deleteAllButton.addEventListener('click', (ev: Event) => {
     $('#deleteAllModal').modal('show');
   });
-  $('#deleteAllModalButton').click(async () => {
+  deleteAllModalButton.addEventListener('click', async (ev: Event) => {
     await keystore.clearKeystore();
     await refreshTable();
     $('#deleteAllModal').modal('hide');
   });
-  $('#saveButton').click(async () => {
-    const editId = $('#editId').val();
-    const name = $('#nameBox').val();
-    const passphrase = $('#passphraseBox').val();
-    const base = $('#baseBox').val();
-    var tags = ($('#tagsBox').val() as string).split(',');
+  saveButton.addEventListener('click', async (ev: Event) => {
+    const edit = editId.value;
+    const name = nameBox.value;
+    const passphrase = passphraseBox.value;
+    const base = baseBox.value;
+    var tags = (tagsBox.value || '').split(',');
     if (tags.length === 1 && tags[0] === '') {
       tags = [];
     }
@@ -118,11 +172,11 @@ $(document).ready(async () => {
       tags[i] = tags[i].trim();
     }
     if (!isValidBase(base as string)) {
-      $('#baseBox').addClass('is-invalid');
+      baseBox.classList.add('is-invalid');
       return;
     }
-    $('#saveButton').prop('disabled', true); // spammy clickers can't create multiple keys
-    if (editId === '') {
+    saveButton.disabled = true; // spammy clickers can't create multiple keys
+    if (edit === '') {
       await keystore.addEntry(
         name as string,
         passphrase as string,
@@ -131,7 +185,7 @@ $(document).ready(async () => {
       );
     } else {
       await keystore.editEntry(
-        Number.parseInt(editId as string),
+        Number.parseInt(edit as string),
         name as string,
         passphrase as string,
         base as string,
@@ -140,23 +194,22 @@ $(document).ready(async () => {
     }
     $('#entryModal').modal('hide');
     await refreshTable();
-    $('#saveButton').prop('disabled', false);
+    saveButton.disabled = false;
   });
-  $('#searchBox').keyup(refreshTable);
-  $('#genUUIDButton').click(async () => {
-    const uuid: string = await cryptoutils.genUUID();
-    $('#passphraseBox').val(uuid);
+  searchBox.addEventListener('keyup', refreshTable);
+  genUUIDButton.addEventListener('click', async (ev: Event) => {
+    passphraseBox.value = await cryptoutils.genUUID();
   });
   // TODO: Find this type!
   const entryModalOnEnter = (event: any) => {
     if (event.keyCode == 10 || event.keyCode == 13) {
-      $('#saveButton').click();
+      saveButton.click();
     }
   };
-  $('#nameBox').keydown(entryModalOnEnter);
-  $('#passphraseBox').keydown(entryModalOnEnter);
-  $('#baseBox').keydown(entryModalOnEnter);
-  $('#tagsBox').keydown(entryModalOnEnter);
+  nameBox.addEventListener('keydown', entryModalOnEnter);
+  passphraseBox.addEventListener('keydown', entryModalOnEnter);
+  baseBox.addEventListener('keydown', entryModalOnEnter);
+  tagsBox.addEventListener('keydown', entryModalOnEnter);
 });
 
 // Taken from mustache.js templating library
