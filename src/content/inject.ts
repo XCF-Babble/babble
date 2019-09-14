@@ -22,7 +22,7 @@
 import { ElementPicker } from './element-picker';
 import { Walk, walkDOM } from './walkdom';
 import { Website } from './website';
-import { Request } from '../utils/message';
+import { Request, Response, sendMessage } from '../utils/message';
 import { load } from './loader';
 
 window.onload = (): void => {
@@ -42,34 +42,31 @@ window.onload = (): void => {
     (selected: Element) => {
       walkDOM(
         selected,
-        (childNode: Node): Walk => {
+        async (childNode: Node): Promise<Walk> => {
           if (childNode.textContent) {
-            chrome.runtime.sendMessage(
-              { request: 'proxyDebabbleText', data: childNode.textContent },
-              (response: any): void => {} // TODO: we want to return if we successfully decrypted something
-            );
+            await sendMessage({
+              request: 'proxyDebabbleText',
+              data: childNode.textContent
+            });
           }
           return Walk.CONTINUE;
         }
       );
     },
-    (_: EventTarget) => {
+    async (_: EventTarget) => {
       picker.deactivate(false);
-      chrome.runtime.sendMessage(
-        { request: 'proxyPickerSelect', data: null },
-        (response: any): void => {
-          if (!cryptFrame) {
-            return;
-          }
 
-          if (response.success) {
-            cryptFrame.style.pointerEvents = 'all';
-          } else {
-            document.documentElement.removeChild(cryptFrame);
-            cryptFrame = null; // ensure we don't keep the node in mem
-          }
-        }
-      );
+      const r: Response = await sendMessage({ request: 'proxyPickerSelect' });
+      if (!cryptFrame) {
+        return;
+      }
+
+      if (r.success) {
+        cryptFrame.style.pointerEvents = 'all';
+      } else {
+        document.documentElement.removeChild(cryptFrame);
+        cryptFrame = null; // ensure we don't keep the node in mem
+      }
     },
     () => {
       if (cryptFrame) {
@@ -98,7 +95,9 @@ window.onload = (): void => {
           }
           switch (request.request) {
             case 'tunnelCipherText':
-              website.tunnelInput(request.data);
+              if (request.data) {
+                website.tunnelInput(request.data);
+              }
               break;
             case 'submitCipherText':
               website.submitInput();

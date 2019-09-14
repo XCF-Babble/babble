@@ -24,8 +24,11 @@ export enum Walk {
   CONTINUE
 }
 
-export const walkDOM = (root: Node, callback: (elem: Node) => Walk) => {
-  if (callback(root) == Walk.STOP) {
+export const walkDOM = async (
+  root: Node,
+  callback: (elem: Node) => Promise<Walk>
+) => {
+  if ((await callback(root)) == Walk.STOP) {
     return;
   }
   for (var i = 0; i < root.childNodes.length; i++) {

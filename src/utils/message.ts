@@ -22,9 +22,22 @@
 // TODO: Maybe change request and requestClass to enum
 export interface Request {
   request: string;
-  data: string;
-  requestClass: string;
+  data?: string;
+  requestClass?: string;
 }
+
+export interface Response {
+  success: boolean;
+  data: any; // TODO: be more strict here?
+}
+
+export const sendMessage = (message: Request): Promise<any> => {
+  return new Promise<any>((resolve: (data: any) => void) => {
+    chrome.runtime.sendMessage(message, (response: Response): void => {
+      resolve(response);
+    });
+  });
+};
 
 export const sendMessageActiveTab = (
   message: any,
