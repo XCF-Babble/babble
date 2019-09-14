@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "说都不会话了。",
   "author": "All Babble Contributors",
-  "license": "GPL",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/XCF-Babble/babble.git"
+  },
   "scripts": {
     "build": "webpack --config webpack/webpack.prod.js",
     "dev": "webpack --config webpack/webpack.dev.js",
