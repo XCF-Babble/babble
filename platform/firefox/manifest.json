@@ -49,5 +49,10 @@
     "tabs",
     "unlimitedStorage",
     "<all_urls>"
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{f45cc0a0-da01-dfc1-49f9-f68316927e2d}"
+    }
+  }
 }
