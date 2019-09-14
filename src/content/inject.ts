@@ -28,6 +28,16 @@ import { load } from './loader';
 window.onload = (): void => {
   var cryptFrame: HTMLIFrameElement | null;
 
+  const deletePickerIFrame = (): void => {
+    if (picker) {
+      picker.deactivate();
+    }
+    if (cryptFrame) {
+      document.documentElement.removeChild(cryptFrame);
+      cryptFrame = null; // ensure we don't keep the node in mem
+    }
+  };
+
   const picker = new ElementPicker(
     (selected: Element) => {
       walkDOM(
@@ -104,6 +114,7 @@ window.onload = (): void => {
         case 'decryptionPicker':
           switch (request.request) {
             case 'activateElementPicker':
+              deletePickerIFrame();
               cryptFrame = document.createElement('iframe');
               cryptFrame.src = chrome.runtime.getURL('dist/html/decrypt.html');
               const pickerCSSStyle: string = [
@@ -137,13 +148,7 @@ window.onload = (): void => {
               sendResponse({ success: true });
               break;
             case 'deletePickerIFrame':
-              if (picker) {
-                picker.deactivate();
-              }
-              if (cryptFrame) {
-                document.documentElement.removeChild(cryptFrame);
-                cryptFrame = null; // ensure we don't keep the node in mem
-              }
+              deletePickerIFrame();
               sendResponse({ success: true });
               break;
             default:
