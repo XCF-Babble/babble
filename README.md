@@ -9,6 +9,8 @@ decrypt any ciphertext they have a key for. Babble is meant to be _dead simple_
 to use, so people of all backgrounds have the ability to encrypt sensitive data
 on any service.
 
+A list of supported websites can be found [here](supported-websites.md).
+
 ## Demo
 
 ### Encryption
