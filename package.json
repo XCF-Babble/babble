@@ -9,8 +9,8 @@
     "url": "git://github.com/XCF-Babble/babble.git"
   },
   "scripts": {
-    "build": "webpack --config webpack/webpack.prod.js",
-    "dev": "webpack --config webpack/webpack.dev.js",
+    "build": "webpack --config webpack/webpack.prod.js --progress",
+    "dev": "webpack --config webpack/webpack.dev.js --progress",
     "watch": "webpack --config webpack/webpack.dev.js --watch",
     "clean": "rm -rf dist",
     "lint": "tslint --project tsconfig.json --fix src/**/*.ts",
