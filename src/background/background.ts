@@ -19,7 +19,7 @@
 
 'use strict';
 
-import { Request, sendMessageActiveTab } from '../utils/message';
+import { Request, Response, sendMessageActiveTab } from '../utils/message';
 
 const proxyTransformer = (proxyRequest: string): string => {
   return proxyRequest[5].toLowerCase() + proxyRequest.slice(6);
@@ -40,16 +40,14 @@ chrome.runtime.onMessage.addListener(
     sendResponse
   ): boolean => {
     if (request.request.startsWith('proxy') && request.request.length > 5) {
-      sendMessageActiveTab(
-        {
+      (async (): Promise<void> => {
+        const r: Response = await sendMessageActiveTab({
           request: proxyTransformer(request.request),
           requestClass: request.requestClass,
           data: request.data
-        },
-        (response: any): void => {
-          sendResponse(response);
-        }
-      );
+        });
+        sendResponse(r);
+      })();
       return true;
     } else {
       sendResponse({ success: false });

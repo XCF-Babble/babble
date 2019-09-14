@@ -19,7 +19,7 @@
 
 'use strict';
 
-import { sendMessageActiveTab } from '../utils/message';
+import { sendMessageActiveTab, Response } from '../utils/message';
 import * as keystore from '../utils/keystore';
 
 window.addEventListener('DOMContentLoaded', (event: Event) => {
@@ -52,17 +52,14 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
   ) as HTMLElement;
 
   if (debabbleIcon) {
-    debabbleIcon.addEventListener('click', (event: MouseEvent) => {
-      sendMessageActiveTab(
-        {
-          request: 'activateElementPicker',
-          requestClass: 'decryptionPicker',
-          data: null
-        },
-        (response: any): void => {
-          window.close();
-        }
-      );
+    debabbleIcon.addEventListener('click', async (event: MouseEvent) => {
+      const r: Response = await sendMessageActiveTab({
+        request: 'activateElementPicker',
+        requestClass: 'decryptionPicker'
+      });
+      if (r.success) {
+        window.close();
+      }
     });
   }
 
@@ -98,10 +95,10 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
       async (kevent: Event): Promise<void> => {
         const cleanedData: string = plaintext.value.trim();
         if (cleanedData === '') {
-          sendMessageActiveTab(
-            { request: 'clearInputBox', requestClass: 'injectInput' },
-            (response: any): void => {}
-          );
+          await sendMessageActiveTab({
+            request: 'clearInputBox',
+            requestClass: 'injectInput'
+          });
           displaytext.value = '';
           displayLength.innerText = displaytext.value.length.toString();
           return;
@@ -111,14 +108,11 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
         );
         displaytext.value = babbledText;
         displayLength.innerText = displaytext.value.length.toString();
-        sendMessageActiveTab(
-          {
-            request: 'tunnelCipherText',
-            requestClass: 'injectInput',
-            data: babbledText
-          },
-          (response: any): void => {}
-        );
+        await sendMessageActiveTab({
+          request: 'tunnelCipherText',
+          requestClass: 'injectInput',
+          data: babbledText
+        });
       }
     );
 
@@ -126,18 +120,17 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
       return event.ctrlKey && (event.keyCode == 10 || event.keyCode == 13);
     };
 
-    plaintext.addEventListener('keydown', (kevent: KeyboardEvent) => {
+    plaintext.addEventListener('keydown', async (kevent: KeyboardEvent) => {
       if (isEnter(kevent)) {
-        sendMessageActiveTab(
-          { request: 'submitCipherText', requestClass: 'injectInput' },
-          (response: any): void => {
-            if (response.success) {
-              plaintext.value = '';
-              displaytext.value = '';
-              displayLength.innerText = displaytext.value.length.toString();
-            }
-          }
-        );
+        const r: Response = await sendMessageActiveTab({
+          request: 'submitCipherText',
+          requestClass: 'injectInput'
+        });
+        if (r.success) {
+          plaintext.value = '';
+          displaytext.value = '';
+          displayLength.innerText = displaytext.value.length.toString();
+        }
       }
     });
   }
