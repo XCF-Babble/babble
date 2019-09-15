@@ -26,6 +26,7 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
   const plaintext: HTMLTextAreaElement | null = document.getElementById(
     'plaintext'
   ) as HTMLTextAreaElement;
+  plaintext.focus();
 
   const displaytext: HTMLTextAreaElement | null = document.getElementById(
     'display-text'
