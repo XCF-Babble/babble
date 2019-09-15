@@ -44,10 +44,13 @@ window.onload = (): void => {
         selected,
         async (childNode: Node): Promise<Walk> => {
           if (childNode.textContent) {
-            await sendMessage({
+            const r: Response = await sendMessage({
               request: 'proxyDebabbleText',
               data: childNode.textContent
             });
+            if (r.success) {
+              return Walk.STOP;
+            }
           }
           return Walk.CONTINUE;
         }
