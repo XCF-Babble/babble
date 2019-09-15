@@ -26,12 +26,12 @@ import { Request, Response, sendMessage } from '../utils/message';
 import { load } from './loader';
 
 window.onload = (): void => {
-  var cryptFrame: HTMLIFrameElement | null;
+  let cryptFrame: HTMLIFrameElement | null;
 
   const activatePicker = (): void => {
     deletePickerIFrame();
-    cryptFrame = document.createElement('iframe');
-    cryptFrame.src = chrome.runtime.getURL('dist/html/decrypt.html');
+    cryptFrame = document.createElement( 'iframe' );
+    cryptFrame.src = chrome.runtime.getURL( 'dist/html/decrypt.html' );
     const pickerCSSStyle: string = [
       'background: transparent',
       'border: 0',
@@ -53,36 +53,36 @@ window.onload = (): void => {
       'pointer-events: none', // this lets us be the top layer and still highlight DOM nodes
       'z-index: 2147483647',
       ''
-    ].join(' !important;');
+    ].join( ' !important;' );
     cryptFrame.style.cssText = pickerCSSStyle;
     // We don't append to the body because we are setting the frame's
     // width and height to be 100%. Prevents the picker from only being
     // able to hover the iframe.
-    document.documentElement.appendChild(cryptFrame);
+    document.documentElement.appendChild( cryptFrame );
     picker.activate();
   };
 
   const deletePickerIFrame = (): void => {
-    if (picker) {
+    if ( picker ) {
       picker.deactivate();
     }
-    if (cryptFrame) {
-      document.documentElement.removeChild(cryptFrame);
+    if ( cryptFrame ) {
+      document.documentElement.removeChild( cryptFrame );
       cryptFrame = null; // ensure we don't keep the node in mem
     }
   };
 
   const picker = new ElementPicker(
-    (selected: Element) => {
-      walkDOM(
+    ( selected: Element ) => {
+      void walkDOM(
         selected,
-        async (childNode: Node): Promise<Walk> => {
-          if (childNode.textContent) {
-            const r: Response = await sendMessage({
+        async ( childNode: Node ): Promise<Walk> => {
+          if ( childNode.textContent ) {
+            const r: Response = await sendMessage( {
               request: 'proxyDebabbleText',
               data: childNode.textContent
-            });
-            if (r.success) {
+            } );
+            if ( r.success ) {
               return Walk.STOP;
             }
           }
@@ -90,31 +90,31 @@ window.onload = (): void => {
         }
       );
     },
-    async (_: EventTarget) => {
-      picker.deactivate(false);
+    async ( _: EventTarget ) => {
+      picker.deactivate( false );
 
-      const r: Response = await sendMessage({ request: 'proxyPickerSelect' });
-      if (!cryptFrame) {
+      const r: Response = await sendMessage( { request: 'proxyPickerSelect' } );
+      if ( !cryptFrame ) {
         return;
       }
 
-      if (r.success) {
+      if ( r.success ) {
         cryptFrame.style.pointerEvents = 'all';
       } else {
-        document.documentElement.removeChild(cryptFrame);
+        document.documentElement.removeChild( cryptFrame );
         cryptFrame = null; // ensure we don't keep the node in mem
       }
     },
     () => {
-      if (cryptFrame) {
-        document.documentElement.removeChild(cryptFrame);
+      if ( cryptFrame ) {
+        document.documentElement.removeChild( cryptFrame );
         cryptFrame = null; // ensure we don't keep the node in mem
       }
     }
   );
 
-  const website: Website | null = load(window.location);
-  if (website) {
+  const website: Website | null = load( window.location );
+  if ( website ) {
     website.register();
   }
 
@@ -124,16 +124,16 @@ window.onload = (): void => {
       sender: chrome.runtime.MessageSender,
       sendResponse
     ): void => {
-      switch (request.requestClass) {
+      switch ( request.requestClass ) {
         case 'injectInput':
-          if (!website) {
-            sendResponse({ success: false });
+          if ( !website ) {
+            sendResponse( { success: false } );
             return;
           }
-          switch (request.request) {
+          switch ( request.request ) {
             case 'tunnelCipherText':
-              if (request.data) {
-                website.tunnelInput(request.data);
+              if ( request.data ) {
+                website.tunnelInput( request.data );
               }
               break;
             case 'submitCipherText':
@@ -145,21 +145,21 @@ window.onload = (): void => {
             default:
               break;
           }
-          sendResponse({ success: true });
+          sendResponse( { success: true } );
           break;
         case 'decryptionPicker':
-          switch (request.request) {
+          switch ( request.request ) {
             case 'activateElementPicker':
               activatePicker();
-              sendResponse({ success: true });
+              sendResponse( { success: true } );
               break;
             case 'toggleElementPicker':
               picker.isActive() ? deletePickerIFrame() : activatePicker();
-              sendResponse({ success: true });
+              sendResponse( { success: true } );
               break;
             case 'deletePickerIFrame':
               deletePickerIFrame();
-              sendResponse({ success: true });
+              sendResponse( { success: true } );
               break;
             default:
               break;

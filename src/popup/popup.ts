@@ -22,7 +22,7 @@
 import { sendMessageActiveTab, Response } from '../utils/message';
 import * as keystore from '../utils/keystore';
 
-window.addEventListener('DOMContentLoaded', (event: Event) => {
+window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
   const plaintext: HTMLTextAreaElement | null = document.getElementById(
     'plaintext'
   ) as HTMLTextAreaElement;
@@ -51,33 +51,33 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
     'display-length'
   ) as HTMLElement;
 
-  if (debabbleIcon) {
-    debabbleIcon.addEventListener('click', async (event: MouseEvent) => {
-      const r: Response = await sendMessageActiveTab({
+  if ( debabbleIcon ) {
+    debabbleIcon.addEventListener( 'click', async ( event: MouseEvent ) => {
+      const r: Response = await sendMessageActiveTab( {
         request: 'activateElementPicker',
         requestClass: 'decryptionPicker'
-      });
-      if (r.success) {
+      } );
+      if ( r.success ) {
         window.close();
       }
-    });
+    } );
   }
 
-  if (keystoreIcon) {
-    keystoreIcon.addEventListener('click', (event: MouseEvent) => {
-      if (chrome.runtime.openOptionsPage) {
+  if ( keystoreIcon ) {
+    keystoreIcon.addEventListener( 'click', ( event: MouseEvent ) => {
+      if ( chrome.runtime.openOptionsPage ) {
         chrome.runtime.openOptionsPage();
       } else {
-        window.open(chrome.runtime.getURL('../html/options.html'));
+        window.open( chrome.runtime.getURL( '../html/options.html' ) );
       }
       window.close();
-    });
+    } );
   }
 
-  if (plaintext) {
-    (async (): Promise<void> => {
+  if ( plaintext ) {
+    void ( async (): Promise<void> => {
       const numKeys: number = await keystore.getKeystoreSize();
-      if (numKeys === 0) {
+      if ( numKeys === 0 ) {
         plaintext.placeholder = 'Create key to encrypt messages...';
         plaintext.readOnly = true;
         plaintext.disabled = true;
@@ -88,17 +88,17 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
         );
         encryptionKeyName.innerText = curEntry.name;
       }
-    })();
+    } )();
 
     plaintext.addEventListener(
       'input',
-      async (kevent: Event): Promise<void> => {
+      async ( kevent: Event ): Promise<void> => {
         const cleanedData: string = plaintext.value.trim();
-        if (cleanedData === '') {
-          await sendMessageActiveTab({
+        if ( cleanedData === '' ) {
+          await sendMessageActiveTab( {
             request: 'clearInputBox',
             requestClass: 'injectInput'
-          });
+          } );
           displaytext.value = '';
           displayLength.innerText = displaytext.value.length.toString();
           return;
@@ -108,41 +108,41 @@ window.addEventListener('DOMContentLoaded', (event: Event) => {
         );
         displaytext.value = babbledText;
         displayLength.innerText = displaytext.value.length.toString();
-        await sendMessageActiveTab({
+        await sendMessageActiveTab( {
           request: 'tunnelCipherText',
           requestClass: 'injectInput',
           data: babbledText
-        });
+        } );
       }
     );
 
-    const isEnter = (event: KeyboardEvent) => {
-      return event.ctrlKey && (event.keyCode == 10 || event.keyCode == 13);
+    const isEnter = ( event: KeyboardEvent ) => {
+      return event.ctrlKey && ( event.keyCode === 10 || event.keyCode === 13 );
     };
 
-    plaintext.addEventListener('keydown', async (kevent: KeyboardEvent) => {
-      if (isEnter(kevent)) {
-        const r: Response = await sendMessageActiveTab({
+    plaintext.addEventListener( 'keydown', async ( kevent: KeyboardEvent ) => {
+      if ( isEnter( kevent ) ) {
+        const r: Response = await sendMessageActiveTab( {
           request: 'submitCipherText',
           requestClass: 'injectInput'
-        });
-        if (r.success) {
+        } );
+        if ( r.success ) {
           plaintext.value = '';
           displaytext.value = '';
           displayLength.innerText = displaytext.value.length.toString();
         }
       }
-    });
+    } );
   }
 
-  if (displaytext && copyIcon) {
-    copyIcon.addEventListener('click', (event: MouseEvent) => {
+  if ( displaytext && copyIcon ) {
+    copyIcon.addEventListener( 'click', ( event: MouseEvent ) => {
       displaytext.select();
-      document.execCommand('copy');
+      document.execCommand( 'copy' );
       const selection: Selection | null = document.getSelection();
-      if (selection) {
+      if ( selection ) {
         selection.removeAllRanges();
       }
-    });
+    } );
   }
-});
+} );

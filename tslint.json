@@ -1,11 +1,11 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint-plugin-prettier",
-    "tslint-config-prettier"
-  ],
+  "extends": [ "tslint-config-standard" ],
   "rules": {
-    "prettier": [true, { "singleQuote": true }],
-    "only-arrow-functions": true
+    "array-bracket-spacing": [true, "always"],
+    "deprecation": false,
+    "only-arrow-functions": true,
+    "semicolon": [ true, "always" ],
+    "space-within-parens": [ true, 1 ]
   }
 }
