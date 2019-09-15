@@ -55,3 +55,12 @@ chrome.runtime.onMessage.addListener(
     }
   }
 );
+
+chrome.commands.onCommand.addListener(async (command: string) => {
+  if (command === 'toggle-decryption') {
+    await sendMessageActiveTab({
+      request: 'toggleElementPicker',
+      requestClass: 'decryptionPicker'
+    });
+  }
+});

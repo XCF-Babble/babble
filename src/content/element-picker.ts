@@ -28,6 +28,7 @@ export class ElementPicker {
   private lastElem: HTMLElement | null;
   private lastBackgroundColor: string | null;
   private lastBorder: string | null;
+  private _isActive: boolean;
   constructor(
     callbackHover: (elem: Element) => void,
     callbackClick: (elem: EventTarget) => void,
@@ -40,6 +41,7 @@ export class ElementPicker {
     this.callbackHover = callbackHover;
     this.callbackClick = callbackClick;
     this.callbackOnDeactivate = callbackOnDeactivate;
+    this._isActive = false;
     this.lastElem = null;
     this.lastBackgroundColor = null;
     this.lastBorder = null;
@@ -83,11 +85,16 @@ export class ElementPicker {
     }
   };
 
+  isActive = (): boolean => {
+    return this._isActive;
+  };
+
   activate = (): void => {
     document.addEventListener('click', this.onMouseClickEvent, true);
     document.addEventListener('keydown', this.onKeydownEvent, true);
     document.addEventListener('mousemove', this.onMouseMoveEvent, false);
     document.body.style.cursor = 'crosshair';
+    this._isActive = true;
   };
 
   deactivate = (triggerCallback: boolean = true): void => {
@@ -101,5 +108,6 @@ export class ElementPicker {
     if (triggerCallback) {
       this.callbackOnDeactivate();
     }
+    this._isActive = false;
   };
 }

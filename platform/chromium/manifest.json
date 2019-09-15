@@ -42,6 +42,19 @@
     "dist/html/decrypt.html",
     "dist/js/web_accessible_resources/decrypt.js"
   ],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+Z"
+      }
+    },
+    "toggle-decryption": {
+      "suggested_key": {
+        "default": "Alt+Shift+D"
+      },
+      "description": "Enter decryption picker mode"
+    }
+  },
   "permissions": [
     "debugger",
     "storage",
