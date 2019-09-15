@@ -22,18 +22,31 @@
 // TODO: Maybe change request and requestClass to enum
 export interface Request {
   request: string;
-  data: string;
-  requestClass: string;
+  data?: string;
+  requestClass?: string;
 }
 
-export const sendMessageActiveTab = (
-  message: any,
-  responseCallback?: (response: any) => void
-): void => {
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    const activeTab: chrome.tabs.Tab | null = tabs.length > 0 ? tabs[0] : null;
-    if (activeTab && activeTab.id) {
-      chrome.tabs.sendMessage(activeTab.id, message, responseCallback);
-    }
+export interface Response {
+  success: boolean; // TODO: change to ENUM of possible errors
+  data: any;
+}
+
+export const sendMessage = (message: Request): Promise<any> => {
+  return new Promise<any>((resolve: (_: any) => void) => {
+    chrome.runtime.sendMessage(message, resolve);
+  });
+};
+
+export const sendMessageActiveTab = (message: Request): Promise<any> => {
+  return new Promise<any>((resolve: (_: any) => void) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      const activeTab: chrome.tabs.Tab | null =
+        tabs.length > 0 ? tabs[0] : null;
+      if (activeTab && activeTab.id) {
+        chrome.tabs.sendMessage(activeTab.id, message, resolve);
+      } else {
+        resolve({ success: false });
+      }
+    });
   });
 };

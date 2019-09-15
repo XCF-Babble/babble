@@ -19,7 +19,7 @@
 
 'use strict';
 
-import { Request } from '../utils/message';
+import { Request, sendMessage } from '../utils/message';
 import * as keystore from '../utils/keystore';
 
 window.onload = (): void => {
@@ -48,15 +48,11 @@ window.onload = (): void => {
     }
   });
 
-  quitButton.addEventListener('click', (event: MouseEvent) => {
-    chrome.runtime.sendMessage(
-      {
-        request: 'proxyDeletePickerIFrame',
-        requestClass: 'decryptionPicker',
-        data: null
-      },
-      (response: any): void => {}
-    );
+  quitButton.addEventListener('click', async (event: MouseEvent) => {
+    await sendMessage({
+      request: 'proxyDeletePickerIFrame',
+      requestClass: 'decryptionPicker'
+    });
   });
 
   const aside: HTMLElement = document.querySelector('aside') as HTMLElement;
@@ -68,6 +64,10 @@ window.onload = (): void => {
     ): boolean => {
       switch (request.request) {
         case 'debabbleText':
+          if (!request.data) {
+            sendResponse({ success: false });
+            break;
+          }
           const cleanedData: string = request.data.trim();
           if (cleanedData !== '') {
             (async (): Promise<void> => {
