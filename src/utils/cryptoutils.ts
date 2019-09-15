@@ -36,8 +36,8 @@ export const deriveKey = async (
   const sodium = await getSodium();
   return sodium.crypto_pwhash(
     sodium.crypto_aead_chacha20poly1305_ietf_KEYBYTES,
-    sodium.from_string(babblePassphrase),
-    sodium.from_string(babbleSalt),
+    sodium.from_string( babblePassphrase ),
+    sodium.from_string( babbleSalt ),
     sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
     sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE,
     sodium.crypto_pwhash_ALG_DEFAULT
@@ -53,15 +53,15 @@ const encrypt = async (
     sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES
   );
   const cipher: Uint8Array = sodium.crypto_aead_chacha20poly1305_ietf_encrypt(
-    sodium.from_string(s),
+    sodium.from_string( s ),
     null,
     null,
     nonce,
     babbleKey
   );
-  const ret: Uint8Array = new Uint8Array(nonce.length + cipher.length);
-  ret.set(nonce);
-  ret.set(cipher, nonce.length);
+  const ret: Uint8Array = new Uint8Array( nonce.length + cipher.length );
+  ret.set( nonce );
+  ret.set( cipher, nonce.length );
   return ret;
 };
 
@@ -74,8 +74,9 @@ const decrypt = async (
     s.length <
     sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES +
       sodium.crypto_aead_chacha20poly1305_ietf_ABYTES
-  )
+  ) {
     return '';
+  }
   const nonce: Uint8Array = s.subarray(
     0,
     sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES
@@ -94,22 +95,22 @@ const decrypt = async (
   );
 };
 
-const hanziEncode = (s: Uint8Array, babbleBase: string): string => {
-  var ret = '';
-  s.forEach(b => {
+const hanziEncode = ( s: Uint8Array, babbleBase: string ): string => {
+  let ret = '';
+  s.forEach( b => {
     ret += babbleBase[b];
-  });
+  } );
   return ret;
 };
 
-const hanziDecode = (s: string, babbleBase: string): Uint8Array => {
-  var ret = new Uint8Array(s.length);
-  var parsed = 0;
-  for (const c of s) {
-    const index = babbleBase.indexOf(c);
-    if (index != -1) ret[parsed++] = index;
+const hanziDecode = ( s: string, babbleBase: string ): Uint8Array => {
+  let ret = new Uint8Array( s.length );
+  let parsed = 0;
+  for ( const c of s ) {
+    const index = babbleBase.indexOf( c );
+    if ( index != -1 ) ret[parsed++] = index;
   }
-  return ret.subarray(0, parsed);
+  return ret.subarray( 0, parsed );
 };
 
 export const babble = async (
@@ -118,8 +119,8 @@ export const babble = async (
   babbleBase: string
 ): Promise<string> => {
   try {
-    return hanziEncode(await encrypt(s, babbleKey), babbleBase);
-  } catch (e) {
+    return hanziEncode( await encrypt( s, babbleKey ), babbleBase );
+  } catch ( e ) {
     return '';
   }
 };
@@ -130,8 +131,8 @@ export const debabble = async (
   babbleBase: string
 ): Promise<string> => {
   try {
-    return await decrypt(hanziDecode(s, babbleBase), babbleKey);
-  } catch (e) {
+    return await decrypt( hanziDecode( s, babbleBase ), babbleKey );
+  } catch ( e ) {
     return '';
   }
 };
@@ -139,13 +140,13 @@ export const debabble = async (
 export const genUUID = async (): Promise<string> => {
   const sodium = await getSodium();
   const uuidLen: number = 16;
-  const hyphenPos: Array<number> = [3, 5, 7, 9];
-  const rand: Uint8Array = sodium.randombytes_buf(uuidLen);
-  var ret: string = '';
-  for (var i = 0; i < uuidLen; ++i) {
-    const hex: string = rand[i].toString(16);
+  const hyphenPos: Array<number> = [ 3, 5, 7, 9 ];
+  const rand: Uint8Array = sodium.randombytes_buf( uuidLen );
+  let ret: string = '';
+  for ( let i = 0; i < uuidLen; ++i ) {
+    const hex: string = rand[i].toString( 16 );
     ret += hex.length === 1 ? '0' + hex : hex;
-    if (hyphenPos.includes(i)) {
+    if ( hyphenPos.includes( i ) ) {
       ret += '-';
     }
   }

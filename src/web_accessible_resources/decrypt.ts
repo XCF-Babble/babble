@@ -39,77 +39,77 @@ window.onload = (): void => {
     'key-name'
   ) as HTMLSpanElement;
 
-  copyButton.addEventListener('click', (event: MouseEvent) => {
+  copyButton.addEventListener( 'click', ( event: MouseEvent ) => {
     decryptBox.select();
-    document.execCommand('copy');
+    document.execCommand( 'copy' );
     const selection: Selection | null = document.getSelection();
-    if (selection) {
+    if ( selection ) {
       selection.removeAllRanges();
     }
-  });
+  } );
 
-  quitButton.addEventListener('click', async (event: MouseEvent) => {
-    await sendMessage({
+  quitButton.addEventListener( 'click', async ( event: MouseEvent ) => {
+    await sendMessage( {
       request: 'proxyDeletePickerIFrame',
       requestClass: 'decryptionPicker'
-    });
-  });
+    } );
+  } );
 
-  const aside: HTMLElement = document.querySelector('aside') as HTMLElement;
+  const aside: HTMLElement = document.querySelector( 'aside' ) as HTMLElement;
   chrome.runtime.onMessage.addListener(
     (
       request: Request,
       sender: chrome.runtime.MessageSender,
       sendResponse
     ): boolean => {
-      switch (request.request) {
+      switch ( request.request ) {
         case 'debabbleText':
-          if (!request.data) {
-            sendResponse({ success: false });
+          if ( !request.data ) {
+            sendResponse( { success: false } );
             break;
           }
           const cleanedData: string = request.data.trim();
-          if (cleanedData !== '') {
-            (async (): Promise<void> => {
+          if ( cleanedData !== '' ) {
+            ( async (): Promise<void> => {
               const debabbleResult: keystore.DebabbleResult = await keystore.debabbleWithAllEntries(
                 cleanedData
               );
-              if (debabbleResult.clearText !== '') {
+              if ( debabbleResult.clearText !== '' ) {
                 decryptBox.value = debabbleResult.clearText;
                 keyName.innerText = debabbleResult.keyName;
-                if (!aside.classList.contains('show')) {
-                  aside.classList.add('show');
+                if ( !aside.classList.contains( 'show' ) ) {
+                  aside.classList.add( 'show' );
                 }
-                sendResponse({ success: false });
+                sendResponse( { success: false } );
               } else {
-                if (aside.classList.contains('show')) {
-                  aside.classList.remove('show');
+                if ( aside.classList.contains( 'show' ) ) {
+                  aside.classList.remove( 'show' );
                 }
                 decryptBox.value = '';
-                sendResponse({ success: true });
+                sendResponse( { success: true } );
               }
-            })();
+            } )();
             return true; // tell sender to wait on decryption
           } else {
-            sendResponse({ success: false });
+            sendResponse( { success: false } );
           }
           break;
         case 'hidePopup':
-          if (aside.classList.contains('show')) {
-            aside.classList.remove('show');
+          if ( aside.classList.contains( 'show' ) ) {
+            aside.classList.remove( 'show' );
           }
           decryptBox.value = '';
-          sendResponse({ success: true });
+          sendResponse( { success: true } );
           break;
         case 'pickerSelect':
-          if (aside.classList.contains('show')) {
+          if ( aside.classList.contains( 'show' ) ) {
             // We are hovering over a decrypted element
             copyButton.disabled = false;
             quitButton.disabled = false;
-            sendResponse({ success: true });
+            sendResponse( { success: true } );
           } else {
             // No decrypted element
-            sendResponse({ success: false });
+            sendResponse( { success: false } );
           }
           break;
         default:

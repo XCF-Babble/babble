@@ -21,8 +21,8 @@
 
 import { Request, Response, sendMessageActiveTab } from '../utils/message';
 
-const proxyTransformer = (proxyRequest: string): string => {
-  return proxyRequest[5].toLowerCase() + proxyRequest.slice(6);
+const proxyTransformer = ( proxyRequest: string ): string => {
+  return proxyRequest[5].toLowerCase() + proxyRequest.slice( 6 );
 };
 
 // Because Firefox does not support sending messages from content script to
@@ -39,18 +39,18 @@ chrome.runtime.onMessage.addListener(
     sender: chrome.runtime.MessageSender,
     sendResponse
   ): boolean => {
-    if (request.request.startsWith('proxy') && request.request.length > 5) {
-      (async (): Promise<void> => {
-        const r: Response = await sendMessageActiveTab({
-          request: proxyTransformer(request.request),
+    if ( request.request.startsWith( 'proxy' ) && request.request.length > 5 ) {
+      ( async (): Promise<void> => {
+        const r: Response = await sendMessageActiveTab( {
+          request: proxyTransformer( request.request ),
           requestClass: request.requestClass,
           data: request.data
-        });
-        sendResponse(r);
-      })();
+        } );
+        sendResponse( r );
+      } )();
       return true;
     } else {
-      sendResponse({ success: false });
+      sendResponse( { success: false } );
       return false;
     }
   }

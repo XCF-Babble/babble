@@ -26,7 +26,7 @@ import { Request, Response, sendMessage } from '../utils/message';
 import { load } from './loader';
 
 window.onload = (): void => {
-  var cryptFrame: HTMLIFrameElement | null;
+  let cryptFrame: HTMLIFrameElement | null;
 
   const activatePicker = (): void => {
     deletePickerIFrame();
@@ -63,26 +63,26 @@ window.onload = (): void => {
   };
 
   const deletePickerIFrame = (): void => {
-    if (picker) {
+    if ( picker ) {
       picker.deactivate();
     }
-    if (cryptFrame) {
-      document.documentElement.removeChild(cryptFrame);
+    if ( cryptFrame ) {
+      document.documentElement.removeChild( cryptFrame );
       cryptFrame = null; // ensure we don't keep the node in mem
     }
   };
 
   const picker = new ElementPicker(
-    (selected: Element) => {
+    ( selected: Element ) => {
       walkDOM(
         selected,
-        async (childNode: Node): Promise<Walk> => {
-          if (childNode.textContent) {
-            const r: Response = await sendMessage({
+        async ( childNode: Node ): Promise<Walk> => {
+          if ( childNode.textContent ) {
+            const r: Response = await sendMessage( {
               request: 'proxyDebabbleText',
               data: childNode.textContent
-            });
-            if (r.success) {
+            } );
+            if ( r.success ) {
               return Walk.STOP;
             }
           }
@@ -90,31 +90,31 @@ window.onload = (): void => {
         }
       );
     },
-    async (_: EventTarget) => {
-      picker.deactivate(false);
+    async ( _: EventTarget ) => {
+      picker.deactivate( false );
 
-      const r: Response = await sendMessage({ request: 'proxyPickerSelect' });
-      if (!cryptFrame) {
+      const r: Response = await sendMessage( { request: 'proxyPickerSelect' } );
+      if ( !cryptFrame ) {
         return;
       }
 
-      if (r.success) {
+      if ( r.success ) {
         cryptFrame.style.pointerEvents = 'all';
       } else {
-        document.documentElement.removeChild(cryptFrame);
+        document.documentElement.removeChild( cryptFrame );
         cryptFrame = null; // ensure we don't keep the node in mem
       }
     },
     () => {
-      if (cryptFrame) {
-        document.documentElement.removeChild(cryptFrame);
+      if ( cryptFrame ) {
+        document.documentElement.removeChild( cryptFrame );
         cryptFrame = null; // ensure we don't keep the node in mem
       }
     }
   );
 
-  const website: Website | null = load(window.location);
-  if (website) {
+  const website: Website | null = load( window.location );
+  if ( website ) {
     website.register();
   }
 
@@ -124,16 +124,16 @@ window.onload = (): void => {
       sender: chrome.runtime.MessageSender,
       sendResponse
     ): void => {
-      switch (request.requestClass) {
+      switch ( request.requestClass ) {
         case 'injectInput':
-          if (!website) {
-            sendResponse({ success: false });
+          if ( !website ) {
+            sendResponse( { success: false } );
             return;
           }
-          switch (request.request) {
+          switch ( request.request ) {
             case 'tunnelCipherText':
-              if (request.data) {
-                website.tunnelInput(request.data);
+              if ( request.data ) {
+                website.tunnelInput( request.data );
               }
               break;
             case 'submitCipherText':
@@ -145,10 +145,10 @@ window.onload = (): void => {
             default:
               break;
           }
-          sendResponse({ success: true });
+          sendResponse( { success: true } );
           break;
         case 'decryptionPicker':
-          switch (request.request) {
+          switch ( request.request ) {
             case 'activateElementPicker':
               activatePicker();
               sendResponse({ success: true });
@@ -159,7 +159,7 @@ window.onload = (): void => {
               break;
             case 'deletePickerIFrame':
               deletePickerIFrame();
-              sendResponse({ success: true });
+              sendResponse( { success: true } );
               break;
             default:
               break;
