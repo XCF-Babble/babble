@@ -32,10 +32,10 @@ const refreshTable = async (): Promise<void> => {
   tbody.empty();
   for ( let i = 0; i < len; ++i ) {
     const entry = ks[i];
-    if ( entry.name.indexOf( search ) == -1 ) {
+    if ( entry.name.indexOf( search ) === -1 ) {
       let ok: boolean = false;
       for ( const tag of entry.tags ) {
-        if ( tag.indexOf( search ) != -1 ) {
+        if ( tag.indexOf( search ) !== -1 ) {
           ok = true;
           break;
         }
@@ -52,7 +52,7 @@ const refreshTable = async (): Promise<void> => {
     let selectButtonId: string = '';
     let deleteButtonId: string = '';
 
-    if ( i == selectedEntry ) {
+    if ( i === selectedEntry ) {
       button = '<i class="fa fa-check"></i>';
     } else {
       selectButtonId = 'selectButton' + i.toString();
@@ -150,7 +150,7 @@ $( document ).ready( async () => {
       );
     } else {
       await keystore.editEntry(
-        Number.parseInt( editId as string ),
+        Number.parseInt( editId as string, 10 ),
         name as string,
         passphrase as string,
         base as string,
@@ -168,7 +168,7 @@ $( document ).ready( async () => {
   } );
   // TODO: Find this type!
   const entryModalOnEnter = ( event: any ) => {
-    if ( event.keyCode == 10 || event.keyCode == 13 ) {
+    if ( event.keyCode === 10 || event.keyCode === 13 ) {
       $( '#saveButton' ).click();
     }
   };

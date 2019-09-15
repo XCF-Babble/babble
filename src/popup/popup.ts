@@ -75,7 +75,7 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
   }
 
   if ( plaintext ) {
-    ( async (): Promise<void> => {
+    void ( async (): Promise<void> => {
       const numKeys: number = await keystore.getKeystoreSize();
       if ( numKeys === 0 ) {
         plaintext.placeholder = 'Create key to encrypt messages...';
@@ -117,7 +117,7 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
     );
 
     const isEnter = ( event: KeyboardEvent ) => {
-      return event.ctrlKey && ( event.keyCode == 10 || event.keyCode == 13 );
+      return event.ctrlKey && ( event.keyCode === 10 || event.keyCode === 13 );
     };
 
     plaintext.addEventListener( 'keydown', async ( kevent: KeyboardEvent ) => {

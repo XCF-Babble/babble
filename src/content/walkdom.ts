@@ -28,11 +28,11 @@ export const walkDOM = async (
   root: Node,
   callback: ( elem: Node ) => Promise<Walk>
 ) => {
-  if ( ( await callback( root ) ) == Walk.STOP ) {
+  if ( ( await callback( root ) ) === Walk.STOP ) {
     return;
   }
   for ( let i = 0; i < root.childNodes.length; i++ ) {
     const child: Node = root.childNodes[i];
-    walkDOM( child, callback );
+    void walkDOM( child, callback );
   }
 };

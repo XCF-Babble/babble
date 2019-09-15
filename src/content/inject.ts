@@ -30,8 +30,8 @@ window.onload = (): void => {
 
   const activatePicker = (): void => {
     deletePickerIFrame();
-    cryptFrame = document.createElement('iframe');
-    cryptFrame.src = chrome.runtime.getURL('dist/html/decrypt.html');
+    cryptFrame = document.createElement( 'iframe' );
+    cryptFrame.src = chrome.runtime.getURL( 'dist/html/decrypt.html' );
     const pickerCSSStyle: string = [
       'background: transparent',
       'border: 0',
@@ -53,12 +53,12 @@ window.onload = (): void => {
       'pointer-events: none', // this lets us be the top layer and still highlight DOM nodes
       'z-index: 2147483647',
       ''
-    ].join(' !important;');
+    ].join( ' !important;' );
     cryptFrame.style.cssText = pickerCSSStyle;
     // We don't append to the body because we are setting the frame's
     // width and height to be 100%. Prevents the picker from only being
     // able to hover the iframe.
-    document.documentElement.appendChild(cryptFrame);
+    document.documentElement.appendChild( cryptFrame );
     picker.activate();
   };
 
@@ -74,7 +74,7 @@ window.onload = (): void => {
 
   const picker = new ElementPicker(
     ( selected: Element ) => {
-      walkDOM(
+      void walkDOM(
         selected,
         async ( childNode: Node ): Promise<Walk> => {
           if ( childNode.textContent ) {
@@ -151,11 +151,11 @@ window.onload = (): void => {
           switch ( request.request ) {
             case 'activateElementPicker':
               activatePicker();
-              sendResponse({ success: true });
+              sendResponse( { success: true } );
               break;
             case 'toggleElementPicker':
               picker.isActive() ? deletePickerIFrame() : activatePicker();
-              sendResponse({ success: true });
+              sendResponse( { success: true } );
               break;
             case 'deletePickerIFrame':
               deletePickerIFrame();

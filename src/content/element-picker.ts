@@ -29,9 +29,9 @@ export class ElementPicker {
   private lastBackgroundColor: string | null;
   private lastBorder: string | null;
   private _isActive: boolean;
-  constructor(
-    callbackHover: (elem: Element) => void,
-    callbackClick: (elem: EventTarget) => void,
+  constructor (
+    callbackHover: ( elem: Element ) => void,
+    callbackClick: ( elem: EventTarget ) => void,
     callbackOnDeactivate: () => void,
     hoverColor: string = 'rgba(195, 63, 182, 0.3)',
     borderStyle: string = 'thin solid rgba(222, 18, 99, 0.8)'
@@ -87,7 +87,7 @@ export class ElementPicker {
 
   isActive = (): boolean => {
     return this._isActive;
-  };
+  }
 
   activate = (): void => {
     document.addEventListener( 'click', this.onMouseClickEvent, true );
@@ -95,7 +95,7 @@ export class ElementPicker {
     document.addEventListener( 'mousemove', this.onMouseMoveEvent, false );
     document.body.style.cursor = 'crosshair';
     this._isActive = true;
-  };
+  }
 
   deactivate = ( triggerCallback: boolean = true ): void => {
     document.removeEventListener( 'click', this.onMouseClickEvent, true );
@@ -109,5 +109,5 @@ export class ElementPicker {
       this.callbackOnDeactivate();
     }
     this._isActive = false;
-  };
+  }
 }

@@ -40,7 +40,7 @@ chrome.runtime.onMessage.addListener(
     sendResponse
   ): boolean => {
     if ( request.request.startsWith( 'proxy' ) && request.request.length > 5 ) {
-      ( async (): Promise<void> => {
+      void ( async (): Promise<void> => {
         const r: Response = await sendMessageActiveTab( {
           request: proxyTransformer( request.request ),
           requestClass: request.requestClass,
@@ -56,11 +56,11 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
-chrome.commands.onCommand.addListener(async (command: string) => {
-  if (command === 'toggle-decryption') {
-    await sendMessageActiveTab({
+chrome.commands.onCommand.addListener( async ( command: string ) => {
+  if ( command === 'toggle-decryption' ) {
+    await sendMessageActiveTab( {
       request: 'toggleElementPicker',
       requestClass: 'decryptionPicker'
-    });
+    } );
   }
-});
+} );

@@ -70,7 +70,7 @@ window.onload = (): void => {
           }
           const cleanedData: string = request.data.trim();
           if ( cleanedData !== '' ) {
-            ( async (): Promise<void> => {
+            void ( async (): Promise<void> => {
               const debabbleResult: keystore.DebabbleResult = await keystore.debabbleWithAllEntries(
                 cleanedData
               );
