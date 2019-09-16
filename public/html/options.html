@@ -65,9 +65,15 @@
             </div>
             <div class="form-group">
               <label for="baseBox">Base</label>
-              <input type="text" class="form-control" id="baseBox" minlength="256" maxlength="256">
-              <div class="invalid-feedback">
-                Base must be 256 unique characters.
+              <div class="input-group">
+                <input type="text" class="form-control" id="baseBox" minlength="256" maxlength="256">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary dropdown-toggle rounded-right" id="presetDropdown" data-toggle="dropdown">Preset</button>
+                  <div class="dropdown-menu" aria-labelledby="presetDropdown" id="presetDropdownItems"></div>
+                </div>
+                <div class="invalid-feedback">
+                  Base must be 256 unique characters.
+                </div>
               </div>
             </div>
             <div class="form-group">
