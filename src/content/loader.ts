@@ -20,14 +20,16 @@
 'use strict';
 
 import { Website } from './website';
-import { Slack } from './websites/slack';
 import { Discord } from './websites/discord';
+import { Slack } from './websites/slack';
+import { Weibo } from './websites/weibo';
 
 export const load = ( location: Location ): Website | null => {
   let siteClasses: Website[] = [];
 
-  siteClasses.push( new Slack() );
   siteClasses.push( new Discord() );
+  siteClasses.push( new Slack() );
+  siteClasses.push( new Weibo() );
 
   for ( const siteClass of siteClasses ) {
     if ( window.location.hostname === siteClass.getDomain() ) {
