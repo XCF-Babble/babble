@@ -1,5 +1,7 @@
 # Babble Browser Extension
 
+[![CircleCI](https://circleci.com/gh/XCF-Babble/babble.svg?style=svg)](https://circleci.com/gh/XCF-Babble/babble)
+
 说都不会话了。
 
 **Babble** is a platform agnostic browser extension that allows for easy
