@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.10.0
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Run Linter
+          command: npm run lint
+      - run:
+          name: Compile
+          command: npm run dev
+      - run:
+          name: Build Release
+          command: scripts/make-release.sh
+      - store_artifacts:
+          path: babble-chromium.zip
+      - store_artifacts:
+          path: babble-firefox.zip
