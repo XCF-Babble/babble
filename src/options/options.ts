@@ -109,7 +109,7 @@ $( document ).ready( async () => {
     $( '#editId' ).val( '' );
     $( '#nameBox' ).val( '' );
     $( '#passphraseBox' ).val( '' );
-    $( '#baseBox' ).val( cryptoutils.babbleDefaultBase );
+    $( '#baseBox' ).val( cryptoutils.babblePresetBases[0].base );
     $( '#tagsBox' ).val( '' );
 
     $( '#baseBox' ).removeClass( 'is-invalid' );
@@ -176,6 +176,17 @@ $( document ).ready( async () => {
   $( '#passphraseBox' ).keydown( entryModalOnEnter );
   $( '#baseBox' ).keydown( entryModalOnEnter );
   $( '#tagsBox' ).keydown( entryModalOnEnter );
+
+  const presetDropdownItems = $( '#presetDropdownItems' );
+  for ( let i = 0; i < cryptoutils.babblePresetBases.length; ++i ) {
+    const base: cryptoutils.PresetBase = cryptoutils.babblePresetBases[i];
+    const buttonId: string = 'preset' + i.toString();
+    const button: string = `<button type="button" class="dropdown-item" id="${buttonId}">${base.name}</button>`;
+    presetDropdownItems.append( button );
+    $( '#' + buttonId ).click( () => {
+      $( '#baseBox' ).val( base.base );
+    } );
+  }
 } );
 
 // Taken from mustache.js templating library
