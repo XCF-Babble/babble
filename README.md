@@ -1,6 +1,7 @@
 # Babble Browser Extension
 
 [![CircleCI](https://circleci.com/gh/XCF-Babble/babble.svg?style=svg)](https://circleci.com/gh/XCF-Babble/babble)
+[![Language Grade: javascript](https://img.shields.io/lgtm/grade/javascript/github/XCF-Babble/babble)](https://lgtm.com/projects/g/XCF-Babble/babble/context:javascript)
 
 说都不会话了。
 
