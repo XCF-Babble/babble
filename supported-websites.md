@@ -1,8 +1,8 @@
 # Supported Websites
 
-- Discord
-- Slack
-- Weibo
+- [Discord](https://discordapp.com/)
+- [Slack](https://slack.com/)
+- [Weibo](https://www.weibo.com/)
 
 For unsupported websites, you can copy the encrypted text from the popup to the
 textbox in the website. Also, pull requests about new website support are
