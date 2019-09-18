@@ -35,9 +35,15 @@ window.onload = (): void => {
     'quit'
   ) as HTMLButtonElement;
 
+  const setKeyButton: HTMLButtonElement = document.getElementById(
+    'setKey'
+  ) as HTMLButtonElement;
+
   const keyName: HTMLSpanElement = document.getElementById(
     'key-name'
   ) as HTMLSpanElement;
+
+  let debabbleResult: keystore.DebabbleResult | null;
 
   copyButton.addEventListener( 'click', ( event: MouseEvent ) => {
     decryptBox.select();
@@ -53,6 +59,12 @@ window.onload = (): void => {
       request: 'proxyDeletePickerIFrame',
       requestClass: 'decryptionPicker'
     } );
+  } );
+
+  setKeyButton.addEventListener( 'click', async ( event: MouseEvent ) => {
+    if ( debabbleResult ) {
+      await keystore.setSelectedEntry( debabbleResult.keyId );
+    }
   } );
 
   const aside: HTMLElement = document.querySelector( 'aside' ) as HTMLElement;
@@ -71,7 +83,7 @@ window.onload = (): void => {
           const cleanedData: string = request.data.trim();
           if ( cleanedData !== '' ) {
             void ( async (): Promise<void> => {
-              const debabbleResult: keystore.DebabbleResult = await keystore.debabbleWithAllEntries(
+              debabbleResult = await keystore.debabbleWithAllEntries(
                 cleanedData
               );
               if ( debabbleResult.clearText !== '' ) {
@@ -106,6 +118,7 @@ window.onload = (): void => {
             // We are hovering over a decrypted element
             copyButton.disabled = false;
             quitButton.disabled = false;
+            setKeyButton.disabled = false;
             sendResponse( { success: true } );
           } else {
             // No decrypted element

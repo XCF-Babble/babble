@@ -32,6 +32,7 @@ export interface KeystoreEntry {
 export interface DebabbleResult {
   clearText: string;
   keyName: string;
+  keyId: number;
 }
 
 export const getKeystore = (): Promise<KeystoreEntry[]> => {
@@ -121,7 +122,7 @@ export const debabbleWithAllEntries = async (
   s: string
 ): Promise<DebabbleResult> => {
   const keystore = await getKeystore();
-  for ( const entry of keystore ) {
+  for ( const [ keyId, entry ] of keystore.entries() ) {
     const debabble = await cryptoutils.debabble(
       s,
       Uint8Array.from( entry.key ),
@@ -130,13 +131,15 @@ export const debabbleWithAllEntries = async (
     if ( debabble !== '' ) {
       return {
         clearText: debabble,
-        keyName: entry.name
+        keyName: entry.name,
+        keyId: keyId
       };
     }
   }
   return {
     clearText: '',
-    keyName: ''
+    keyName: '',
+    keyId: 0
   };
 };
 
