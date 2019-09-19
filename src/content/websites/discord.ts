@@ -26,7 +26,7 @@ export class Discord extends Website {
   private targetElement: HTMLTextAreaElement | null;
   constructor () {
     super();
-    this.domain = 'discordapp.com';
+    this.domains = [ 'discordapp.com' ];
     this.targetElement = null;
   }
 

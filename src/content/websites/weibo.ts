@@ -26,7 +26,7 @@ export class Weibo extends Website {
   private targetElement: HTMLTextAreaElement | null;
   constructor () {
     super();
-    this.domain = 'www.weibo.com';
+    this.domains = [ 'www.weibo.com' ];
     this.targetElement = null;
   }
 

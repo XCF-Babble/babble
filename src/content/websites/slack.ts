@@ -26,7 +26,7 @@ export class Slack extends Website {
   private targetElement: HTMLElement | null;
   constructor () {
     super();
-    this.domain = 'app.slack.com';
+    this.domains = [ 'app.slack.com' ];
     this.targetElement = null;
   }
 

@@ -27,7 +27,7 @@ export class Mastodon extends Website {
   private tootButton: HTMLButtonElement | null;
   constructor () {
     super();
-    this.domain = 'mastodon.social';
+    this.domains = [ 'mastodon.social', 'mastodon.ocf.berkeley.edu' ];
     this.targetElement = null;
     this.tootButton = null;
   }

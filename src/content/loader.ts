@@ -34,7 +34,8 @@ export const load = ( location: Location ): Website | null => {
   siteClasses.push( new Weibo() );
 
   for ( const siteClass of siteClasses ) {
-    if ( window.location.hostname === siteClass.getDomain() ) {
+    const domains: string[] = siteClass.getDomains();
+    if ( domains.indexOf( window.location.hostname ) !== -1 ) {
       return siteClass;
     }
   }
