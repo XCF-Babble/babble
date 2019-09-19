@@ -26,7 +26,7 @@ export class Discord extends Website {
   private targetElement: HTMLTextAreaElement | null;
   constructor () {
     super();
-    this.domain = 'discordapp.com';
+    this.domains = [ 'discordapp.com' ];
     this.targetElement = null;
   }
 
@@ -55,14 +55,6 @@ export class Discord extends Website {
       return false;
     }
     sendEnterEvent( 'keypress', this.targetElement );
-    return true;
-  }
-
-  clearInput (): boolean {
-    if ( !this.targetElement ) {
-      return false;
-    }
-    this.targetElement.value = '';
     return true;
   }
 }

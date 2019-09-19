@@ -20,19 +20,22 @@
 'use strict';
 
 import { Website } from '../website';
-import { documentObserver, sendEnterEvent } from '../../utils/webutils';
+import { documentObserver } from '../../utils/webutils';
 
-export class Slack extends Website {
-  private targetElement: HTMLElement | null;
+export class Mastodon extends Website {
+  private targetElement: HTMLTextAreaElement | null;
+  private tootButton: HTMLButtonElement | null;
   constructor () {
     super();
-    this.domains = [ 'app.slack.com' ];
+    this.domains = [ 'mastodon.social', 'mastodon.ocf.berkeley.edu' ];
     this.targetElement = null;
+    this.tootButton = null;
   }
 
   register (): void {
     documentObserver( ( mutationsList: MutationRecord[], observer: MutationObserver ) => {
-      this.targetElement = document.querySelector( 'div.ql-editor' );
+      this.targetElement = document.querySelector( 'textarea.autosuggest-textarea__textarea' );
+      this.tootButton = document.querySelector( '.compose-form__publish button' );
     } );
   }
 
@@ -40,16 +43,16 @@ export class Slack extends Website {
     if ( !this.targetElement ) {
       return false;
     }
-    this.targetElement.innerText = s;
+    this.targetElement.value = s;
+    this.targetElement.dispatchEvent( new KeyboardEvent( 'input', { bubbles: true } ) );
     return true;
   }
 
   submitInput (): boolean {
-    if ( !this.targetElement ) {
+    if ( !this.tootButton ) {
       return false;
     }
-    ( this.targetElement.parentElement as HTMLElement ).click();
-    sendEnterEvent( 'keydown', this.targetElement );
+    this.tootButton.click();
     return true;
   }
 }

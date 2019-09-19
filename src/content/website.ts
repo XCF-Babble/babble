@@ -20,12 +20,12 @@
 'use strict';
 
 export class Website {
-  protected domain: string;
+  protected domains: string[];
   constructor () {
     if ( new.target === Website ) {
       throw new TypeError( 'Cannot construct Website (Abstract)' );
     }
-    this.domain = 'babble.moe';
+    this.domains = [ 'babble.moe' ];
   }
 
   // Called on page initialization. This sets up monitoring for the target encryption elements.
@@ -46,12 +46,7 @@ export class Website {
     return false;
   }
 
-  // Clear the submission element
-  clearInput (): boolean {
-    return true;
-  }
-
-  getDomain (): string {
-    return this.domain;
+  getDomains (): string[] {
+    return this.domains;
   }
 }

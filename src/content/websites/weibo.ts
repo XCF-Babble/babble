@@ -26,7 +26,7 @@ export class Weibo extends Website {
   private targetElement: HTMLTextAreaElement | null;
   constructor () {
     super();
-    this.domain = 'www.weibo.com';
+    this.domains = [ 'www.weibo.com' ];
     this.targetElement = null;
   }
 
@@ -54,14 +54,6 @@ export class Weibo extends Website {
       return false;
     }
     submit.click();
-    return true;
-  }
-
-  clearInput (): boolean {
-    if ( !this.targetElement ) {
-      return false;
-    }
-    this.targetElement.value = '';
     return true;
   }
 }
