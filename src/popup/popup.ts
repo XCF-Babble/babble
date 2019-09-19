@@ -147,3 +147,6 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
     } );
   }
 } );
+
+// This is a no-op so the background knows when the popup is closed.
+chrome.runtime.connect( { name: 'popup' } );

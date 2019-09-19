@@ -56,6 +56,16 @@ chrome.runtime.onMessage.addListener(
   }
 );
 
+chrome.runtime.onConnect.addListener( ( port: chrome.runtime.Port ) => {
+  console.assert( port.name === 'popup' );
+  port.onDisconnect.addListener( async ( ) => {
+    await sendMessageActiveTab( {
+      request: 'clearInputBox',
+      requestClass: 'injectInput'
+    } );
+  } );
+} );
+
 chrome.commands.onCommand.addListener( async ( command: string ) => {
   if ( command === 'toggle-decryption' ) {
     await sendMessageActiveTab( {
