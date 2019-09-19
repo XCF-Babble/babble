@@ -4,6 +4,7 @@
   "rules": {
     "array-bracket-spacing": [true, "always"],
     "deprecation": false,
+    "max-line-length": [ true, 120 ],
     "only-arrow-functions": true,
     "semicolon": [ true, "always" ],
     "space-within-parens": [ true, 1 ]

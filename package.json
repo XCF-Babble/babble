@@ -13,7 +13,8 @@
     "dev": "webpack --config webpack/webpack.dev.js --progress",
     "watch": "webpack --config webpack/webpack.dev.js --watch",
     "clean": "rm -rf dist",
-    "lint": "tslint --project tsconfig.json --fix",
+    "fix-lint": "tslint --project tsconfig.json --fix",
+    "lint": "tslint --project tsconfig.json",
     "chromium": "ln -sf platform/chromium/manifest.json manifest.json",
     "firefox": "ln -sf platform/firefox/manifest.json manifest.json"
   },
