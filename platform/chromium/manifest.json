@@ -57,7 +57,6 @@
     }
   },
   "permissions": [
-    "debugger",
     "storage",
     "tabs",
     "unlimitedStorage",
