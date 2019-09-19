@@ -56,12 +56,4 @@ export class Weibo extends Website {
     submit.click();
     return true;
   }
-
-  clearInput (): boolean {
-    if ( !this.targetElement ) {
-      return false;
-    }
-    this.targetElement.value = '';
-    return true;
-  }
 }

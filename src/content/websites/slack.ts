@@ -52,12 +52,4 @@ export class Slack extends Website {
     sendEnterEvent( 'keydown', this.targetElement );
     return true;
   }
-
-  clearInput (): boolean {
-    if ( !this.targetElement ) {
-      return false;
-    }
-    this.targetElement.innerHTML = '';
-    return true;
-  }
 }

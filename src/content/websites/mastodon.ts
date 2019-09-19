@@ -55,13 +55,4 @@ export class Mastodon extends Website {
     this.tootButton.click();
     return true;
   }
-
-  clearInput (): boolean {
-    if ( !this.targetElement ) {
-      return false;
-    }
-    this.targetElement.value = '';
-    this.targetElement.dispatchEvent( new KeyboardEvent( 'input', { bubbles: true } ) );
-    return true;
-  }
 }

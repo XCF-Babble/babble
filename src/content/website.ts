@@ -46,11 +46,6 @@ export class Website {
     return false;
   }
 
-  // Clear the submission element
-  clearInput (): boolean {
-    return true;
-  }
-
   getDomain (): string {
     return this.domain;
   }

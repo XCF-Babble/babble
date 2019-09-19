@@ -57,12 +57,4 @@ export class Discord extends Website {
     sendEnterEvent( 'keypress', this.targetElement );
     return true;
   }
-
-  clearInput (): boolean {
-    if ( !this.targetElement ) {
-      return false;
-    }
-    this.targetElement.value = '';
-    return true;
-  }
 }

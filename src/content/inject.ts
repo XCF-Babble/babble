@@ -140,7 +140,7 @@ window.onload = (): void => {
               website.submitInput();
               break;
             case 'clearInputBox':
-              website.clearInput();
+              website.tunnelInput( '' );
               break;
             default:
               break;
