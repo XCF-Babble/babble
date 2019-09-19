@@ -25,6 +25,7 @@
         "dist/js/content/walkdom.js",
         "dist/js/content/website.js",
         "dist/js/content/websites/discord.js",
+        "dist/js/content/websites/mastodon.js",
         "dist/js/content/websites/slack.js",
         "dist/js/content/websites/weibo.js",
         "dist/js/utils/message.js",

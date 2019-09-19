@@ -21,6 +21,7 @@
 
 import { Website } from './website';
 import { Discord } from './websites/discord';
+import { Mastodon } from './websites/mastodon';
 import { Slack } from './websites/slack';
 import { Weibo } from './websites/weibo';
 
@@ -28,6 +29,7 @@ export const load = ( location: Location ): Website | null => {
   let siteClasses: Website[] = [];
 
   siteClasses.push( new Discord() );
+  siteClasses.push( new Mastodon() );
   siteClasses.push( new Slack() );
   siteClasses.push( new Weibo() );
 
