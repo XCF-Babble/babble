@@ -25,7 +25,7 @@ import { Website } from './website';
 import { Request, Response, sendMessage } from '../utils/message';
 import { load } from './loader';
 
-window.onload = (): void => {
+window.addEventListener( 'load', ( ev: Event ): void => {
   let cryptFrame: HTMLIFrameElement | null;
 
   const activatePicker = (): void => {
@@ -170,4 +170,4 @@ window.onload = (): void => {
       }
     }
   );
-};
+} );
