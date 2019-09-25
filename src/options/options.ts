@@ -177,6 +177,50 @@ $( document ).ready( async () => {
   $( '#baseBox' ).keydown( entryModalOnEnter );
   $( '#tagsBox' ).keydown( entryModalOnEnter );
 
+  let keypair: cryptoutils.Keypair | null = null;
+  $( '#keyExchangeButton' ).click( () => {
+    keypair = null;
+    $( '#yourPublicKeyBox' ).val( '' );
+    $( '#theirPublicKeyBox' ).val( '' );
+    $( '#sharedKeyBox' ).val( '' );
+    $( '#keyExchangeModal' ).modal( 'show' );
+  } );
+  $( '#genKeypairButton' ).click( async () => {
+    keypair = await cryptoutils.genKeypair();
+    $( '#yourPublicKeyBox' ).val( keypair.encodedPublicKey );
+  } );
+  $( '#calcKeyButton' ).click( async () => {
+    if ( keypair === null ) {
+      return;
+    }
+    let sharedKey: string = '';
+    try {
+      sharedKey = await cryptoutils.dh(
+        keypair,
+        $( '#theirPublicKeyBox' ).val() as string
+      );
+    } catch {
+      sharedKey = '';
+    }
+    $( '#sharedKeyBox' ).val( sharedKey );
+  } );
+  $( '#copyYourPublicKeyButton' ).click( () => {
+    $( '#yourPublicKeyBox' ).select();
+    document.execCommand( 'copy' );
+    const selection: Selection | null = document.getSelection();
+    if ( selection ) {
+      selection.removeAllRanges();
+    }
+  } );
+  $( '#copySharedKeyButton' ).click( () => {
+    $( '#sharedKeyBox' ).select();
+    document.execCommand( 'copy' );
+    const selection: Selection | null = document.getSelection();
+    if ( selection ) {
+      selection.removeAllRanges();
+    }
+  } );
+
   const presetDropdownItems = $( '#presetDropdownItems' );
   for ( let i = 0; i < cryptoutils.babblePresetBases.length; ++i ) {
     const base: cryptoutils.PresetBase = cryptoutils.babblePresetBases[i];
