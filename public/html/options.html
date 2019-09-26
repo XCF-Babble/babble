@@ -119,9 +119,12 @@
             <div class="form-group">
               <label for="yourPublicKeyBox">Your Public Key</label>
               <div class="input-group">
-                <input type="text" class="form-control" id="yourPublicKeyBox" readonly>
+                <input type="text" class="form-control" aria-describedby="yourPublicKeyHelp" id="yourPublicKeyBox" readonly>
                 <div class="input-group-append">
                   <button type="button" class="btn btn-secondary" id="copyYourPublicKeyButton">Copy</button>
+                </div>
+                <div class="invalid-feedback">
+                  Cannot derive shared secret. Ensure keys are not modified.
                 </div>
               </div>
               <small class="text-muted">Please send this key to the other party.</small>
@@ -131,21 +134,9 @@
               <input type="text" class="form-control" id="theirPublicKeyBox">
               <small class="text-muted">Please paste the other party's public key here.</small>
             </div>
-            <div class="form-group">
-              <button type="button" class="btn btn-primary" id="calcKeyButton">Calculate Shared Key</button>
-            </div>
-            <div class="form-group">
-              <label for="sharedKeyBox">Shared Key</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="sharedKeyBox" readonly>
-                <div class="input-group-append">
-                  <button type="button" class="btn btn-secondary" id="copySharedKeyButton">Copy</button>
-                </div>
-              </div>
-              <small class="text-muted">Please verify with the other party <b>in real life</b> that the key is correct.</small>
-            </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-primary mr-auto" id="addEphemeralButton">Calculate Shared Key</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>

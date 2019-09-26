@@ -104,16 +104,19 @@ const refreshTable = async (): Promise<void> => {
 
 $( document ).ready( async () => {
   await refreshTable();
-  $( '#addNewButton' ).click( () => {
+  const addNewKey = ( passphrase: string = '' ): void => {
     $( '#entryModalTitle' ).html( 'New Entry' );
     $( '#editId' ).val( '' );
     $( '#nameBox' ).val( '' );
-    $( '#passphraseBox' ).val( '' );
+    $( '#passphraseBox' ).val( passphrase );
     $( '#baseBox' ).val( cryptoutils.babblePresetBases[0].base );
     $( '#tagsBox' ).val( '' );
 
     $( '#baseBox' ).removeClass( 'is-invalid' );
     $( '#entryModal' ).modal( 'show' );
+  };
+  $( '#addNewButton' ).click( () => {
+    addNewKey();
   } );
   $( '#deleteAllButton' ).click( () => {
     $( '#deleteAllModal' ).modal( 'show' );
@@ -182,14 +185,14 @@ $( document ).ready( async () => {
     keypair = null;
     $( '#yourPublicKeyBox' ).val( '' );
     $( '#theirPublicKeyBox' ).val( '' );
-    $( '#sharedKeyBox' ).val( '' );
     $( '#keyExchangeModal' ).modal( 'show' );
+    $( '#yourPublicKeyBox' ).removeClass( 'is-invalid' );
   } );
   $( '#genKeypairButton' ).click( async () => {
     keypair = await cryptoutils.genKeypair();
     $( '#yourPublicKeyBox' ).val( keypair.encodedPublicKey );
   } );
-  $( '#calcKeyButton' ).click( async () => {
+  $( '#addEphemeralButton' ).click( async () => {
     if ( keypair === null ) {
       return;
     }
@@ -199,21 +202,14 @@ $( document ).ready( async () => {
         keypair,
         $( '#theirPublicKeyBox' ).val() as string
       );
+      addNewKey( sharedKey );
+      $( '#keyExchangeModal' ).modal( 'hide' );
     } catch {
-      sharedKey = '';
+      $( '#yourPublicKeyBox' ).addClass( 'is-invalid' );
     }
-    $( '#sharedKeyBox' ).val( sharedKey );
   } );
   $( '#copyYourPublicKeyButton' ).click( () => {
     $( '#yourPublicKeyBox' ).select();
-    document.execCommand( 'copy' );
-    const selection: Selection | null = document.getSelection();
-    if ( selection ) {
-      selection.removeAllRanges();
-    }
-  } );
-  $( '#copySharedKeyButton' ).click( () => {
-    $( '#sharedKeyBox' ).select();
     document.execCommand( 'copy' );
     const selection: Selection | null = document.getSelection();
     if ( selection ) {
