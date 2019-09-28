@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Babble",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "说都不会话了。",
   "icons": {
     "128": "assets/images/icon_128.png"
