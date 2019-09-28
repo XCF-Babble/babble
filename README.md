@@ -82,14 +82,14 @@ policy](https://en.wikipedia.org/wiki/Same-origin_policy).
 
 ### Key Exchange
 
-In the options page, users can generate a keypair, share it with a
+In the keystore page, users can generate a keypair, share it with a
 correspondent, and both parties derive the same passphrase (UUID) using
 [Elliptic-curve Diffie-Hellman ephemeral
 (ECDHE)](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman).
 Point multiplication is done on
 [Curve25519](https://en.wikipedia.org/wiki/Curve25519) and the shared UUID is
 computed by `UUID(hash(secret || publicKey1 || publicKey2))`. It is not unheard
-of for different keypairs produce the same point on the curve, thus the public
+of for different keypairs to produce the same point on the curve, so the public
 keys are hashed with the shared secret to produce a more secure output ([per
 the libsodium
 recommendation](https://libsodium.gitbook.io/doc/advanced/scalar_multiplication)).
