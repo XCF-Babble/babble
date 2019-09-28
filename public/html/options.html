@@ -123,21 +123,21 @@
                 <div class="input-group-append">
                   <button type="button" class="btn btn-secondary" id="copyYourPublicKeyButton">Copy</button>
                 </div>
-                <div class="invalid-feedback">
-                  Cannot derive shared secret. Ensure keys are not modified.
-                </div>
               </div>
               <small class="text-muted">Please send this key to the other party.</small>
             </div>
             <div class="form-group">
               <label for="theirPublicKeyBox">Their Public Key</label>
               <input type="text" class="form-control" id="theirPublicKeyBox">
+              <div class="invalid-feedback">
+                Cannot derive shared secret. Ensure keys are not modified.
+              </div>
               <small class="text-muted">Please paste the other party's public key here.</small>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary mr-auto" id="addEphemeralButton">Calculate Shared Key</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="addEphemeralButton">Calculate Shared Key</button>
           </div>
         </div>
       </div>

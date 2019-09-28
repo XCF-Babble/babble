@@ -186,7 +186,7 @@ $( document ).ready( async () => {
     $( '#yourPublicKeyBox' ).val( '' );
     $( '#theirPublicKeyBox' ).val( '' );
     $( '#keyExchangeModal' ).modal( 'show' );
-    $( '#yourPublicKeyBox' ).removeClass( 'is-invalid' );
+    $( '#theirPublicKeyBox' ).removeClass( 'is-invalid' );
   } );
   $( '#genKeypairButton' ).click( async () => {
     keypair = await cryptoutils.genKeypair();
@@ -205,7 +205,7 @@ $( document ).ready( async () => {
       addNewKey( sharedKey );
       $( '#keyExchangeModal' ).modal( 'hide' );
     } catch {
-      $( '#yourPublicKeyBox' ).addClass( 'is-invalid' );
+      $( '#theirPublicKeyBox' ).addClass( 'is-invalid' );
     }
   } );
   $( '#copyYourPublicKeyButton' ).click( () => {
