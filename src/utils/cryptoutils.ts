@@ -27,6 +27,12 @@ export interface PresetBase {
   base: string;
 }
 
+export interface Keypair {
+  encodedPublicKey: string;
+  publicKey: Uint8Array;
+  privateKey: Uint8Array;
+}
+
 export const babblePresetBases: PresetBase[] = [
   {
     name: 'Chinese',
@@ -154,11 +160,11 @@ export const debabble = async (
   }
 };
 
-export const genUUID = async (): Promise<string> => {
+export const genUUID = async ( data?: Uint8Array | undefined ): Promise<string> => {
   const sodium = await getSodium();
   const uuidLen: number = 16;
   const hyphenPos: Array<number> = [ 3, 5, 7, 9 ];
-  const rand: Uint8Array = sodium.randombytes_buf( uuidLen );
+  const rand: Uint8Array = data === undefined ? sodium.randombytes_buf( uuidLen ) : data;
   let ret: string = '';
   for ( let i = 0; i < uuidLen; ++i ) {
     const hex: string = rand[i].toString( 16 );
@@ -168,4 +174,29 @@ export const genUUID = async (): Promise<string> => {
     }
   }
   return ret;
+};
+
+export const genKeypair = async (): Promise<Keypair> => {
+  const sodium = await getSodium();
+  const privateKey: Uint8Array = sodium.randombytes_buf( sodium.crypto_scalarmult_SCALARBYTES );
+  const publicKey: Uint8Array = sodium.crypto_scalarmult_base( privateKey );
+  const encodedPublicKey: string = hanziEncode( publicKey, babblePresetBases[0].base );
+  return { encodedPublicKey, publicKey, privateKey };
+};
+
+export const dh = async ( keypair: Keypair, encodedPublicKey: string ): Promise<string> => {
+  const sodium = await getSodium();
+  let publicKey1: Uint8Array = hanziDecode( encodedPublicKey, babblePresetBases[0].base );
+  let publicKey2: Uint8Array = keypair.publicKey;
+  const sharedSecret: Uint8Array = sodium.crypto_scalarmult( keypair.privateKey, publicKey1 );
+  let sharedSecretWithPublicKeys: Uint8Array = new Uint8Array( sodium.crypto_scalarmult_BYTES * 3 );
+  if ( sodium.compare( publicKey1, publicKey2 ) === 1 ) {
+    const tmp: Uint8Array = publicKey1;
+    publicKey1 = publicKey2;
+    publicKey2 = tmp;
+  }
+  sharedSecretWithPublicKeys.set( sharedSecret );
+  sharedSecretWithPublicKeys.set( publicKey1, sodium.crypto_scalarmult_BYTES );
+  sharedSecretWithPublicKeys.set( publicKey2, sodium.crypto_scalarmult_BYTES * 2 );
+  return genUUID( sodium.crypto_generichash( 16, sharedSecretWithPublicKeys ) );
 };

@@ -104,16 +104,19 @@ const refreshTable = async (): Promise<void> => {
 
 $( document ).ready( async () => {
   await refreshTable();
-  $( '#addNewButton' ).click( () => {
+  const addNewKey = ( passphrase: string = '' ): void => {
     $( '#entryModalTitle' ).html( 'New Entry' );
     $( '#editId' ).val( '' );
     $( '#nameBox' ).val( '' );
-    $( '#passphraseBox' ).val( '' );
+    $( '#passphraseBox' ).val( passphrase );
     $( '#baseBox' ).val( cryptoutils.babblePresetBases[0].base );
     $( '#tagsBox' ).val( '' );
 
     $( '#baseBox' ).removeClass( 'is-invalid' );
     $( '#entryModal' ).modal( 'show' );
+  };
+  $( '#addNewButton' ).click( () => {
+    addNewKey();
   } );
   $( '#deleteAllButton' ).click( () => {
     $( '#deleteAllModal' ).modal( 'show' );
@@ -176,6 +179,43 @@ $( document ).ready( async () => {
   $( '#passphraseBox' ).keydown( entryModalOnEnter );
   $( '#baseBox' ).keydown( entryModalOnEnter );
   $( '#tagsBox' ).keydown( entryModalOnEnter );
+
+  let keypair: cryptoutils.Keypair | null = null;
+  $( '#keyExchangeButton' ).click( () => {
+    keypair = null;
+    $( '#yourPublicKeyBox' ).val( '' );
+    $( '#theirPublicKeyBox' ).val( '' );
+    $( '#keyExchangeModal' ).modal( 'show' );
+    $( '#theirPublicKeyBox' ).removeClass( 'is-invalid' );
+  } );
+  $( '#genKeypairButton' ).click( async () => {
+    keypair = await cryptoutils.genKeypair();
+    $( '#yourPublicKeyBox' ).val( keypair.encodedPublicKey );
+  } );
+  $( '#addEphemeralButton' ).click( async () => {
+    if ( keypair === null ) {
+      return;
+    }
+    let sharedKey: string = '';
+    try {
+      sharedKey = await cryptoutils.dh(
+        keypair,
+        $( '#theirPublicKeyBox' ).val() as string
+      );
+      addNewKey( sharedKey );
+      $( '#keyExchangeModal' ).modal( 'hide' );
+    } catch {
+      $( '#theirPublicKeyBox' ).addClass( 'is-invalid' );
+    }
+  } );
+  $( '#copyYourPublicKeyButton' ).click( () => {
+    $( '#yourPublicKeyBox' ).select();
+    document.execCommand( 'copy' );
+    const selection: Selection | null = document.getSelection();
+    if ( selection ) {
+      selection.removeAllRanges();
+    }
+  } );
 
   const presetDropdownItems = $( '#presetDropdownItems' );
   for ( let i = 0; i < cryptoutils.babblePresetBases.length; ++i ) {

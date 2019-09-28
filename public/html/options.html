@@ -21,6 +21,7 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <button type="button" class="btn btn-primary" id="addNewButton">Add New</button>
+          <button type="button" class="btn btn-secondary" id="keyExchangeButton">Key Exchange</button>
         </div>
         <input type="text" class="form-control" placeholder="Search by name and tag" id="searchBox">
         <div class="input-group-append">
@@ -100,6 +101,43 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
             <button type="button" class="btn btn-danger" id="deleteAllModalButton">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="keyExchangeModal" tabindex="-1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Key Exchange</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <button type="button" class="btn btn-info" id="genKeypairButton">Generate Ephemeral Keypair</button><br>
+              <small class="text-muted">For security reasons, The private key is not shown.</small>
+            </div>
+            <div class="form-group">
+              <label for="yourPublicKeyBox">Your Public Key</label>
+              <div class="input-group">
+                <input type="text" class="form-control" aria-describedby="yourPublicKeyHelp" id="yourPublicKeyBox" readonly>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-secondary" id="copyYourPublicKeyButton">Copy</button>
+                </div>
+              </div>
+              <small class="text-muted">Please send this key to the other party.</small>
+            </div>
+            <div class="form-group">
+              <label for="theirPublicKeyBox">Their Public Key</label>
+              <input type="text" class="form-control" id="theirPublicKeyBox">
+              <div class="invalid-feedback">
+                Cannot derive shared secret. Ensure keys are not modified.
+              </div>
+              <small class="text-muted">Please paste the other party's public key here.</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="addEphemeralButton">Calculate Shared Key</button>
           </div>
         </div>
       </div>
