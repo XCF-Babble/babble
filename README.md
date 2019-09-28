@@ -41,6 +41,7 @@ Click the _key_ icon inside of the Babble popup and you'll be brought to the
 Babble Keystore. From there, you can add, search, select, edit, and delete
 key-base pairs.
 
+<a name="encryption-and-encoding"></a>
 ### Encryption and Encoding
 
 Encryption can begin when you type into the textbox inside of the Babble popup.
@@ -78,3 +79,19 @@ utilized because they have unique protocols (`chrome-extension://` on Chromium
 or `moz-extension://` on Firefox), and protect our plaintext from being
 exfiltrated by malicious Javascript the on page by the [same-origin
 policy](https://en.wikipedia.org/wiki/Same-origin_policy).
+
+### Key Exchange
+
+In the options page, users can generate a keypair, share it with a
+correspondent, and both parties derive the same passphrase (UUID) using
+[Elliptic-curve Diffie-Hellman ephemeral
+(ECDHE)](https://en.wikipedia.org/wiki/Elliptic-curve_Diffie%E2%80%93Hellman).
+Point multiplication is done on
+[Curve25519](https://en.wikipedia.org/wiki/Curve25519) and the shared UUID is
+computed by `UUID(hash(secret || publicKey1 || publicKey2))`. It is not unheard
+of for different keypairs produce the same point on the curve, thus the public
+keys are hashed with the shared secret to produce a more secure output ([per
+the libsodium
+recommendation](https://libsodium.gitbook.io/doc/advanced/scalar_multiplication)).
+The resulting UUID is to be used as a [source for key
+derivation](#encryption-and-encoding).
