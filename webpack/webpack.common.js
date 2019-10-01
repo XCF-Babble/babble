@@ -14,6 +14,7 @@ module.exports = {
         'content/websites/discord': path.join(__dirname, srcDir + 'content/websites/discord.ts'),
         'content/websites/mastodon': path.join(__dirname, srcDir + 'content/websites/mastodon.ts'),
         'content/websites/slack': path.join(__dirname, srcDir + 'content/websites/slack.ts'),
+        'content/websites/telegram': path.join(__dirname, srcDir + 'content/websites/telegram.ts'),
         'content/websites/weibo': path.join(__dirname, srcDir + 'content/websites/weibo.ts'),
         'options/options': path.join(__dirname, srcDir + 'options/options.ts'),
         'popup/popup': path.join(__dirname, srcDir + 'popup/popup.ts'),
