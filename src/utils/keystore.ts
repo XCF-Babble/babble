@@ -20,6 +20,7 @@
 'use strict';
 
 import * as cryptoutils from './cryptoutils';
+import { spongebobify } from './spongebob';
 
 export interface KeystoreEntry {
   name: string;
@@ -111,6 +112,9 @@ export const delEntry = async ( id: number ): Promise<void> => {
 export const babbleWithSelectedEntry = async ( s: string ): Promise<string> => {
   const keystore = await getKeystore();
   const id = await getSelectedEntry();
+  if ( keystore[id].name === 'spongebob' ) {
+    return spongebobify( s );
+  }
   return cryptoutils.babble(
     s,
     Uint8Array.from( keystore[id].key ),
