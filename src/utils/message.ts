@@ -22,7 +22,7 @@
 // TODO: Maybe change request and requestClass to enum
 export interface Request {
   request: string;
-  data?: string;
+  data?: any;
   requestClass?: string;
 }
 
@@ -46,6 +46,17 @@ export const sendMessageActiveTab = ( message: Request ): Promise<any> => {
         chrome.tabs.sendMessage( activeTab.id, message, resolve );
       } else {
         resolve( { success: false } );
+      }
+    } );
+  } );
+};
+
+export const getURL = (): Promise<URL> => {
+  return new Promise<URL>( ( resolve: ( _: URL ) => void ) => {
+    chrome.tabs.query( { active: true, currentWindow: true }, tabs => {
+      const activeTab: chrome.tabs.Tab | null = tabs.length > 0 ? tabs[0] : null;
+      if ( activeTab && activeTab.url ) {
+        resolve( new URL( activeTab.url ) );
       }
     } );
   } );

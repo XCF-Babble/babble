@@ -19,40 +19,72 @@
 
 'use strict';
 
-import { Request, Response, sendMessageActiveTab } from '../utils/message';
+import { Request, sendMessageActiveTab } from '../utils/message';
 
 const proxyTransformer = ( proxyRequest: string ): string => {
   return proxyRequest[5].toLowerCase() + proxyRequest.slice( 6 );
 };
 
-// Because Firefox does not support sending messages from content script to
-// content script, we have the background proxy the request back to the content
-// page for the iframe to receive the message.
-//
-// TODO: Consider using window.postMessage to communicate with the iframe
-// (simpler, better performance). I am not sure I like this, because a hostile
-// webpage could spam the iframe with requests and attempt some sort of
-// side-channel attack. Need to look into this more.
+const historyMap: { [domain: string]: string } = {};
+
 chrome.runtime.onMessage.addListener(
   (
     request: Request,
     sender: chrome.runtime.MessageSender,
     sendResponse
   ): boolean => {
-    if ( request.request.startsWith( 'proxy' ) && request.request.length > 5 ) {
-      void ( async (): Promise<void> => {
-        const r: Response = await sendMessageActiveTab( {
-          request: proxyTransformer( request.request ),
-          requestClass: request.requestClass,
-          data: request.data
-        } );
-        sendResponse( r );
-      } )();
-      return true;
-    } else {
-      sendResponse( { success: false } );
-      return false;
-    }
+    void ( async ( ): Promise<void> => {
+      switch ( request.request ) {
+        case 'tunnelCipherText':
+          historyMap[request.data.hostname] = request.data.plaintext;
+          sendResponse(
+            await sendMessageActiveTab( {
+              request: request.request,
+              requestClass: request.requestClass,
+              data: request.data.ciphertext
+            } )
+          );
+          break;
+        case 'clearInputBox':
+        case 'submitCipherText':
+          historyMap[request.data.hostname] = '';
+          sendResponse(
+            await sendMessageActiveTab( {
+              request: request.request,
+              requestClass: request.requestClass
+            } )
+          );
+          break;
+        case 'getPopupHistory':
+          sendResponse( {
+            success: true,
+            data: historyMap[request.data.hostname] || ''
+          } );
+          break;
+        default:
+          // Because Firefox does not support sending messages from content script to
+          // content script, we have the background proxy the request back to the content
+          // page for the iframe to receive the message.
+          //
+          // TODO: Consider using window.postMessage to communicate with the iframe
+          // (simpler, better performance). I am not sure I like this, because a hostile
+          // webpage could spam the iframe with requests and attempt some sort of
+          // side-channel attack. Need to look into this more.
+          if ( request.request.startsWith( 'proxy' ) && request.request.length > 5 ) {
+            sendResponse(
+              await sendMessageActiveTab( {
+                request: proxyTransformer( request.request ),
+                requestClass: request.requestClass,
+                data: request.data
+              } )
+            );
+          } else {
+            sendResponse( { success: false } );
+          }
+          break;
+      }
+    } )();
+    return true;
   }
 );
 
