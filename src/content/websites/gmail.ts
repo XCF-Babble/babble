@@ -23,7 +23,7 @@ import { Website } from '../website';
 import { documentObserver, sendEnterEvent } from '../../utils/webutils';
 
 export class Gmail extends Website {
-  private targetElement: HTMLTextAreaElement | null;
+  private targetElement: HTMLElement | null;
   constructor () {
     super();
     this.domains = [ 'mail.google.com' ];
@@ -35,6 +35,11 @@ export class Gmail extends Website {
       // @ts-ignore ... Let me use my ES6 in peace, Microsoft.
       this.targetElement = [ ...document.querySelectorAll( '[role=textbox]' ) ]
         .find( ( e: HTMLElement ) => e.offsetHeight > 0 ); // first email box such that display!=none
+
+      if ( !this.targetElement ) {
+        // try basic HTML Gmail interface
+        this.targetElement = document.querySelector( 'textarea[name=body]' ) as HTMLTextAreaElement;
+      }
     } );
   }
 
@@ -42,7 +47,11 @@ export class Gmail extends Website {
     if ( !this.targetElement ) {
       return false;
     }
-    this.targetElement.innerText = s;
+    if ( this.targetElement instanceof HTMLTextAreaElement ) {
+      this.targetElement.value = s;
+    } else {
+      this.targetElement.innerText = s;
+    }
     return true;
   }
 
@@ -51,6 +60,10 @@ export class Gmail extends Website {
       return false;
     }
     sendEnterEvent( 'keydown', this.targetElement, true );
+
+    // submission for basic HTML Gmail interface
+    const submit: HTMLInputElement | null = document.querySelector( 'input[type=submit][value=Send]' );
+    if ( submit ) { submit.click(); }
     return true;
   }
 }
