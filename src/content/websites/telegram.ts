@@ -23,7 +23,7 @@ import { Website } from '../website';
 import { documentObserver, sendEnterEvent } from '../../utils/webutils';
 
 export class Telegram extends Website {
-  private targetElement: HTMLElement | null;
+  private targetElement: HTMLDivElement | null;
   constructor () {
     super();
     this.domains = [ 'web.telegram.org' ];
@@ -48,7 +48,6 @@ export class Telegram extends Website {
     if ( !this.targetElement ) {
       return false;
     }
-    ( this.targetElement.parentElement as HTMLElement ).click();
     sendEnterEvent( 'keydown', this.targetElement );
     return true;
   }
