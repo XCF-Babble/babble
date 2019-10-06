@@ -20,19 +20,7 @@
         "https://*/*"
       ],
       "js": [
-        "dist/js/content/element-picker.js",
         "dist/js/content/inject.js",
-        "dist/js/content/loader.js",
-        "dist/js/content/walkdom.js",
-        "dist/js/content/website.js",
-        "dist/js/content/websites/discord.js",
-        "dist/js/content/websites/gmail.js",
-        "dist/js/content/websites/mastodon.js",
-        "dist/js/content/websites/slack.js",
-        "dist/js/content/websites/telegram.js",
-        "dist/js/content/websites/weibo.js",
-        "dist/js/utils/message.js",
-        "dist/js/utils/webutils.js",
         "dist/js/vendor.js"
       ],
       "run_at": "document_end"
