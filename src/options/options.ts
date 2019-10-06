@@ -23,6 +23,8 @@ import * as keystore from '../utils/keystore';
 import * as cryptoutils from '../utils/cryptoutils';
 import * as _ from 'bootstrap';
 
+import { escapeHTML } from '../utils/webutils';
+
 const refreshTable = async (): Promise<void> => {
   const tbody = $( '#keystoreTable tbody' );
   const search = $( '#searchBox' ).val() as string;
@@ -67,10 +69,10 @@ const refreshTable = async (): Promise<void> => {
     const row = `
     <tr>
       <td>${button}</td>
-      <td>${escapeHtml( entry.name )}</td>
-      <td>${escapeHtml( entry.passphrase )}</td>
-      <td>${escapeHtml( truncatedBase )}</td>
-      <td>${escapeHtml( tags )}</td>
+      <td>${escapeHTML( entry.name )}</td>
+      <td>${escapeHTML( entry.passphrase )}</td>
+      <td>${escapeHTML( truncatedBase )}</td>
+      <td>${escapeHTML( tags )}</td>
       <td>${editButton}</td>
       <td>${deleteButton}</td>
     </tr>
@@ -228,25 +230,6 @@ $( document ).ready( async () => {
     } );
   }
 } );
-
-// Taken from mustache.js templating library
-// https://github.com/janl/mustache.js/blob/6c3608bfb9fa74684cd9e22f5bb4c097f87484ef/mustache.js#L73-L88
-const entityMap: { [unsafeEntity: string]: string } = {
-  '&': '&amp;',
-  '<': '&lt;',
-  '>': '&gt;',
-  '"': '&quot;',
-  "'": '&#39;',
-  '/': '&#x2F;',
-  '`': '&#x60;',
-  '=': '&#x3D;'
-};
-
-const escapeHtml = ( unsafe: string ): string => {
-  return unsafe.replace( /[&<>"'`=\/]/g, ( s: string ): string => {
-    return entityMap[s];
-  } );
-};
 
 const baseLen: number = 256;
 const isValidBase = ( base: string ): boolean => {

@@ -1,11 +1,12 @@
 <head>
   <meta charset="utf-8">
   <title>Babble Decryption</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <style>
     body {
       background: transparent !important;
       color: black !important;
-      font: 12px sans-serif !important;
+      font: 14px sans-serif !important;
       height: 100% !important;
       margin: 0 !important;
       overflow: hidden !important;
@@ -16,37 +17,18 @@
       outline: none !important;
     }
 
-    section {
-      border: 0 !important;
-      box-sizing: border-box !important;
-      display: inline-block !important;
-      width: 100% !important;
+    #decrypt-box {
+      height: 8em;
+      padding: 5px;
+      margin-bottom: 5px;
+      background-color: #fff;
+      border-radius: .1em;
+      overflow-y: auto;
+      overflow-wrap: break-word;
     }
 
-    section > div:first-child {
-      border: 1px solid #aaa !important;
-      margin: 0 !important;
-      position: relative !important;
-    }
-
-    section.invalidFilter > div:first-child {
-      border-color: red !important;
-    }
-
-    section > div:first-child > textarea {
-      background-color: #fff !important;
-      border: none !important;
-      box-sizing: border-box !important;
-      color: #000 !important;
-      font: 11px monospace !important;
-      height: 8em !important;
-      margin: 0 !important;
-      overflow: hidden !important;
-      overflow-y: auto !important;
-      padding: 2px !important;
-      resize: none !important;
-      width: 100% !important;
-      word-break: break-all !important;
+    #copy-box {
+      display: none; /* Hidden text area for copying */
     }
 
     section > div:first-child + div {
@@ -55,9 +37,14 @@
       text-align: right !important;
     }
 
+    section > div > small {
+      float: right;
+    }
+
     aside {
       background-color: #eee !important;
       border: 1px solid #aaa !important;
+      border-radius: .1em;
       bottom: 4px !important;
       box-sizing: border-box !important;
       min-width: 24em !important;
@@ -94,14 +81,15 @@
 <body>
   <aside>
     <section>
-      <div>
-        <textarea id="decrypt-box" readonly lang="en" dir="ltr" spellcheck="false"></textarea>
+      <div id="decrypt-box" style="height:8em;">
       </div>
+      <textarea id="copy-box" readonly spellcheck="false"></textarea>
       <div>
-        <button id="copy" disabled type="button">Copy</button>
-        <button id="setKey" disabled type="button">Use this key</button>
-        <button id="quit" disabled type="button">Quit</button>
+        <button id="copy" class="btn btn-sm" disabled type="button">Copy</button>
+        <button id="setKey" class="btn btn-sm" disabled type="button">Use this key</button>
+        <button id="quit" class="btn btn-sm" disabled type="button">Quit</button>
         <small>Decryption Key: <span id="key-name"></span></small>
+      </div>
     </section>
   </aside>
   <script src="../js/web_accessible_resources/decrypt.js"></script>

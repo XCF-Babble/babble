@@ -49,3 +49,22 @@ export const documentObserver = (
     characterData: false
   } );
 };
+
+// Taken from mustache.js templating library
+// https://github.com/janl/mustache.js/blob/6c3608bfb9fa74684cd9e22f5bb4c097f87484ef/mustache.js#L73-L88
+const entityMap: { [unsafeEntity: string]: string } = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
+  '`': '&#x60;',
+  '=': '&#x3D;'
+};
+
+export const escapeHTML = ( unsafe: string ): string => {
+  return unsafe.replace( /[&<>"'`=\/]/g, ( s: string ): string => {
+    return entityMap[s];
+  } );
+};

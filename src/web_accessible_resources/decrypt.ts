@@ -19,13 +19,15 @@
 
 'use strict';
 
-import { Request, sendMessage } from '../utils/message';
 import * as keystore from '../utils/keystore';
 
+import { Request, sendMessage } from '../utils/message';
+import { escapeHTML } from '../utils/webutils';
+
 window.onload = (): void => {
-  const decryptBox: HTMLTextAreaElement = document.querySelector(
-    'textarea'
-  ) as HTMLTextAreaElement;
+  const decryptBox = document.getElementById( 'decrypt-box' ) as HTMLDivElement;
+
+  const copyBox = document.getElementById( 'copy-box' ) as HTMLTextAreaElement;
 
   const copyButton: HTMLButtonElement = document.getElementById(
     'copy'
@@ -46,12 +48,14 @@ window.onload = (): void => {
   let debabbleResult: keystore.DebabbleResult | null;
 
   copyButton.addEventListener( 'click', ( event: MouseEvent ) => {
-    decryptBox.select();
+    copyBox.style.display = 'block';
+    copyBox.select();
     document.execCommand( 'copy' );
     const selection: Selection | null = document.getSelection();
     if ( selection ) {
       selection.removeAllRanges();
     }
+    copyBox.style.display = 'none';
   } );
 
   quitButton.addEventListener( 'click', async ( event: MouseEvent ) => {
@@ -87,7 +91,8 @@ window.onload = (): void => {
                 cleanedData
               );
               if ( debabbleResult.clearText !== '' ) {
-                decryptBox.value = debabbleResult.clearText;
+                decryptBox.innerHTML = urlify( escapeHTML( debabbleResult.clearText ) );
+                copyBox.value = debabbleResult.clearText;
                 keyName.innerText = debabbleResult.keyName;
                 if ( !aside.classList.contains( 'show' ) ) {
                   aside.classList.add( 'show' );
@@ -97,7 +102,8 @@ window.onload = (): void => {
                 if ( aside.classList.contains( 'show' ) ) {
                   aside.classList.remove( 'show' );
                 }
-                decryptBox.value = '';
+                decryptBox.innerHTML = '';
+                copyBox.value = '';
                 sendResponse( { success: true } );
               }
             } )();
@@ -110,7 +116,8 @@ window.onload = (): void => {
           if ( aside.classList.contains( 'show' ) ) {
             aside.classList.remove( 'show' );
           }
-          decryptBox.value = '';
+          decryptBox.innerHTML = '';
+          copyBox.value = '';
           sendResponse( { success: true } );
           break;
         case 'pickerSelect':
@@ -131,4 +138,18 @@ window.onload = (): void => {
       return false;
     }
   );
+};
+
+const urlify = ( text: string ): string => {
+  // Taken from https://github.com/sindresorhus/linkify-urls/blob/62fd87c59d61eb8d15530e4d38dbc99abdef78b6/index.js#L5
+  // and modified to include escaped characters.
+  const urlRegex = /^((?:https?(?:(?::\/\/)|(?::&#x2F;&#x2F;)))(?:www\.)?(?:[a-zA-Z\d-_.]+(?:(?:\.|@)[a-zA-Z\d]{2,})|localhost)(?:(?:[-a-zA-Z\d:%_+.~#!?&//=@]*(?:(?:&#x2F;)|(?:&amp;))*)(?:[,](?![\s]))*)*)$/;
+  const words = text.split( ' ' );
+  words.forEach( ( _: string, i: number ) => {
+    words[i] = _.replace( urlRegex, ( url: string ) => {
+      // Since we are in an iframe, set target=_blank to open in new tab
+      return `<a href="${url}" target="_blank">${url}</a>`;
+    } );
+  } );
+  return words.join( ' ' );
 };
