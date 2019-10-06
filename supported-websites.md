@@ -1,6 +1,7 @@
 # Supported Websites
 
 - [Discord](https://discordapp.com/)
+- [Gmail](https://mail.google.com/)
 - [Mastodon](https://mastodon.social/)
 - [Slack](https://slack.com/)
 - [Telegram](https://telegram.com/)
