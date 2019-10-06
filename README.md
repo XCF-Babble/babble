@@ -49,7 +49,7 @@ For supported sites, the encrypted text will be automatically filled into the
 webpage's textbox. Hitting `Ctrl+Enter` will trigger sending the message from
 the webpage. For unsupported sites, you can click the _copy_ icon and paste the
 encrypted text to the textbox you want. The popup can also be activated by
-`Shift+Alt+Z`.
+`Alt+Shift+Z`.
 
 Babble uses [Argon2i](https://en.wikipedia.org/wiki/Argon2) algorithm to
 generate a 256-bit encryption key (with salt `BabbleBabbleBabb`). The key
@@ -67,7 +67,7 @@ Decryption can begin when the _unlock_ icon inside of the Babble popup is
 clicked. This action launches the element picker, highlighting the DOM element
 under the cursor purple. The extension will walk the DOM starting at that
 element looking for data to decrypt. Decryption can also be activated by
-`Shift+Alt+D`.
+`Alt+Shift+D`.
 
 **Babble operates under the assumption that every website is running hostile
 JavaScript**. To that end, when the element picker is started, an iframe is
