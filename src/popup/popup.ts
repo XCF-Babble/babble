@@ -19,7 +19,7 @@
 
 'use strict';
 
-import { sendMessageActiveTab, Response } from '../utils/message';
+import { getURL, sendMessage, sendMessageActiveTab, Response } from '../utils/message';
 import * as keystore from '../utils/keystore';
 
 window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
@@ -75,6 +75,28 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
     } );
   }
 
+  void ( async (): Promise<void> => {
+    const url = await getURL();
+    const r: Response = await sendMessage( {
+      request: 'getPopupHistory',
+      data: { hostname: url.hostname }
+    } );
+    if ( ! r.success || ! r.data ) { return; }
+    const babbledText = await keystore.babbleWithSelectedEntry( r.data );
+    if ( ! babbledText ) { return; }
+    plaintext.value = r.data;
+    displaytext.value = babbledText;
+    await sendMessage( {
+      request: 'tunnelCipherText',
+      requestClass: 'injectInput',
+      data: {
+        plaintext: r.data,
+        ciphertext: babbledText,
+        hostname: url.hostname
+      }
+    } );
+  } )();
+
   if ( plaintext ) {
     void ( async (): Promise<void> => {
       const numKeys: number = await keystore.getKeystoreSize();
@@ -94,11 +116,15 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
     plaintext.addEventListener(
       'input',
       async ( kevent: Event ): Promise<void> => {
+        const url = await getURL();
         const cleanedData: string = plaintext.value.trim();
         if ( cleanedData === '' ) {
-          await sendMessageActiveTab( {
+          await sendMessage( {
             request: 'clearInputBox',
-            requestClass: 'injectInput'
+            requestClass: 'injectInput',
+            data: {
+              hostname: url.hostname
+            }
           } );
           displaytext.value = '';
           displayLength.innerText = displaytext.value.length.toString();
@@ -109,10 +135,14 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
         );
         displaytext.value = babbledText;
         displayLength.innerText = displaytext.value.length.toString();
-        await sendMessageActiveTab( {
+        await sendMessage( {
           request: 'tunnelCipherText',
           requestClass: 'injectInput',
-          data: babbledText
+          data: {
+            plaintext: cleanedData,
+            ciphertext: babbledText,
+            hostname: url.hostname
+          }
         } );
       }
     );
@@ -122,10 +152,14 @@ window.addEventListener( 'DOMContentLoaded', ( event: Event ) => {
     };
 
     plaintext.addEventListener( 'keydown', async ( kevent: KeyboardEvent ) => {
+      const url = await getURL();
       if ( isEnter( kevent ) ) {
-        const r: Response = await sendMessageActiveTab( {
+        const r: Response = await sendMessage( {
           request: 'submitCipherText',
-          requestClass: 'injectInput'
+          requestClass: 'injectInput',
+          data: {
+            hostname: url.hostname
+          }
         } );
         if ( r.success ) {
           plaintext.value = '';
