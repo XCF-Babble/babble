@@ -143,7 +143,7 @@ window.onload = (): void => {
 const urlify = ( text: string ): string => {
   // Taken from https://github.com/sindresorhus/linkify-urls/blob/62fd87c59d61eb8d15530e4d38dbc99abdef78b6/index.js#L5
   // and modified to include escaped characters.
-  const urlRegex = /((?<!\+)(?:https?(?:(?::\/\/)|(?::&#x2F;&#x2F;)))(?:www\.)?(?:[a-zA-Z\d-_.]+(?:(?:\.|@)[a-zA-Z\d]{2,})|localhost)(?:(?:[-a-zA-Z\d:%_+.~#!?&//=@]*)(?:[,](?![\s]))*)*)/g;
+  const urlRegex = /((?:https?(?:(?::\/\/)|(?::&#x2F;&#x2F;)))(?:www\.)?(?:[a-zA-Z\d-_.]+(?:(?:\.|@)[a-zA-Z\d]{2,})|localhost)(?:(?:[-a-zA-Z\d:%_+.~#!?&//=@]*)(?:[,](?![\s]))*)*)/g;
   return text.replace( urlRegex, ( url: string ) => {
     // Since we are in an iframe, set target=_blank to open in new tab
     return `<a href="${url}" target="_blank">${url}</a>`;
