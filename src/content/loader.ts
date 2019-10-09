@@ -41,7 +41,7 @@ export const load = ( location: Location ): Website | null => {
 
   for ( const siteClass of siteClasses ) {
     const domains: string[] = siteClass.getDomains();
-    if ( domains.indexOf( window.location.hostname ) !== -1 ) {
+    if ( domains.indexOf( location.hostname ) !== -1 ) {
       return siteClass;
     }
   }
