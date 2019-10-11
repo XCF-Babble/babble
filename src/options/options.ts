@@ -49,9 +49,14 @@ const refreshTable = async (): Promise<void> => {
     let button: string = '';
     let truncatedBase: string = '';
     let tags: string = '';
+    let passphraseField: string = '';
+    let showPassphraseButton: string = '';
     let editButton: string = '';
     let deleteButton: string = '';
     let selectButtonId: string = '';
+    let passphraseFieldId: string = '';
+    let showPassphraseButtonId: string = '';
+    let editButtonId: string = '';
     let deleteButtonId: string = '';
 
     if ( i === selectedEntry ) {
@@ -62,7 +67,11 @@ const refreshTable = async (): Promise<void> => {
     }
     truncatedBase = entry.base.substr( 0, 10 ) + '...';
     tags = entry.tags.join( ', ' );
-    const editButtonId = 'editButton' + i.toString();
+    passphraseFieldId = 'passphraseField' + i.toString();
+    passphraseField = `<span id="${passphraseFieldId}">**********</span>`;
+    showPassphraseButtonId = 'showPassphraseButton' + i.toString();
+    showPassphraseButton = `<button type="button" class="btn btn-link btn-sm" id="${showPassphraseButtonId}">(show)</button>`;
+    editButtonId = 'editButton' + i.toString();
     editButton = `<button type="button" class="btn btn-info btn-sm btn-block" id="${editButtonId}"><i class="fa fa-edit"></i></button>`;
     deleteButtonId = 'deleteButton' + i.toString();
     deleteButton = `<button type="button" class="btn btn-danger btn-sm btn-block" id="${deleteButtonId}"><i class="fa fa-trash"></i></button>`;
@@ -70,7 +79,7 @@ const refreshTable = async (): Promise<void> => {
     <tr>
       <td>${button}</td>
       <td>${escapeHTML( entry.name )}</td>
-      <td>${escapeHTML( entry.passphrase )}</td>
+      <td>${passphraseField}${showPassphraseButton}</td>
       <td>${escapeHTML( truncatedBase )}</td>
       <td>${escapeHTML( tags )}</td>
       <td>${editButton}</td>
@@ -85,6 +94,17 @@ const refreshTable = async (): Promise<void> => {
         await refreshTable();
       } );
     }
+    $( '#' + showPassphraseButtonId ).click( () => {
+      const btn = $( '#' + showPassphraseButtonId );
+      const field = $( '#' + passphraseFieldId );
+      if ( btn.text() === '(show)' ) {
+        field.text( entry.passphrase );
+        btn.text( '(hide)' );
+      } else {
+        field.text( '**********' );
+        btn.text( '(show)' );
+      }
+    } );
     $( '#' + editButtonId ).click( async () => {
       $( '#entryModalTitle' ).html( 'Edit Entry' );
       $( '#editId' ).val( id.toString() );
