@@ -49,7 +49,7 @@ export class TheLounge extends Website {
     if ( !this.targetElement ) {
       return false;
     }
-    const submit = document.querySelector("#submit") as HTMLButtonElement;
+    const submit = document.querySelector( '#submit' ) as HTMLButtonElement;
     submit.click();
     return true;
   }
