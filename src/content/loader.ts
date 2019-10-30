@@ -27,6 +27,7 @@ import { Slack } from './websites/slack';
 import { Telegram } from './websites/telegram';
 import { Weibo } from './websites/weibo';
 import { WeiboApi } from './websites/weibo-api';
+import { TheLounge } from './websites/thelounge';
 
 export const load = ( location: Location ): Website | null => {
   let siteClasses: Website[] = [];
@@ -36,6 +37,7 @@ export const load = ( location: Location ): Website | null => {
   siteClasses.push( new Mastodon() );
   siteClasses.push( new Slack() );
   siteClasses.push( new Telegram() );
+  siteClasses.push( new TheLounge() );
   siteClasses.push( new Weibo() );
   siteClasses.push( new WeiboApi() );
 
