@@ -49,8 +49,8 @@ export class ElementPicker {
 
   resetElement = (): void => {
     if ( this.lastElem ) {
-      this.lastElem.style.backgroundColor = this.lastBackgroundColor;
-      this.lastElem.style.border = this.lastBorder;
+      this.lastElem.style.backgroundColor = this.lastBackgroundColor || '';
+      this.lastElem.style.border = this.lastBorder || '';
     }
   }
 
